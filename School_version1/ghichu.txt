@@ -1,0 +1,3 @@
+Data Anotation
+fluent api  
+sử dụng 2 cái khi tạo database bị lỗi

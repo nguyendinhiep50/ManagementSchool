@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace School_version1.Migrations
 {
-    public partial class init01 : Migration
+    public partial class data_init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,7 @@ namespace School_version1.Migrations
                 name: "Courses",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     NameCourse = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -22,10 +22,24 @@ namespace School_version1.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Management",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    NameManagement = table.Column<string>(type: "Nvarchar(100)", nullable: false),
+                    EmailManagement = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PasswordManagement = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Management", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Semesters",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     NameSemester = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DayBeginSemester = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DayEndSemester = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -37,31 +51,10 @@ namespace School_version1.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Students",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NameStudent = table.Column<string>(type: "Nvarchar(100)", nullable: false),
-                    ImageStudent = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmailStudent = table.Column<string>(type: "Nvarchar(100)", nullable: false),
-                    PasswordStudent = table.Column<string>(type: "Nvarchar(100)", nullable: false),
-                    BirthDateStudent = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PhoneStudent = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AdressStudent = table.Column<string>(type: "Nvarchar(200)", nullable: false),
-                    SchoolYear = table.Column<int>(type: "int", nullable: false),
-                    DateComeShoool = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StatusStudent = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Students", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Subjects",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     NameSubject = table.Column<string>(type: "Nvarchar(100)", nullable: false),
                     CreditSubject = table.Column<int>(type: "int", nullable: false),
                     MandatorySubject = table.Column<bool>(type: "bit", nullable: false)
@@ -75,7 +68,7 @@ namespace School_version1.Migrations
                 name: "Teachers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     NameTeacher = table.Column<string>(type: "Nvarchar(100)", nullable: false),
                     ImageTeacher = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EmailTeacher = table.Column<string>(type: "Nvarchar(100)", nullable: false),
@@ -91,10 +84,38 @@ namespace School_version1.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Students",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    NameStudent = table.Column<string>(type: "Nvarchar(100)", nullable: false),
+                    ImageStudent = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmailStudent = table.Column<string>(type: "Nvarchar(100)", nullable: false),
+                    PasswordStudent = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BirthDateStudent = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PhoneStudent = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AdressStudent = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SchoolYear = table.Column<int>(type: "int", nullable: false),
+                    DateComeShoool = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StatusStudent = table.Column<bool>(type: "bit", nullable: false),
+                    IdCourse = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Students", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Students_Courses_IdCourse",
+                        column: x => x.IdCourse,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AcademicPrograms",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     TimeEndAcademicProgram = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IdSemester = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IdCourese = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -127,7 +148,7 @@ namespace School_version1.Migrations
                 name: "ClassLearns",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     NameClassLearn = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EnrollmentClass = table.Column<int>(type: "int", nullable: false),
                     IdAcademicProgram = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -154,9 +175,8 @@ namespace School_version1.Migrations
                 name: "ListStudentClassLearns",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdListStudentClassLearn = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdStudent = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    StudentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IdClassLearn = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -169,11 +189,11 @@ namespace School_version1.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ListStudentClassLearns_Students_IdStudent",
-                        column: x => x.IdStudent,
+                        name: "FK_ListStudentClassLearns_Students_StudentId",
+                        column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -207,15 +227,23 @@ namespace School_version1.Migrations
                 column: "IdClassLearn");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ListStudentClassLearns_IdStudent",
+                name: "IX_ListStudentClassLearns_StudentId",
                 table: "ListStudentClassLearns",
-                column: "IdStudent");
+                column: "StudentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_IdCourse",
+                table: "Students",
+                column: "IdCourse");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "ListStudentClassLearns");
+
+            migrationBuilder.DropTable(
+                name: "Management");
 
             migrationBuilder.DropTable(
                 name: "ClassLearns");

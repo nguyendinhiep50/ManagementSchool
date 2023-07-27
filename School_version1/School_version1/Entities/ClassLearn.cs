@@ -11,11 +11,11 @@ namespace School_version1.Entities
         [Required]
         public int EnrollmentClass { get; set; }  // sỉ số
         [ForeignKey("AcademicProgram")]
-        public Guid IdAcademicProgram { get; set; }
+        public Guid AcademicProgramId { get; set; }
         [JsonIgnore]
         public virtual AcademicProgram? AcademicProgram { get; set; }
         [ForeignKey("Teacher")]
-        public Guid IdTeacher { get; set; }
+        public Guid TeacherId { get; set; }
         [JsonIgnore]
         public virtual Teacher? Teacher { get; set; }
 

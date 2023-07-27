@@ -46,7 +46,7 @@ const App: React.FC = () => {
       </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit" className="login-form-button">
-          <Link to="/IndexStudent">
+          <Link to="/ChangePassword">
             <i className="fa fa-shopping-cart"></i> Save Change
           </Link>
         </Button>

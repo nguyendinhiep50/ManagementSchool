@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\File_PhanMem\\API_CORE_6\\ProjectSchool\\School_version1\\School_version1\\School_version1.csproj": {}
+    "D:\\File_PhanMem\\API_CORE_6\\ProjectSchool_CV\\ManagementSchool\\School_version1\\School_version1\\School_version1.csproj": {}
   },
   "projects": {
-    "D:\\File_PhanMem\\API_CORE_6\\ProjectSchool\\School_version1\\School_version1\\School_version1.csproj": {
+    "D:\\File_PhanMem\\API_CORE_6\\ProjectSchool_CV\\ManagementSchool\\School_version1\\School_version1\\School_version1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\File_PhanMem\\API_CORE_6\\ProjectSchool\\School_version1\\School_version1\\School_version1.csproj",
+        "projectUniqueName": "D:\\File_PhanMem\\API_CORE_6\\ProjectSchool_CV\\ManagementSchool\\School_version1\\School_version1\\School_version1.csproj",
         "projectName": "School_version1",
-        "projectPath": "D:\\File_PhanMem\\API_CORE_6\\ProjectSchool\\School_version1\\School_version1\\School_version1.csproj",
+        "projectPath": "D:\\File_PhanMem\\API_CORE_6\\ProjectSchool_CV\\ManagementSchool\\School_version1\\School_version1\\School_version1.csproj",
         "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-        "outputPath": "D:\\File_PhanMem\\API_CORE_6\\ProjectSchool\\School_version1\\School_version1\\obj\\",
+        "outputPath": "D:\\File_PhanMem\\API_CORE_6\\ProjectSchool_CV\\ManagementSchool\\School_version1\\School_version1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",

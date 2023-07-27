@@ -29,13 +29,13 @@ namespace School_version1.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
-                    b.Property<Guid>("IdCourese")
+                    b.Property<Guid>("CoureseId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("IdSemester")
+                    b.Property<Guid>("SemesterId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("IdSubject")
+                    b.Property<Guid>("SubjectId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("TimeEndAcademicProgram")
@@ -43,11 +43,11 @@ namespace School_version1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdCourese");
+                    b.HasIndex("CoureseId");
 
-                    b.HasIndex("IdSemester");
+                    b.HasIndex("SemesterId");
 
-                    b.HasIndex("IdSubject");
+                    b.HasIndex("SubjectId");
 
                     b.ToTable("AcademicPrograms");
                 });
@@ -59,24 +59,24 @@ namespace School_version1.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
+                    b.Property<Guid>("AcademicProgramId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("EnrollmentClass")
                         .HasColumnType("int");
-
-                    b.Property<Guid>("IdAcademicProgram")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("IdTeacher")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("NameClassLearn")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("TeacherId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("IdAcademicProgram");
+                    b.HasIndex("AcademicProgramId");
 
-                    b.HasIndex("IdTeacher");
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("ClassLearns");
                 });
@@ -104,20 +104,17 @@ namespace School_version1.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
-                    b.Property<Guid>("IdClassLearn")
+                    b.Property<Guid>("ClassLearnId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("IdListStudentClassLearn")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("IdStudent")
+                    b.Property<Guid>("StudentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdClassLearn");
+                    b.HasIndex("ClassLearnId");
 
-                    b.HasIndex("IdStudent");
+                    b.HasIndex("StudentId");
 
                     b.ToTable("ListStudentClassLearns");
                 });
@@ -180,10 +177,13 @@ namespace School_version1.Migrations
 
                     b.Property<string>("AdressStudent")
                         .IsRequired()
-                        .HasColumnType("Nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("BirthDateStudent")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateComeShoool")
                         .HasColumnType("datetime2");
@@ -202,7 +202,7 @@ namespace School_version1.Migrations
 
                     b.Property<string>("PasswordStudent")
                         .IsRequired()
-                        .HasColumnType("Nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneStudent")
                         .IsRequired()
@@ -215,6 +215,8 @@ namespace School_version1.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
 
                     b.ToTable("Students");
                 });
@@ -287,19 +289,19 @@ namespace School_version1.Migrations
                 {
                     b.HasOne("School_version1.Entities.Course", "Courese")
                         .WithMany()
-                        .HasForeignKey("IdCourese")
+                        .HasForeignKey("CoureseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("School_version1.Entities.Semester", "Semester")
                         .WithMany()
-                        .HasForeignKey("IdSemester")
+                        .HasForeignKey("SemesterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("School_version1.Entities.Subject", "Subject")
                         .WithMany()
-                        .HasForeignKey("IdSubject")
+                        .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -314,13 +316,13 @@ namespace School_version1.Migrations
                 {
                     b.HasOne("School_version1.Entities.AcademicProgram", "AcademicProgram")
                         .WithMany()
-                        .HasForeignKey("IdAcademicProgram")
+                        .HasForeignKey("AcademicProgramId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("School_version1.Entities.Teacher", "Teacher")
                         .WithMany()
-                        .HasForeignKey("IdTeacher")
+                        .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -333,19 +335,35 @@ namespace School_version1.Migrations
                 {
                     b.HasOne("School_version1.Entities.ClassLearn", "ClassLearn")
                         .WithMany()
-                        .HasForeignKey("IdClassLearn")
+                        .HasForeignKey("ClassLearnId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("School_version1.Entities.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("IdStudent")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("ListStudentClassLearns")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ClassLearn");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("School_version1.Entities.Student", b =>
+                {
+                    b.HasOne("School_version1.Entities.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("School_version1.Entities.Student", b =>
+                {
+                    b.Navigation("ListStudentClassLearns");
                 });
 #pragma warning restore 612, 618
         }

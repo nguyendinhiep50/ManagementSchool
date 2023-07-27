@@ -1,42 +1,37 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+
 import LoginAccount from "./Component/LoginAccount";
-import IndexStudent from "./Views/Student/IndexStudent.js";
-import RegisterSubject from "./Views/Student/RegisterSubject.js";
-
-import IndexTeacher from "./Views/Teacher/IndexTeacher.js";
-
-import IndexManagement from "./Views/Management/IndexManagement.js";
-import StudentManagement from "./Views/Management/StudentManagement.js";
+import ManagementStudent from "./Views/Management/ManagementStudent";
+import ChangePassword from "./Views/Management/ChangePassword";
+import AddStudent from "./Views/Management/AddStudent";
+import ListStudent from "./Views/Management/ListStudent";
+import AddTeacher from "./Views/Management/AddTeacher";
+import ListTeacher from "./Views/Management/ListTeacher";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LoginAccount></LoginAccount>} />
-      </Routes>
-      {/* Student */}
-      <Routes>
-        <Route path="/IndexStudent" element={<IndexStudent />}></Route>
+        <Route path="/" element={<LoginAccount />}></Route>
       </Routes>
       <Routes>
-        <Route path="/ChangePassword" element={<IndexStudent />}></Route>
+        <Route path="/ManagementStudent" element={<ManagementStudent />} />
       </Routes>
       <Routes>
-        <Route path="/IndexTeacher" element={<IndexTeacher />}></Route>
+        <Route path="/ChangePassword" element={<ChangePassword />} />
       </Routes>
       <Routes>
-        <Route path="/RegisterSubject" element={<RegisterSubject />}></Route>
-      </Routes>
-      {/* Management */}
-      <Routes>
-        <Route path="/IndexManagement" element={<IndexManagement />}></Route>
+        <Route path="/AddStudent" element={<AddStudent />} />
       </Routes>
       <Routes>
-        <Route
-          path="/StudentManagement"
-          element={<StudentManagement />}
-        ></Route>
+        <Route path="/ListStudent" element={<ListStudent />} />
+      </Routes>
+      <Routes>
+        <Route path="/AddTeacher" element={<AddTeacher />} />
+      </Routes>
+      <Routes>
+        <Route path="/ListTeacher" element={<ListTeacher />} />
       </Routes>
     </Router>
   );

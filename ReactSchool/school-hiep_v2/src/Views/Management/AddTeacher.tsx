@@ -37,45 +37,29 @@ const FormDisabledDemo: React.FC = () => {
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 14 }}
         layout="horizontal"
-        disabled={!componentDisabled}
         style={{ maxWidth: 600 }}
       >
         <Form.Item label="Họ và tên">
-          <Input value={"Nguyen dinh hiep"}/>
-        </Form.Item>
-        <Form.Item label="Lớp">
-          <Input value={"Tin học"}/>
+          <Input />
         </Form.Item>
         <Form.Item label="Email">
           <Input />
         </Form.Item>   
-        <Form.Item label="Tình trạng" style={{margin:"0"}}>
-        <div style={{display:"flex"}}>
-          <Col span={8}>
-            <Form.Item label="" name="disabled" valuePropName="checked">
-              <Checkbox defaultChecked={true}>Còn học</Checkbox>
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item label="Giới tính">
+        <Form.Item label="Giới tính">
               <Radio.Group>
                 <Radio value="Nam"> Nam </Radio>
                 <Radio value="Nu"> Nữ </Radio>
               </Radio.Group>
-            </Form.Item>                
-          </Col>
-        </div>
-       
-        </Form.Item>    
+        </Form.Item>   
         
         <Form.Item label="Ngày sinh">
           <DatePicker />
         </Form.Item>
         <Form.Item label="Số điện thoại">
-          <Input value={"Nguyen dinh hiep"}/>
+          <Input />
         </Form.Item>        
         <Form.Item label="Địa chỉ">
-          <Input value={"Nguyen dinh hiep"}/>
+          <Input />
         </Form.Item>
         <Form.Item label="Thay đổi ảnh" valuePropName="fileList" getValueFromEvent={normFile}>
           <Upload action="/upload.do" listType="picture-card">
@@ -86,15 +70,10 @@ const FormDisabledDemo: React.FC = () => {
           </Upload>
         </Form.Item>
         <Button type="primary" block>
-            Cập nhật dữ liệu
+            Add Teacher
         </Button> 
       </Form>
-      <Form.Item
-        label="Cập nhật thông tin"
-        valuePropName=""
-      >
-      <Switch checked={componentDisabled} onChange={(checked) => setComponentDisabled(checked)} />
-</Form.Item>
+
     </>
   );
 };

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "tnw6hCs0P+EwykwiZi3OsLomgJDdF5xPzcSnDdtZiUpJAsFVgKvqp20SHuMnfHI4ifSLhhyRTZdlP+wZV5seqQ==",
+  "dgSpecHash": "KiIXJ4PBNl777hUisRx5yk7YaOAemjlqLq+pAaOsZdxwDSgynTPaTvQLKG3w5mHcejkV8euCxDLGCiYqiw5jYw==",
   "success": true,
-  "projectFilePath": "D:\\File_PhanMem\\API_CORE_6\\ProjectSchool\\School_version1\\School_version1\\School_version1.csproj",
+  "projectFilePath": "D:\\File_PhanMem\\API_CORE_6\\ProjectSchool_CV\\ManagementSchool\\School_version1\\School_version1\\School_version1.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Dell\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\Dell\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

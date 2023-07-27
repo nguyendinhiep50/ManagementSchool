@@ -16,15 +16,15 @@ namespace School_version1.Entities
         [Required]
         public DateTime TimeEndAcademicProgram { get; set; }
         [ForeignKey("Semester")]
-        public Guid IdSemester { get; set; }
+        public Guid SemesterId { get; set; }
         [JsonIgnore]
         public virtual Semester? Semester { get; set; }
         [ForeignKey("Courese")]
-        public Guid IdCourese { get; set; }
+        public Guid CoureseId { get; set; }
         [JsonIgnore]
         public virtual Course? Courese { get; set; }
         [ForeignKey("Subject")]
-        public Guid IdSubject { get; set; }
+        public Guid SubjectId { get; set; }
         [JsonIgnore]
         public virtual Subject? Subject { get; set; }
 

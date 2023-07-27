@@ -25,22 +25,22 @@ namespace School_version1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Management>>> GetManagement()
         {
-          if (_context.Management == null)
+          if (_context.Managements == null)
           {
               return NotFound();
           }
-            return await _context.Management.ToListAsync();
+            return await _context.Managements.ToListAsync();
         }
 
         // GET: api/Managements/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Management>> GetManagement(Guid id)
         {
-          if (_context.Management == null)
+          if (_context.Managements == null)
           {
               return NotFound();
           }
-            var management = await _context.Management.FindAsync(id);
+            var management = await _context.Managements.FindAsync(id);
 
             if (management == null)
             {
@@ -86,11 +86,11 @@ namespace School_version1.Controllers
         [HttpPost]
         public async Task<ActionResult<Management>> PostManagement(Management management)
         {
-          if (_context.Management == null)
+          if (_context.Managements == null)
           {
               return Problem("Entity set 'DbContextSchool.Management'  is null.");
           }
-            _context.Management.Add(management);
+            _context.Managements.Add(management);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetManagement", new { id = management.Id }, management);
@@ -100,17 +100,17 @@ namespace School_version1.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteManagement(Guid id)
         {
-            if (_context.Management == null)
+            if (_context.Managements == null)
             {
                 return NotFound();
             }
-            var management = await _context.Management.FindAsync(id);
+            var management = await _context.Managements.FindAsync(id);
             if (management == null)
             {
                 return NotFound();
             }
 
-            _context.Management.Remove(management);
+            _context.Managements.Remove(management);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -118,7 +118,7 @@ namespace School_version1.Controllers
 
         private bool ManagementExists(Guid id)
         {
-            return (_context.Management?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Managements?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

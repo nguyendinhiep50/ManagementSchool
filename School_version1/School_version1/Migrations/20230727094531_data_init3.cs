@@ -4,7 +4,7 @@
 
 namespace School_version1.Migrations
 {
-    public partial class init04 : Migration
+    public partial class data_init3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

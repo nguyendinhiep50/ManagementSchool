@@ -12,8 +12,8 @@ using School_version1.Context;
 namespace School_version1.Migrations
 {
     [DbContext(typeof(DbContextSchool))]
-    [Migration("20230727021757_init01")]
-    partial class init01
+    [Migration("20230727093514_data_init")]
+    partial class data_init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,7 +28,8 @@ namespace School_version1.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<Guid>("IdCourese")
                         .HasColumnType("uniqueidentifier");
@@ -57,7 +58,8 @@ namespace School_version1.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<int>("EnrollmentClass")
                         .HasColumnType("int");
@@ -85,7 +87,8 @@ namespace School_version1.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("NameCourse")
                         .IsRequired()
@@ -100,31 +103,54 @@ namespace School_version1.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<Guid>("IdClassLearn")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("IdListStudentClassLearn")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("IdStudent")
+                    b.Property<Guid>("StudentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("IdClassLearn");
 
-                    b.HasIndex("IdStudent");
+                    b.HasIndex("StudentId");
 
                     b.ToTable("ListStudentClassLearns");
+                });
+
+            modelBuilder.Entity("School_version1.Entities.Management", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<string>("EmailManagement")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameManagement")
+                        .IsRequired()
+                        .HasColumnType("Nvarchar(100)");
+
+                    b.Property<string>("PasswordManagement")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Management");
                 });
 
             modelBuilder.Entity("School_version1.Entities.Semester", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<DateTime>("DayBeginSemester")
                         .HasColumnType("datetime2");
@@ -148,11 +174,12 @@ namespace School_version1.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("AdressStudent")
                         .IsRequired()
-                        .HasColumnType("Nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("BirthDateStudent")
                         .HasColumnType("datetime2");
@@ -164,6 +191,9 @@ namespace School_version1.Migrations
                         .IsRequired()
                         .HasColumnType("Nvarchar(100)");
 
+                    b.Property<Guid>("IdCourse")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ImageStudent")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -174,7 +204,7 @@ namespace School_version1.Migrations
 
                     b.Property<string>("PasswordStudent")
                         .IsRequired()
-                        .HasColumnType("Nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneStudent")
                         .IsRequired()
@@ -188,6 +218,8 @@ namespace School_version1.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IdCourse");
+
                     b.ToTable("Students");
                 });
 
@@ -195,7 +227,8 @@ namespace School_version1.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<int>("CreditSubject")
                         .HasColumnType("int");
@@ -216,7 +249,8 @@ namespace School_version1.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("AdressTeacher")
                         .IsRequired()
@@ -308,14 +342,30 @@ namespace School_version1.Migrations
                         .IsRequired();
 
                     b.HasOne("School_version1.Entities.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("IdStudent")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("ListStudentClassLearns")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ClassLearn");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("School_version1.Entities.Student", b =>
+                {
+                    b.HasOne("School_version1.Entities.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("IdCourse")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("School_version1.Entities.Student", b =>
+                {
+                    b.Navigation("ListStudentClassLearns");
                 });
 #pragma warning restore 612, 618
         }

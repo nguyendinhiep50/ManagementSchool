@@ -17,6 +17,8 @@ namespace School_version1.Context
         public DbSet<Student> Students { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<Management> Managements { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -65,8 +67,13 @@ namespace School_version1.Context
 
             modelBuilder.Entity<ListStudentClassLearn>()
            .HasKey(pt => new { pt.Id });
-        }
 
+            modelBuilder.Entity<ListStudentClassLearn>()
+                        .HasOne(x => x.Student)
+                        .WithMany(x => x.ListStudentClassLearns)
+                        .HasForeignKey(x => x.StudentId).OnDelete(DeleteBehavior.Restrict);
+        }
         public DbSet<School_version1.Entities.Management>? Management { get; set; }
+
     }
 }
