@@ -1,0 +1,5 @@
+- Quan ly mon hoc
+- Quan ly giang vien
+- Quan ly hoc sinh
+- Quan ly hoc ky
+- Quan ly hoc phan (1 hoc ky co nhieu hoc phan, hoc phan la mon hoc)

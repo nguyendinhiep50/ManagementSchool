@@ -1,0 +1,6 @@
+﻿namespace School_version1.Interface
+{
+    public class IClassLearn
+    {
+    }
+}
