@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace School_version1.Entities
+namespace School_version1.Models.ObjectData
 {
     public abstract class EntityBase
     {

@@ -2,18 +2,18 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace School_version1.Entities
+namespace School_version1.Models.ObjectData
 {
     public class ListStudentClassLearn : EntityBase
-    { 
+    {
         public Guid StudentId { get; set; }
         [JsonIgnore]
 
-        public virtual Student? Student { get; set; }
+        public virtual Student Student { get; set; }
 
         [ForeignKey("ClassLearn")]
         public Guid ClassLearnId { get; set; }
         [JsonIgnore]
-        public virtual ClassLearn? ClassLearn { get; set; }
+        public virtual ClassLearn ClassLearn { get; set; }
     }
 }

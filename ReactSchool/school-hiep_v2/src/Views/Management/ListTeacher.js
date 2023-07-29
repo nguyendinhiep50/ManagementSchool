@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import LayoutStudent from "./ListStudent.tsx";
+import ListTeacher from "./ListTeacher.tsx";
 import {} from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Layout, theme, Col, Row } from "antd";
 import NavbarManagement from "./NavbarManagement";
-import AddStudent from "../Management/AddStudent.tsx";
 
 function ListStudent() {
   const { Content } = Layout;
@@ -24,8 +23,8 @@ function ListStudent() {
               background: colorBgContainer,
             }}
           >
-            <h1>Add Student</h1>
-            <LayoutStudent />
+            <h1>Add teacher</h1>
+            <ListTeacher />
 
             <Row></Row>
           </Content>

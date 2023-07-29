@@ -22,14 +22,14 @@ namespace School_version1.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("School_version1.Entities.AcademicProgram", b =>
+            modelBuilder.Entity("School_version1.Models.ObjectData.AcademicProgram", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
-                    b.Property<Guid>("CoureseId")
+                    b.Property<Guid>("FacultyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("SemesterId")
@@ -43,7 +43,7 @@ namespace School_version1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CoureseId");
+                    b.HasIndex("FacultyId");
 
                     b.HasIndex("SemesterId");
 
@@ -52,7 +52,7 @@ namespace School_version1.Migrations
                     b.ToTable("AcademicPrograms");
                 });
 
-            modelBuilder.Entity("School_version1.Entities.ClassLearn", b =>
+            modelBuilder.Entity("School_version1.Models.ObjectData.ClassLearn", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -62,11 +62,10 @@ namespace School_version1.Migrations
                     b.Property<Guid>("AcademicProgramId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("EnrollmentClass")
+                    b.Property<int>("ClassLearnEnrollment")
                         .HasColumnType("int");
 
-                    b.Property<string>("NameClassLearn")
-                        .IsRequired()
+                    b.Property<string>("ClassLearnName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("TeacherId")
@@ -81,23 +80,23 @@ namespace School_version1.Migrations
                     b.ToTable("ClassLearns");
                 });
 
-            modelBuilder.Entity("School_version1.Entities.Course", b =>
+            modelBuilder.Entity("School_version1.Models.ObjectData.Faculty", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
-                    b.Property<string>("NameCourse")
+                    b.Property<string>("FacultyName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Faculty");
                 });
 
-            modelBuilder.Entity("School_version1.Entities.ListStudentClassLearn", b =>
+            modelBuilder.Entity("School_version1.Models.ObjectData.ListStudentClassLearn", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -119,22 +118,22 @@ namespace School_version1.Migrations
                     b.ToTable("ListStudentClassLearns");
                 });
 
-            modelBuilder.Entity("School_version1.Entities.Management", b =>
+            modelBuilder.Entity("School_version1.Models.ObjectData.Management", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
-                    b.Property<string>("EmailManagement")
+                    b.Property<string>("ManagementEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NameManagement")
+                    b.Property<string>("ManagementName")
                         .IsRequired()
                         .HasColumnType("Nvarchar(100)");
 
-                    b.Property<string>("PasswordManagement")
+                    b.Property<string>("ManagementPassword")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -143,24 +142,24 @@ namespace School_version1.Migrations
                     b.ToTable("Management");
                 });
 
-            modelBuilder.Entity("School_version1.Entities.Semester", b =>
+            modelBuilder.Entity("School_version1.Models.ObjectData.Semester", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
-                    b.Property<DateTime>("DayBeginSemester")
+                    b.Property<DateTime>("SemesterDayBegin")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DayEndSemester")
+                    b.Property<DateTime>("SemesterDayEnd")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("NameSemester")
+                    b.Property<string>("SemesterName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("StatusSemester")
+                    b.Property<bool>("SemesterStatus")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
@@ -168,73 +167,69 @@ namespace School_version1.Migrations
                     b.ToTable("Semesters");
                 });
 
-            modelBuilder.Entity("School_version1.Entities.Student", b =>
+            modelBuilder.Entity("School_version1.Models.ObjectData.Student", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
-                    b.Property<string>("AdressStudent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("BirthDateStudent")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CourseId")
+                    b.Property<Guid>("FacultyId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateComeShoool")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EmailStudent")
-                        .IsRequired()
-                        .HasColumnType("Nvarchar(100)");
-
-                    b.Property<string>("ImageStudent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameStudent")
-                        .IsRequired()
-                        .HasColumnType("Nvarchar(100)");
-
-                    b.Property<string>("PasswordStudent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneStudent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SchoolYear")
                         .HasColumnType("int");
 
-                    b.Property<bool>("StatusStudent")
+                    b.Property<string>("StudentAdress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StudentBirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("StudentDateCome")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("StudentEmail")
+                        .IsRequired()
+                        .HasColumnType("Nvarchar(100)");
+
+                    b.Property<string>("StudentImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StudentName")
+                        .IsRequired()
+                        .HasColumnType("Nvarchar(100)");
+
+                    b.Property<string>("StudentPassword")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StudentPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("StudentStatus")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CourseId");
+                    b.HasIndex("FacultyId");
 
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("School_version1.Entities.Subject", b =>
+            modelBuilder.Entity("School_version1.Models.ObjectData.Subject", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
-                    b.Property<int>("CreditSubject")
+                    b.Property<int>("SubjectCredit")
                         .HasColumnType("int");
 
-                    b.Property<bool>("MandatorySubject")
+                    b.Property<bool>("SubjectMandatory")
                         .HasColumnType("bit");
 
-                    b.Property<string>("NameSubject")
+                    b.Property<string>("SubjectName")
                         .IsRequired()
                         .HasColumnType("Nvarchar(100)");
 
@@ -243,41 +238,38 @@ namespace School_version1.Migrations
                     b.ToTable("Subjects");
                 });
 
-            modelBuilder.Entity("School_version1.Entities.Teacher", b =>
+            modelBuilder.Entity("School_version1.Models.ObjectData.Teacher", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
-                    b.Property<string>("AdressTeacher")
+                    b.Property<string>("TeacherAdress")
                         .IsRequired()
                         .HasColumnType("Nvarchar(200)");
 
-                    b.Property<DateTime>("BirthDateTeacher")
+                    b.Property<DateTime>("TeacherBirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("EmailTeacher")
+                    b.Property<string>("TeacherEmail")
                         .IsRequired()
                         .HasColumnType("Nvarchar(100)");
 
-                    b.Property<string>("ImageTeacher")
-                        .IsRequired()
+                    b.Property<string>("TeacherImage")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NameTeacher")
+                    b.Property<string>("TeacherName")
                         .IsRequired()
                         .HasColumnType("Nvarchar(100)");
 
-                    b.Property<string>("PasswordTeacher")
-                        .IsRequired()
+                    b.Property<string>("TeacherPassword")
                         .HasColumnType("Nvarchar(100)");
 
-                    b.Property<string>("PhoneTeacher")
-                        .IsRequired()
+                    b.Property<string>("TeacherPhone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("StatusTeacher")
+                    b.Property<bool>("TeacherStatus")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
@@ -285,42 +277,86 @@ namespace School_version1.Migrations
                     b.ToTable("Teachers");
                 });
 
-            modelBuilder.Entity("School_version1.Entities.AcademicProgram", b =>
+            modelBuilder.Entity("School_version1.Models.ObjectView.StudentView", b =>
                 {
-                    b.HasOne("School_version1.Entities.Course", "Courese")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("FacultyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("SchoolYear")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StudentAdress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StudentBirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("StudentDateCome")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("StudentEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StudentImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StudentName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StudentPassword")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StudentPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("StudentStatus")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StudentViews");
+                });
+
+            modelBuilder.Entity("School_version1.Models.ObjectData.AcademicProgram", b =>
+                {
+                    b.HasOne("School_version1.Models.ObjectData.Faculty", "Faculty")
                         .WithMany()
-                        .HasForeignKey("CoureseId")
+                        .HasForeignKey("FacultyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("School_version1.Entities.Semester", "Semester")
+                    b.HasOne("School_version1.Models.ObjectData.Semester", "Semester")
                         .WithMany()
                         .HasForeignKey("SemesterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("School_version1.Entities.Subject", "Subject")
+                    b.HasOne("School_version1.Models.ObjectData.Subject", "Subject")
                         .WithMany()
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Courese");
+                    b.Navigation("Faculty");
 
                     b.Navigation("Semester");
 
                     b.Navigation("Subject");
                 });
 
-            modelBuilder.Entity("School_version1.Entities.ClassLearn", b =>
+            modelBuilder.Entity("School_version1.Models.ObjectData.ClassLearn", b =>
                 {
-                    b.HasOne("School_version1.Entities.AcademicProgram", "AcademicProgram")
+                    b.HasOne("School_version1.Models.ObjectData.AcademicProgram", "AcademicProgram")
                         .WithMany()
                         .HasForeignKey("AcademicProgramId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("School_version1.Entities.Teacher", "Teacher")
+                    b.HasOne("School_version1.Models.ObjectData.Teacher", "Teacher")
                         .WithMany()
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -331,15 +367,15 @@ namespace School_version1.Migrations
                     b.Navigation("Teacher");
                 });
 
-            modelBuilder.Entity("School_version1.Entities.ListStudentClassLearn", b =>
+            modelBuilder.Entity("School_version1.Models.ObjectData.ListStudentClassLearn", b =>
                 {
-                    b.HasOne("School_version1.Entities.ClassLearn", "ClassLearn")
+                    b.HasOne("School_version1.Models.ObjectData.ClassLearn", "ClassLearn")
                         .WithMany()
                         .HasForeignKey("ClassLearnId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("School_version1.Entities.Student", "Student")
+                    b.HasOne("School_version1.Models.ObjectData.Student", "Student")
                         .WithMany("ListStudentClassLearns")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -350,18 +386,23 @@ namespace School_version1.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("School_version1.Entities.Student", b =>
+            modelBuilder.Entity("School_version1.Models.ObjectData.Student", b =>
                 {
-                    b.HasOne("School_version1.Entities.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
+                    b.HasOne("School_version1.Models.ObjectData.Faculty", "Faculty")
+                        .WithMany("Students")
+                        .HasForeignKey("FacultyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Course");
+                    b.Navigation("Faculty");
                 });
 
-            modelBuilder.Entity("School_version1.Entities.Student", b =>
+            modelBuilder.Entity("School_version1.Models.ObjectData.Faculty", b =>
+                {
+                    b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("School_version1.Models.ObjectData.Student", b =>
                 {
                     b.Navigation("ListStudentClassLearns");
                 });

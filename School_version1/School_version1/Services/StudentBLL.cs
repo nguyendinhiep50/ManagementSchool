@@ -1,16 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Plugins;
 using School_version1.Context;
-using School_version1.Entities;
 using School_version1.Interface;
+using School_version1.Models.DTOs;
+using School_version1.Models.ObjectData;
+using System.Collections.Generic;
 
 namespace School_version1.Services
 {
     public class StudentBLL:IStudent
     {
         private readonly DbContextSchool _Db;
-        public StudentBLL(DbContextSchool db)
+        private readonly IMapper _mapper;
+
+        public StudentBLL(DbContextSchool db,IMapper mapper)
         {
             _Db = db;
+            _mapper = mapper;
         }
 
         public async Task<bool> DeleteStudent(Guid id)
@@ -32,7 +39,17 @@ namespace School_version1.Services
 
         public async Task<List<Student>> GetAllStudent()
         {
+
             return await _Db.Students.ToListAsync();
+        }
+
+        public async Task<List<StudentDto>> GetAllStudentFaculty()
+        {
+
+            var students = _Db.Students.ToList();
+            foreach (var st in students) 
+                st.Faculty = _Db.Faculty.Find(st.FacultyId); 
+            return _mapper.Map<List<StudentDto>>(students).ToList();
         }
 
         public async Task<Student> GetStudent(Guid id)
@@ -40,10 +57,21 @@ namespace School_version1.Services
             return await _Db.Students.FindAsync(id);
         }
 
+        public async Task<StudentDto> GetStudentFaculty(Guid id)
+        {
+            var student = await _Db.Students.FindAsync(id);
+            student.Faculty = await _Db.Faculty.FindAsync(student.FacultyId);
+            return _mapper.Map<StudentDto>(student);
+        }
+
         public async Task<Boolean> PostStudent(Student student)
         {
             try
             {
+                //student.PasswordStudent = "123";
+                //student.StatusStudent = true;
+                //student.SchoolYear = 1;
+                //student.DateComeShoool = DateTime.Now;
                 _Db.Students.Add(student);
                 await _Db.SaveChangesAsync();
             }

@@ -5,20 +5,20 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace School_version1.Migrations
 {
-    public partial class data_init : Migration
+    public partial class init01 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Courses",
+                name: "Faculty",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
-                    NameCourse = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    FacultyName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Courses", x => x.Id);
+                    table.PrimaryKey("PK_Faculty", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -26,9 +26,9 @@ namespace School_version1.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
-                    NameManagement = table.Column<string>(type: "Nvarchar(100)", nullable: false),
-                    EmailManagement = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PasswordManagement = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ManagementName = table.Column<string>(type: "Nvarchar(100)", nullable: false),
+                    ManagementEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ManagementPassword = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -40,10 +40,10 @@ namespace School_version1.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
-                    NameSemester = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DayBeginSemester = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DayEndSemester = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StatusSemester = table.Column<bool>(type: "bit", nullable: false)
+                    SemesterName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SemesterDayBegin = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SemesterDayEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SemesterStatus = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,13 +51,35 @@ namespace School_version1.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "StudentViews",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StudentName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StudentImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StudentEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StudentPassword = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StudentBirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StudentPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StudentAdress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SchoolYear = table.Column<int>(type: "int", nullable: false),
+                    StudentDateCome = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    StudentStatus = table.Column<bool>(type: "bit", nullable: true),
+                    FacultyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StudentViews", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Subjects",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
-                    NameSubject = table.Column<string>(type: "Nvarchar(100)", nullable: false),
-                    CreditSubject = table.Column<int>(type: "int", nullable: false),
-                    MandatorySubject = table.Column<bool>(type: "bit", nullable: false)
+                    SubjectName = table.Column<string>(type: "Nvarchar(100)", nullable: false),
+                    SubjectCredit = table.Column<int>(type: "int", nullable: false),
+                    SubjectMandatory = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -69,14 +91,14 @@ namespace School_version1.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
-                    NameTeacher = table.Column<string>(type: "Nvarchar(100)", nullable: false),
-                    ImageTeacher = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmailTeacher = table.Column<string>(type: "Nvarchar(100)", nullable: false),
-                    PasswordTeacher = table.Column<string>(type: "Nvarchar(100)", nullable: false),
-                    BirthDateTeacher = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PhoneTeacher = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AdressTeacher = table.Column<string>(type: "Nvarchar(200)", nullable: false),
-                    StatusTeacher = table.Column<bool>(type: "bit", nullable: false)
+                    TeacherName = table.Column<string>(type: "Nvarchar(100)", nullable: false),
+                    TeacherImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TeacherEmail = table.Column<string>(type: "Nvarchar(100)", nullable: false),
+                    TeacherPassword = table.Column<string>(type: "Nvarchar(100)", nullable: true),
+                    TeacherBirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TeacherPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TeacherAdress = table.Column<string>(type: "Nvarchar(200)", nullable: false),
+                    TeacherStatus = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -88,25 +110,25 @@ namespace School_version1.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
-                    NameStudent = table.Column<string>(type: "Nvarchar(100)", nullable: false),
-                    ImageStudent = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmailStudent = table.Column<string>(type: "Nvarchar(100)", nullable: false),
-                    PasswordStudent = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BirthDateStudent = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PhoneStudent = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AdressStudent = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StudentName = table.Column<string>(type: "Nvarchar(100)", nullable: false),
+                    StudentImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StudentEmail = table.Column<string>(type: "Nvarchar(100)", nullable: false),
+                    StudentPassword = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StudentBirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StudentPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StudentAdress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SchoolYear = table.Column<int>(type: "int", nullable: false),
-                    DateComeShoool = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StatusStudent = table.Column<bool>(type: "bit", nullable: false),
-                    IdCourse = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    StudentDateCome = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    StudentStatus = table.Column<bool>(type: "bit", nullable: true),
+                    FacultyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Students", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Students_Courses_IdCourse",
-                        column: x => x.IdCourse,
-                        principalTable: "Courses",
+                        name: "FK_Students_Faculty_FacultyId",
+                        column: x => x.FacultyId,
+                        principalTable: "Faculty",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -117,28 +139,28 @@ namespace School_version1.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     TimeEndAcademicProgram = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IdSemester = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdCourese = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdSubject = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    SemesterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FacultyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SubjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AcademicPrograms", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AcademicPrograms_Courses_IdCourese",
-                        column: x => x.IdCourese,
-                        principalTable: "Courses",
+                        name: "FK_AcademicPrograms_Faculty_FacultyId",
+                        column: x => x.FacultyId,
+                        principalTable: "Faculty",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AcademicPrograms_Semesters_IdSemester",
-                        column: x => x.IdSemester,
+                        name: "FK_AcademicPrograms_Semesters_SemesterId",
+                        column: x => x.SemesterId,
                         principalTable: "Semesters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AcademicPrograms_Subjects_IdSubject",
-                        column: x => x.IdSubject,
+                        name: "FK_AcademicPrograms_Subjects_SubjectId",
+                        column: x => x.SubjectId,
                         principalTable: "Subjects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -149,23 +171,23 @@ namespace School_version1.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
-                    NameClassLearn = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EnrollmentClass = table.Column<int>(type: "int", nullable: false),
-                    IdAcademicProgram = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdTeacher = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ClassLearnName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClassLearnEnrollment = table.Column<int>(type: "int", nullable: false),
+                    AcademicProgramId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TeacherId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ClassLearns", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ClassLearns_AcademicPrograms_IdAcademicProgram",
-                        column: x => x.IdAcademicProgram,
+                        name: "FK_ClassLearns_AcademicPrograms_AcademicProgramId",
+                        column: x => x.AcademicProgramId,
                         principalTable: "AcademicPrograms",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClassLearns_Teachers_IdTeacher",
-                        column: x => x.IdTeacher,
+                        name: "FK_ClassLearns_Teachers_TeacherId",
+                        column: x => x.TeacherId,
                         principalTable: "Teachers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -177,14 +199,14 @@ namespace School_version1.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     StudentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdClassLearn = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ClassLearnId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ListStudentClassLearns", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ListStudentClassLearns_ClassLearns_IdClassLearn",
-                        column: x => x.IdClassLearn,
+                        name: "FK_ListStudentClassLearns_ClassLearns_ClassLearnId",
+                        column: x => x.ClassLearnId,
                         principalTable: "ClassLearns",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -197,34 +219,34 @@ namespace School_version1.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AcademicPrograms_IdCourese",
+                name: "IX_AcademicPrograms_FacultyId",
                 table: "AcademicPrograms",
-                column: "IdCourese");
+                column: "FacultyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AcademicPrograms_IdSemester",
+                name: "IX_AcademicPrograms_SemesterId",
                 table: "AcademicPrograms",
-                column: "IdSemester");
+                column: "SemesterId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AcademicPrograms_IdSubject",
+                name: "IX_AcademicPrograms_SubjectId",
                 table: "AcademicPrograms",
-                column: "IdSubject");
+                column: "SubjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClassLearns_IdAcademicProgram",
+                name: "IX_ClassLearns_AcademicProgramId",
                 table: "ClassLearns",
-                column: "IdAcademicProgram");
+                column: "AcademicProgramId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClassLearns_IdTeacher",
+                name: "IX_ClassLearns_TeacherId",
                 table: "ClassLearns",
-                column: "IdTeacher");
+                column: "TeacherId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ListStudentClassLearns_IdClassLearn",
+                name: "IX_ListStudentClassLearns_ClassLearnId",
                 table: "ListStudentClassLearns",
-                column: "IdClassLearn");
+                column: "ClassLearnId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ListStudentClassLearns_StudentId",
@@ -232,9 +254,9 @@ namespace School_version1.Migrations
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Students_IdCourse",
+                name: "IX_Students_FacultyId",
                 table: "Students",
-                column: "IdCourse");
+                column: "FacultyId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -244,6 +266,9 @@ namespace School_version1.Migrations
 
             migrationBuilder.DropTable(
                 name: "Management");
+
+            migrationBuilder.DropTable(
+                name: "StudentViews");
 
             migrationBuilder.DropTable(
                 name: "ClassLearns");
@@ -258,7 +283,7 @@ namespace School_version1.Migrations
                 name: "Teachers");
 
             migrationBuilder.DropTable(
-                name: "Courses");
+                name: "Faculty");
 
             migrationBuilder.DropTable(
                 name: "Semesters");

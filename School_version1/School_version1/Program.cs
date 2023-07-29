@@ -13,13 +13,13 @@ builder.Services.AddDbContext<DbContextSchool>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolHiep")));
 builder.Services.AddScoped<DbContextSchool>();
 builder.Services.AddScoped<IStudent,StudentBLL>();
-builder.Services.AddScoped<ITeacher, TeacherBLL>();
 
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,

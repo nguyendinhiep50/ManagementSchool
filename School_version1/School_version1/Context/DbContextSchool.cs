@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using School_version1.Entities;
 using School_version1.Interface;
+using School_version1.Models.ObjectData;
+using School_version1.Models.ObjectView;
 
 namespace School_version1.Context
 {
@@ -11,14 +12,13 @@ namespace School_version1.Context
         }
         public DbSet<AcademicProgram> AcademicPrograms { get; set; }
         public DbSet<ClassLearn> ClassLearns { get; set; }
-        public DbSet<Course> Courses { get; set; }
+        public DbSet<Faculty> Faculty { get; set; }
         public DbSet<ListStudentClassLearn> ListStudentClassLearns { get; set; }
         public DbSet<Semester> Semesters { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Management> Managements { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,7 +41,7 @@ namespace School_version1.Context
             .Property(b => b.Id)
             .HasDefaultValueSql("NEWID()");
 
-            modelBuilder.Entity<Course>()
+            modelBuilder.Entity<Faculty>()
             .Property(b => b.Id)
             .HasDefaultValueSql("NEWID()");
 
@@ -72,8 +72,12 @@ namespace School_version1.Context
                         .HasOne(x => x.Student)
                         .WithMany(x => x.ListStudentClassLearns)
                         .HasForeignKey(x => x.StudentId).OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Faculty>()
+            //           .HasOne(x => x.fa)
+            //           .WithMany(x => x.)
+            //           .HasForeignKey(x => x.StudentId).OnDelete(DeleteBehavior.Restrict);
         }
-        public DbSet<School_version1.Entities.Management>? Management { get; set; }
+        public DbSet<Management>? Management { get; set; }
 
     }
 }

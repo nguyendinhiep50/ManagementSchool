@@ -1,6 +1,6 @@
 ﻿namespace School_version1.Interface
 {
-    public class ICourses
+    public class IFaculty
     {
     }
 }

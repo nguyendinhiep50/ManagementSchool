@@ -3,21 +3,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace School_version1.Entities
+namespace School_version1.Models.ObjectData
 {
     public class ClassLearn : EntityBase
     {
-        public string NameClassLearn { get; set; }
+        public string ClassLearnName { get; set; }
         [Required]
-        public int EnrollmentClass { get; set; }  // sỉ số
+        public int ClassLearnEnrollment { get; set; }  // sỉ số
         [ForeignKey("AcademicProgram")]
         public Guid AcademicProgramId { get; set; }
         [JsonIgnore]
-        public virtual AcademicProgram? AcademicProgram { get; set; }
+        public virtual AcademicProgram AcademicProgram { get; set; }
         [ForeignKey("Teacher")]
         public Guid TeacherId { get; set; }
         [JsonIgnore]
-        public virtual Teacher? Teacher { get; set; }
+        public virtual Teacher Teacher { get; set; }
 
         // lấy khóa  của AcacdemicProgram để hiển thị chương trình học kì đó
         // chứa cô giáo để dạy có thể để cho cô giáo chọn môn dạy có thể null

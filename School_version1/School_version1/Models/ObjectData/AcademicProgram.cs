@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace School_version1.Entities
+namespace School_version1.Models.ObjectData
 {
-    public class AcademicProgram:EntityBase
+    public class AcademicProgram : EntityBase
     {
         // tạo key chính
         // chứa học kì
@@ -18,15 +18,15 @@ namespace School_version1.Entities
         [ForeignKey("Semester")]
         public Guid SemesterId { get; set; }
         [JsonIgnore]
-        public virtual Semester? Semester { get; set; }
-        [ForeignKey("Courese")]
-        public Guid CoureseId { get; set; }
+        public virtual Semester Semester { get; set; }
+        [ForeignKey("Faculty")]
+        public Guid FacultyId { get; set; }
         [JsonIgnore]
-        public virtual Course? Courese { get; set; }
+        public virtual Faculty Faculty { get; set; }
         [ForeignKey("Subject")]
         public Guid SubjectId { get; set; }
         [JsonIgnore]
-        public virtual Subject? Subject { get; set; }
+        public virtual Subject Subject { get; set; }
 
     }
 }

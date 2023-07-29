@@ -2,16 +2,16 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace School_version1.Entities
+namespace School_version1.Models.ObjectData
 {
     public class Subject : EntityBase
     {
         [Required]
         [Column(TypeName = "Nvarchar(100)")]
-        public string NameSubject { get; set; }
+        public string SubjectName { get; set; }
         [Required]
-        public int CreditSubject { get; set; }
+        public int SubjectCredit { get; set; }
         [Required]
-        public bool MandatorySubject { get; set; }
+        public bool SubjectMandatory { get; set; }
     }
 }

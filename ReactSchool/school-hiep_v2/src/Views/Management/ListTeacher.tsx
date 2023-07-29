@@ -13,7 +13,7 @@ interface DataType {
 
 }
 
-const columns: ColumnsType<DataType> = [
+const columns2: ColumnsType<DataType> = [
   { title: 'imageTeacher', dataIndex: 'imageTeacher', key: 'imageTeacher' },
   { title: 'nameTeacher', dataIndex: 'nameTeacher', key: 'nameTeacher' },
   { title: 'phoneTeacher', dataIndex: 'phoneTeacher', key: 'phoneTeacher' },
@@ -57,7 +57,7 @@ const App: React.FC = () => {
   }, []);
   return (
   <Table
-    columns={columns} 
+    columns={columns2} 
     dataSource={data}
   />
 )};

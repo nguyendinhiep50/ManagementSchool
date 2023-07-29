@@ -24,7 +24,7 @@ function ListStudent() {
               background: colorBgContainer,
             }}
           >
-            <h1>Add Student</h1>
+            <h1>student</h1>
             <LayoutStudent />
 
             <Row></Row>

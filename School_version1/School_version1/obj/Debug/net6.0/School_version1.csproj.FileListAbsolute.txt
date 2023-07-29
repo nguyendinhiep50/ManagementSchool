@@ -496,3 +496,5 @@ D:\File_PhanMem\API_CORE_6\ProjectSchool_CV\ManagementSchool\School_version1\Sch
 D:\File_PhanMem\API_CORE_6\ProjectSchool_CV\ManagementSchool\School_version1\School_version1\obj\Debug\net6.0\School_version1.pdb
 D:\File_PhanMem\API_CORE_6\ProjectSchool_CV\ManagementSchool\School_version1\School_version1\obj\Debug\net6.0\School_version1.genruntimeconfig.cache
 D:\File_PhanMem\API_CORE_6\ProjectSchool_CV\ManagementSchool\School_version1\School_version1\obj\Debug\net6.0\ref\School_version1.dll
+D:\File_PhanMem\API_CORE_6\ProjectSchool_CV\ManagementSchool\School_version1\School_version1\bin\Debug\net6.0\AutoMapper.dll
+D:\File_PhanMem\API_CORE_6\ProjectSchool_CV\ManagementSchool\School_version1\School_version1\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

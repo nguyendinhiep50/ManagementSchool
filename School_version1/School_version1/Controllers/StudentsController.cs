@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using School_version1.Context;
-using School_version1.Entities;
 using School_version1.Interface;
+using School_version1.Models.DTOs;
+using School_version1.Models.ObjectData;
 
 namespace School_version1.Controllers
 {
@@ -28,24 +29,47 @@ namespace School_version1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
         {
-          if (_context.Students == null)
-          {
-              return NotFound();
-          }
-            return await _iStudent.GetAllStudent() ;
+            if (_context.Students == null)
+            {
+                return NotFound();
+            }
+            return await _iStudent.GetAllStudent();
+        }
+        // GET: api/Students
+        [HttpGet("Take Name Faculty")]
+        public async Task<ActionResult<IEnumerable<StudentDto>>> GetStudentsFaculty()
+        {
+            if (_context.Students == null)
+            {
+                return NotFound();
+            }
+            return await _iStudent.GetAllStudentFaculty();
         }
 
         // GET: api/Students/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Student>> GetStudent(Guid id)
         {
+            var student = await _context.Students.FindAsync(id);
+
             if (_context.Students == null)
             {
                 return NotFound();
             }
-            var student = await _iStudent.GetStudent(id);
-            return student != null ? student : NotFound();
+            return await _iStudent.GetStudent(id);
         }
+        // GET: api/Students/5
+        [HttpGet("Faculty{id}")]
+        public async Task<ActionResult<StudentDto>> GetStudentFaculty(Guid id)
+        {
+            var student = await _context.Students.FindAsync(id);
+
+            if (_context.Students == null)
+            {
+                return NotFound();
+            }
+            return await _iStudent.GetStudentFaculty(id);
+        }       
 
         // PUT: api/Students/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -68,7 +92,7 @@ namespace School_version1.Controllers
         {
             if (_context.Students == null)
                 return Problem("Entity set 'DbContextSchool.Students'  is null.");
-            if(await _iStudent.PostStudent(student))
+            if (await _iStudent.PostStudent(student))
                 return CreatedAtAction("GetStudent", new { id = student.Id }, student);
             return NotFound();
         }

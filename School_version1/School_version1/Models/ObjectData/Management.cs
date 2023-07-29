@@ -2,16 +2,16 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace School_version1.Entities
+namespace School_version1.Models.ObjectData
 {
     public class Management : EntityBase
     {
         [Required]
         [Column(TypeName = "Nvarchar(100)")]
-        public string NameManagement { get; set; }
+        public string ManagementName { get; set; }
         [Required]
-        public string EmailManagement { get; set; }
+        public string ManagementEmail { get; set; }
         [Required]
-        public string PasswordManagement { get; set; }
+        public string ManagementPassword { get; set; }
     }
 }

@@ -14,7 +14,7 @@ import {
   Switch,
   TreeSelect,
   Upload,
-  Col, Row
+  Col, Row,form
 } from 'antd';
 
 
@@ -29,44 +29,59 @@ const normFile = (e: any) => {
 };
 
 const FormDisabledDemo: React.FC = () => {
+  const [form] = Form.useForm();
   const [componentDisabled, setComponentDisabled] = useState<boolean>(false);
+  const [DataPost,setDataPost] = useState({ 
+    NameStudent:"",
+    ImageStudent:"",
+    EmailStudent:"",
+    PasswordStudent:"",
+    BirthDateStudent:"",
+    PhoneStudent:"",
+    AdressStudent:"",
+    SchoolYear:"",
+    DateComeShoool:"",
+    StatusStudent:"",
+  });
+  const handleSaveClick = async () => {
 
+  };
   return (
     <>
       <Form
+        form={form}
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 14 }}
         layout="horizontal"
         style={{ maxWidth: 600 }}
       >
-        <Form.Item label="Họ và tên">
+        <Form.Item name="NameStudent" label="Họ và tên">
           <Input />
         </Form.Item>
-        <Form.Item label="Khoa">
+        <Form.Item name="" label="Khoa">
           <Select>
             <Select.Option value="demo">Demo</Select.Option>
           </Select>
         </Form.Item>
-        <Form.Item label="Email">
+        <Form.Item name="EmailStudent" label="Email">
           <Input />
         </Form.Item>   
-        <Form.Item label="Giới tính">
-              <Radio.Group>
-                <Radio value="Nam"> Nam </Radio>
-                <Radio value="Nu"> Nữ </Radio>
-              </Radio.Group>
-            </Form.Item>   
-        
-        <Form.Item label="Ngày sinh">
+        <Form.Item name="SexStudent" label="Giới tính">
+          <Radio.Group>
+            <Radio value="Nam"> Nam </Radio>
+            <Radio value="Nu"> Nữ </Radio>
+          </Radio.Group>
+        </Form.Item>        
+        <Form.Item name="BirthDateStudent" label="Ngày sinh">
           <DatePicker />
         </Form.Item>
-        <Form.Item label="Số điện thoại">
+        <Form.Item name="PhoneStudent" label="Số điện thoại">
           <Input />
         </Form.Item>        
-        <Form.Item label="Địa chỉ">
+        <Form.Item name="AdressStudent" label="Địa chỉ">
           <Input />
         </Form.Item>
-        <Form.Item label="Thay đổi ảnh" valuePropName="fileList" getValueFromEvent={normFile}>
+        <Form.Item name="ImageStudent" label="Thay đổi ảnh" valuePropName="fileList" getValueFromEvent={normFile}>
           <Upload action="/upload.do" listType="picture-card">
             <div>
               <PlusOutlined />
@@ -74,7 +89,7 @@ const FormDisabledDemo: React.FC = () => {
             </div>
           </Upload>
         </Form.Item>
-        <Button type="primary" block>
+        <Button type="primary" block onClick={handleSaveClick}>
             Add Student
         </Button> 
       </Form>
