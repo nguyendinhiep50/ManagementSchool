@@ -11,7 +11,7 @@ namespace School_version1.Interface
         Task<StudentDto> GetStudentFaculty(Guid id);
         Task<List<StudentDto>> GetAllStudentsInFaculty(Guid id);
         Task<Boolean> DeleteStudent(Guid id);
-        Task<Boolean> PostStudent(Student student);
+        Task<Boolean> PostStudent(StudentAddDto StudentAddDto);
         Task<Student> PutStudent(Guid id , Student student);
     }
 }

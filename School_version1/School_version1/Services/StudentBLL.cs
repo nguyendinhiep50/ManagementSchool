@@ -72,14 +72,11 @@ namespace School_version1.Services
         }
         
 
-        public async Task<Boolean> PostStudent(Student student)
+        public async Task<Boolean> PostStudent(StudentAddDto StudentAddDto)
         {
             try
             {
-                //student.PasswordStudent = "123";
-                //student.StatusStudent = true;
-                //student.SchoolYear = 1;
-                //student.DateComeShoool = DateTime.Now;
+                var student = _mapper.Map<Student>(StudentAddDto);
                 _Db.Students.Add(student);
                 await _Db.SaveChangesAsync();
             }
