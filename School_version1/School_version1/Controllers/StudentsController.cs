@@ -69,7 +69,19 @@ namespace School_version1.Controllers
                 return NotFound();
             }
             return await _iStudent.GetStudentFaculty(id);
-        }       
+        }
+
+        // Get Filter Student if = FacultyId
+        [HttpGet("StudentInFaculty{id}")]
+        public async Task<ActionResult<List<StudentDto>>> GetAllStudentsInFaculty(Guid id)
+        {
+            if (_context.Students == null)
+            {
+                return NotFound();
+            }
+            return await _iStudent.GetAllStudentsInFaculty(id);
+        }
+
 
         // PUT: api/Students/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

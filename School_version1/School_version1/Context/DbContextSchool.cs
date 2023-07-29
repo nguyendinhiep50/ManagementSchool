@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using School_version1.Interface;
-using School_version1.Models.ObjectData;
-using School_version1.Models.ObjectView;
+using School_version1.Models.ObjectData; 
 
 namespace School_version1.Context
 {

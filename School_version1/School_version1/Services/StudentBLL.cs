@@ -63,6 +63,14 @@ namespace School_version1.Services
             student.Faculty = await _Db.Faculty.FindAsync(student.FacultyId);
             return _mapper.Map<StudentDto>(student);
         }
+        public async Task<List<StudentDto>> GetAllStudentsInFaculty(Guid id)
+        {
+            var students = await _Db.Students.Where(x=>x.FacultyId ==id).ToListAsync();
+            foreach (var st in students)
+                st.Faculty = _Db.Faculty.Find(id);
+            return _mapper.Map<List<StudentDto>>(students).ToList();
+        }
+        
 
         public async Task<Boolean> PostStudent(Student student)
         {
