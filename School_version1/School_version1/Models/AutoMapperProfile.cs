@@ -39,6 +39,10 @@ namespace School_version1.Models
                  .ForMember(x => x.TeacherAdress, opt => opt.MapFrom(src => src.TeacherAdress))
                  .ForMember(x => x.TeacherPassword, opt => opt.MapFrom(src => "12345"))
                  .ForMember(x => x.TeacherStatus, opt => opt.MapFrom(src => true));
+            CreateMap<Subject, SubjectDto>()
+                 .ForMember(x => x.SubjectName, opt => opt.MapFrom(src => src.SubjectName))
+                 .ForMember(x => x.SubjectCredit, opt => opt.MapFrom(src => src.SubjectCredit))
+                 .ForMember(x => x.SubjectMandatory, opt => opt.MapFrom(src => src.SubjectMandatory));
 
         }
     }

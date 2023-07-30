@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.DependencyResolver;
 using School_version1.Context;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
@@ -14,70 +15,69 @@ namespace School_version1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
-    public class TeachersController : ControllerBase
+    public class SubjectsController : ControllerBase
     {
         private readonly DbContextSchool _context;
-        private readonly ITeacher _iTeacher;
-        public TeachersController(DbContextSchool context, ITeacher iTeacher)
+        private readonly ISubject _iSubject;
+        public SubjectsController(DbContextSchool context, ISubject iSubject)
         {
             _context = context;
-            _iTeacher = iTeacher;
+            _iSubject = iSubject;
         }
 
-        // GET: api/Teachers
+        // GET: api/Subjects
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Teacher>>> GetAllTeachers()
+        public async Task<ActionResult<IEnumerable<Subject>>> GetAllSubjects()
         {
-            return await _iTeacher.GetAllTeacher();
+            return await _iSubject.GetAllSubject();
         }
 
-        // GET: api/Teachers/5
+        // GET: api/Subjects/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Teacher>> GetTeacher(Guid id)
+        public async Task<ActionResult<Subject>> GetSubject(Guid id)
         {
             if (_context.Teachers == null)
             {
                 return NotFound();
             }
-            return await _iTeacher.GetTeacher(id);
+            return await _iSubject.GetSubject(id);
         }
 
-        // PUT: api/Teachers/5
+        // PUT: api/Subjects/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTeacher(Guid id, Teacher teacher)
+        public async Task<IActionResult> PutSubject(Guid id, Subject subject)
         {
-            if (id != teacher.Id)
+            if (id != subject.Id)
             {
                 return BadRequest();
             }
-            if (await _iTeacher.PutTeacher(id, teacher) != null)
+            if (await _iSubject.PutSubject(id, subject) != null)
                 return NoContent();
             return NotFound();
         }
 
-        // POST: api/Teachers
+        // POST: api/Subjects
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Teacher>> PostTeacher(TeacherDto TeacherDto)
+        public async Task<ActionResult<Subject>> PostSubject(Subject subject)
         {
-            if (_context.Teachers == null)
-                return Problem("Entity set 'DbContextSchool.Teachers'  is null.");
-            if (await _iTeacher.PostTeacher(TeacherDto))
-                return CreatedAtAction("GetTeacher", new { id = TeacherDto.TeacherName }, TeacherDto);
+            if (_context.Subjects == null)
+                return Problem("Entity set 'DbContextSchool.Subjects'  is null.");
+            if (await _iSubject.PostSubject(subject))
+                return CreatedAtAction("GetSubject", new { id = subject.SubjectName }, subject);
             return NotFound();
         }
 
-        // DELETE: api/Teachers/5
+        // DELETE: api/Subjects/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTeacher(Guid id)
+        public async Task<IActionResult> DeleteSubject(Guid id)
         {
-            if (_context.Teachers == null)
+            if (_context.Subjects == null)
             {
                 return NotFound();
             }
-            if (await _iTeacher.DeleteTeacher(id))
+            if (await _iSubject.DeleteSubject(id))
                 return NoContent();
             return NotFound();
         }

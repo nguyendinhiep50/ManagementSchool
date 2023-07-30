@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using NuGet.DependencyResolver;
 using School_version1.Context;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
@@ -7,22 +8,21 @@ using School_version1.Models.ObjectData;
 
 namespace School_version1.Services
 {
-
-    public class TeacherBLL : ITeacher
+    public class SubjectBLL : ISubject
     {
         private readonly DbContextSchool _Db;
         private readonly IMapper _mapper;
-        public TeacherBLL(DbContextSchool db, IMapper mapper)
+        public SubjectBLL(DbContextSchool db, IMapper mapper)
         {
             _Db = db;
             _mapper = mapper;
         }
-        public async Task<bool> DeleteTeacher(Guid id)
+        public async Task<bool> DeleteSubject(Guid id)
         {
             try
             {
-                var teacher = await _Db.Teachers.FindAsync(id);
-                _Db.Teachers.Remove(teacher);
+                var subject = await _Db.Subjects.FindAsync(id);
+                _Db.Subjects.Remove(subject);
                 await _Db.SaveChangesAsync();
                 return true;
             }
@@ -34,22 +34,22 @@ namespace School_version1.Services
             return true;
         }
 
-        public async Task<List<Teacher>> GetAllTeacher()
+        public async Task<List<Subject>> GetAllSubject()
         {
-            return await _Db.Teachers.ToListAsync();
+            return await _Db.Subjects.ToListAsync();
         }
 
-        public async Task<Teacher> GetTeacher(Guid id)
+        public async Task<Subject> GetSubject(Guid id)
         {
-            return await _Db.Teachers.FindAsync(id);
+            return await _Db.Subjects.FindAsync(id);
         }
 
-        public async Task<bool> PostTeacher(TeacherDto teacherDto)
+        public async Task<bool> PostSubject(Subject subject)
         {
             try
             {
-                var teacher = _mapper.Map<Teacher>(teacherDto);
-                _Db.Teachers.Add(teacher);
+                var sj = _mapper.Map<Subject>(subject);
+                _Db.Subjects.Add(sj);
                 await _Db.SaveChangesAsync();
             }
             catch (Exception)
@@ -59,9 +59,9 @@ namespace School_version1.Services
             return true;
         }
 
-        public async Task<Teacher> PutTeacher(Guid id, Teacher teacher)
+        public async Task<Subject> PutSubject(Guid id, Subject Subject)
         {
-            _Db.Entry(teacher).State = EntityState.Modified;
+            _Db.Entry(Subject).State = EntityState.Modified;
             try
             {
                 await _Db.SaveChangesAsync();
@@ -70,7 +70,7 @@ namespace School_version1.Services
             {
                 return null;
             }
-            return teacher;
+            return Subject;
         }
     }
 }

@@ -13,6 +13,9 @@ builder.Services.AddDbContext<DbContextSchool>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolHiep")));
 builder.Services.AddScoped<DbContextSchool>();
 builder.Services.AddScoped<IStudent,StudentBLL>();
+builder.Services.AddScoped<ITeacher, TeacherBLL>();
+builder.Services.AddScoped<ISubject, SubjectBLL>();
+
 
 
 
