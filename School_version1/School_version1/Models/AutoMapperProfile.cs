@@ -23,6 +23,22 @@ namespace School_version1.Models
                  .ForMember(x => x.StudentAdress, opt => opt.MapFrom(src => string.Empty))
                  .ForMember(x => x.SchoolYear, opt => opt.MapFrom(src => 1))
                  .ForMember(x => x.StudentDateCome, opt => opt.MapFrom(src => DateTime.Now));
+            CreateMap<Teacher, TeacherDto>()
+                 .ForMember(x => x.TeacherName, opt => opt.MapFrom(src => src.TeacherName))
+                 .ForMember(x => x.TeacherImage, opt => opt.MapFrom(src => src.TeacherImage))
+                 .ForMember(x => x.TeacherEmail, opt => opt.MapFrom(src => src.TeacherEmail))
+                 .ForMember(x => x.TeacherBirthDate, opt => opt.MapFrom(src => src.TeacherBirthDate))
+                 .ForMember(x => x.TeacherPhone, opt => opt.MapFrom(src => src.TeacherPhone))
+                 .ForMember(x => x.TeacherAdress, opt => opt.MapFrom(src => src.TeacherAdress));
+            CreateMap<TeacherDto, Teacher>()
+                 .ForMember(x => x.TeacherName, opt => opt.MapFrom(src => src.TeacherName))
+                 .ForMember(x => x.TeacherImage, opt => opt.MapFrom(src => src.TeacherImage))
+                 .ForMember(x => x.TeacherEmail, opt => opt.MapFrom(src => src.TeacherEmail))
+                 .ForMember(x => x.TeacherBirthDate, opt => opt.MapFrom(src => src.TeacherBirthDate))
+                 .ForMember(x => x.TeacherPhone, opt => opt.MapFrom(src => src.TeacherPhone))
+                 .ForMember(x => x.TeacherAdress, opt => opt.MapFrom(src => src.TeacherAdress))
+                 .ForMember(x => x.TeacherPassword, opt => opt.MapFrom(src => "12345"))
+                 .ForMember(x => x.TeacherStatus, opt => opt.MapFrom(src => true));
 
         }
     }
