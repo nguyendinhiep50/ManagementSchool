@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace School_version1.Models.ObjectData
+namespace School_version1.Entities
 {
     public class Management : EntityBase
     {

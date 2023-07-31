@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol.Plugins;
 using School_version1.Context;
+using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
-using School_version1.Models.ObjectData;
 using System.Collections.Generic;
 
 namespace School_version1.Services

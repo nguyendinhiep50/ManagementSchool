@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using System.ComponentModel;
 
-namespace School_version1.Models.ObjectData
+namespace School_version1.Entities
 {
     public class Student : EntityBase
     {

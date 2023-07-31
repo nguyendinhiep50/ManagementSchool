@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 
-namespace School_version1.Models.ObjectData
+namespace School_version1.Entities
 {
     public class Teacher : EntityBase
     {

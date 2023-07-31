@@ -15,6 +15,7 @@ builder.Services.AddScoped<DbContextSchool>();
 builder.Services.AddScoped<IStudent,StudentBLL>();
 builder.Services.AddScoped<ITeacher, TeacherBLL>();
 builder.Services.AddScoped<ISubject, SubjectBLL>();
+builder.Services.AddScoped<ISemesters, SemesterBLL>();
 
 
 
