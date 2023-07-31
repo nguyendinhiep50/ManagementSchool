@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using School_version1.Context;
+using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Services;
 
@@ -16,6 +17,9 @@ builder.Services.AddScoped<IStudent,StudentBLL>();
 builder.Services.AddScoped<ITeacher, TeacherBLL>();
 builder.Services.AddScoped<ISubject, SubjectBLL>();
 builder.Services.AddScoped<ISemesters, SemesterBLL>();
+builder.Services.AddScoped<IFaculty, FacultyBLL>();
+builder.Services.AddScoped<IAcademicProgram, AcademicProgramBLL>();
+builder.Services.AddScoped<IClassLearn, ClassLearnsBLL>();
 
 
 

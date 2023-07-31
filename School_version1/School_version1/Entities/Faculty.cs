@@ -6,7 +6,5 @@ namespace School_version1.Entities
     {
         [Required]
         public string FacultyName { get; set; }
-
-        public ICollection<Student> Students { get; set; }
     }
 }

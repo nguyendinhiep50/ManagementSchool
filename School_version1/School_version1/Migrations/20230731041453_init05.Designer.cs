@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using School_version1.Context;
 
@@ -11,9 +12,10 @@ using School_version1.Context;
 namespace School_version1.Migrations
 {
     [DbContext(typeof(DbContextSchool))]
-    partial class DbContextSchoolModelSnapshot : ModelSnapshot
+    [Migration("20230731041453_init05")]
+    partial class init05
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,12 +31,12 @@ namespace School_version1.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
-                    b.Property<string>("AcademicProgramName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid>("FacultyId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("NameAcademicProgram")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("SemesterId")
                         .HasColumnType("uniqueidentifier");

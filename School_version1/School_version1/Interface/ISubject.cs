@@ -3,12 +3,7 @@ using School_version1.Models.DTOs;
 
 namespace School_version1.Interface
 {
-    public interface ISubject
+    public interface ISubject : IEntityService<Subject, SubjectDto>
     {
-        Task<List<Subject>> GetAllSubject();
-        Task<Subject> GetSubject(Guid id);
-        Task<Boolean> DeleteSubject(Guid id);
-        Task<bool> PostSubject(Subject subject);
-        Task<Subject> PutSubject(Guid id, Subject Subject);
     }
 }

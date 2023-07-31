@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using School_version1.Context;
 
@@ -11,9 +12,10 @@ using School_version1.Context;
 namespace School_version1.Migrations
 {
     [DbContext(typeof(DbContextSchool))]
-    partial class DbContextSchoolModelSnapshot : ModelSnapshot
+    [Migration("20230731033400_init02")]
+    partial class init02
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,10 +30,6 @@ namespace School_version1.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
-
-                    b.Property<string>("AcademicProgramName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("FacultyId")
                         .HasColumnType("uniqueidentifier");
@@ -349,12 +347,17 @@ namespace School_version1.Migrations
             modelBuilder.Entity("School_version1.Entities.Student", b =>
                 {
                     b.HasOne("School_version1.Entities.Faculty", "Faculty")
-                        .WithMany()
+                        .WithMany("Students")
                         .HasForeignKey("FacultyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Faculty");
+                });
+
+            modelBuilder.Entity("School_version1.Entities.Faculty", b =>
+                {
+                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("School_version1.Entities.Student", b =>

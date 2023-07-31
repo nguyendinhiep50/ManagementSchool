@@ -3,15 +3,10 @@ using School_version1.Models.DTOs;
 
 namespace School_version1.Interface
 {
-    public interface IStudent
+    public interface IStudent : IEntityService<Student, StudentAddDto>
     {
-        Task<List<Student>> GetAllStudent();
         Task<List<StudentDto>> GetAllStudentFaculty();
-        Task<Student> GetStudent(Guid id);
         Task<StudentDto> GetStudentFaculty(Guid id);
         Task<List<StudentDto>> GetAllStudentsInFaculty(Guid id);
-        Task<Boolean> DeleteStudent(Guid id);
-        Task<Boolean> PostStudent(StudentAddDto StudentAddDto);
-        Task<Student> PutStudent(Guid id , Student student);
     }
 }

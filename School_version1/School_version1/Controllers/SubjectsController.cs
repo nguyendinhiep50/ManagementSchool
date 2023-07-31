@@ -29,7 +29,7 @@ namespace School_version1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Subject>>> GetAllSubjects()
         {
-            return await _iSubject.GetAllSubject();
+            return await _iSubject.GetAll();
         }
 
         // GET: api/Subjects/5
@@ -40,7 +40,7 @@ namespace School_version1.Controllers
             {
                 return NotFound();
             }
-            return await _iSubject.GetSubject(id);
+            return await _iSubject.Get(id);
         }
 
         // PUT: api/Subjects/5
@@ -52,7 +52,7 @@ namespace School_version1.Controllers
             {
                 return BadRequest();
             }
-            if (await _iSubject.PutSubject(id, subject) != null)
+            if (await _iSubject.Put(id, subject) != null)
                 return NoContent();
             return NotFound();
         }
@@ -60,12 +60,12 @@ namespace School_version1.Controllers
         // POST: api/Subjects
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Subject>> PostSubject(Subject subject)
+        public async Task<ActionResult<Subject>> PostSubject(SubjectDto subjectdto)
         {
             if (_context.Subjects == null)
                 return Problem("Entity set 'DbContextSchool.Subjects'  is null.");
-            if (await _iSubject.PostSubject(subject))
-                return CreatedAtAction("GetSubject", new { id = subject.SubjectName }, subject);
+            if (await _iSubject.Post(subjectdto))
+                return CreatedAtAction("GetSubject", new { id = subjectdto.SubjectName }, subjectdto);
             return NotFound();
         }
 
@@ -77,7 +77,7 @@ namespace School_version1.Controllers
             {
                 return NotFound();
             }
-            if (await _iSubject.DeleteSubject(id))
+            if (await _iSubject.Delete(id))
                 return NoContent();
             return NotFound();
         }

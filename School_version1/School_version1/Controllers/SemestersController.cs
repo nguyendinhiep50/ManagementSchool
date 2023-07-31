@@ -29,7 +29,7 @@ namespace School_version1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Semester>>> GetSemesters()
         {
-            return await _iSemesters.GetAllSemester(); 
+            return await _iSemesters.GetAll(); 
         }
 
         // GET: api/Semesters/5
@@ -40,7 +40,7 @@ namespace School_version1.Controllers
             {
                 return NotFound();
             }
-            return await _iSemesters.GetSemester(id);
+            return await _iSemesters.Get(id);
         }
 
         // PUT: api/Semesters/5
@@ -52,7 +52,7 @@ namespace School_version1.Controllers
             {
                 return BadRequest();
             }
-            if (await _iSemesters.PutSemester(id, semester) != null)
+            if (await _iSemesters.Put(id, semester) != null)
                 return NoContent();
             return NotFound();
         }
@@ -64,11 +64,10 @@ namespace School_version1.Controllers
         {
             if (_context.Semesters == null)
                 return Problem("Entity set 'DbContextSchool.Teachers'  is null.");
-            if (await _iSemesters.PostSemester(semesterDto))
+            if (await _iSemesters.Post(semesterDto))
                 return CreatedAtAction("GetTeacher", new { id = semesterDto.SemesterName }, semesterDto);
             return NotFound();
         }
-
         // DELETE: api/Semesters/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSemester(Guid id)
@@ -77,7 +76,7 @@ namespace School_version1.Controllers
             {
                 return NotFound();
             }
-            if (await _iSemesters.DeleteSemester(id))
+            if (await _iSemesters.Delete(id))
                 return NoContent();
             return NotFound();
         }

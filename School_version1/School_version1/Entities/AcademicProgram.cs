@@ -12,7 +12,8 @@ namespace School_version1.Entities
         // tạo thuộc tính khóa lại đăng ký học môn này khi kết thúc thời gian đăng ký
         // chứa lớp học 
         // dựa vào học kì và lớp học để lọc ra những gì cần học trong năm học đó
-
+        [Required]
+        public string AcademicProgramName { get; set; }
         [Required]
         public DateTime TimeEndAcademicProgram { get; set; }
         [ForeignKey("Semester")]

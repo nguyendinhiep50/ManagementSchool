@@ -14,70 +14,64 @@ namespace School_version1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
-    public class TeachersController : ControllerBase
+    public class FacultiesController : ControllerBase
     {
         private readonly DbContextSchool _context;
-        private readonly ITeacher _iTeacher;
-        public TeachersController(DbContextSchool context, ITeacher iTeacher)
+        private readonly IFaculty _faculty;
+        public FacultiesController(DbContextSchool context, IFaculty iFaculty)
         {
             _context = context;
-            _iTeacher = iTeacher;
+            _faculty = iFaculty;
         }
-
-        // GET: api/Teachers
+        // GET: api/Faculties
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Teacher>>> GetAllTeachers()
+        public async Task<ActionResult<IEnumerable<Faculty>>> GetFaculty()
         {
-            return await _iTeacher.GetAll();
+            return await _faculty.GetAll();
         }
 
-        // GET: api/Teachers/5
+        // GET: api/Faculties/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Teacher>> GetTeacher(Guid id)
+        public async Task<ActionResult<Faculty>> GetFaculty(Guid id)
         {
-            if (_context.Teachers == null)
+            if (_context.Faculty == null)
             {
                 return NotFound();
             }
-            return await _iTeacher.Get(id);
+            return await _faculty.Get(id);
         }
 
-        // PUT: api/Teachers/5
+        // PUT: api/Faculties/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTeacher(Guid id, Teacher teacher)
+        public async Task<IActionResult> PutFaculty(Guid id, Faculty faculty)
         {
-            if (id != teacher.Id)
+            if (id != faculty.Id)
             {
                 return BadRequest();
             }
-            if (await _iTeacher.Put(id, teacher) != null)
+            if (await _faculty.Put(id, faculty) != null)
                 return NoContent();
             return NotFound();
         }
 
-        // POST: api/Teachers
+        // POST: api/Faculties
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Teacher>> PostTeacher(TeacherDto TeacherDto)
+        public async Task<ActionResult<Faculty>> PostFaculty(FacultyDto facultyDto)
         {
-            if (_context.Teachers == null)
+            if (_context.Faculty == null)
                 return Problem("Entity set 'DbContextSchool.Teachers'  is null.");
-            if (await _iTeacher.Post(TeacherDto))
-                return CreatedAtAction("GetTeacher", new { id = TeacherDto.TeacherName }, TeacherDto);
+            if (await _faculty.Post(facultyDto))
+                return CreatedAtAction("GetFaculty", new { id = facultyDto.FacultyName }, facultyDto);
             return NotFound();
         }
 
-        // DELETE: api/Teachers/5
+        // DELETE: api/Faculties/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTeacher(Guid id)
+        public async Task<IActionResult> DeleteFaculty(Guid id)
         {
-            if (_context.Teachers == null)
-            {
-                return NotFound();
-            }
-            if (await _iTeacher.Delete(id))
+            if (await _faculty.Delete(id))
                 return NoContent();
             return NotFound();
         }

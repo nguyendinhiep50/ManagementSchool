@@ -33,7 +33,7 @@ namespace School_version1.Controllers
             {
                 return NotFound();
             }
-            return await _iStudent.GetAllStudent();
+            return await _iStudent.GetAll();
         }
         // GET: api/Students
         [HttpGet("Take Name Faculty")]
@@ -56,7 +56,7 @@ namespace School_version1.Controllers
             {
                 return NotFound();
             }
-            return await _iStudent.GetStudent(id);
+            return await _iStudent.Get(id);
         }
         // GET: api/Students/5
         [HttpGet("Faculty{id}")]
@@ -92,7 +92,7 @@ namespace School_version1.Controllers
             {
                 return BadRequest();
             }
-            if (await _iStudent.PutStudent(id, student) != null)
+            if (await _iStudent.Put(id, student) != null)
                 return NoContent();
             return NotFound();
         }
@@ -104,7 +104,7 @@ namespace School_version1.Controllers
         {
             if (_context.Students == null)
                 return Problem("Entity set 'DbContextSchool.Students'  is null.");
-            if (await _iStudent.PostStudent(StudentAddDto))
+            if (await _iStudent.Post(StudentAddDto))
                 return CreatedAtAction("GetStudent", new { id = StudentAddDto.StudentName }, StudentAddDto);
             return NotFound();
         }
@@ -117,7 +117,7 @@ namespace School_version1.Controllers
             {
                 return NotFound();
             }
-            if (await _iStudent.DeleteStudent(id))
+            if (await _iStudent.Delete(id))
                 return NoContent();
             return NotFound();
         }
