@@ -60,7 +60,7 @@ namespace School_version1.Controllers
         // POST: api/Subjects
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Subject>> PostSubject(SubjectDto subjectdto)
+        public async Task<ActionResult<SubjectDto>> PostSubject(SubjectDto subjectdto)
         {
             if (_context.Subjects == null)
                 return Problem("Entity set 'DbContextSchool.Subjects'  is null.");

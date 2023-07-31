@@ -60,12 +60,12 @@ namespace School_version1.Controllers
         // POST: api/AcademicPrograms
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<AcademicProgram>> PostAcademicProgram(AcademicProgramDto academicProgramDto)
+        public async Task<ActionResult<AcademicProgramDto>> PostAcademicProgram(AcademicProgramDto academicProgramDto)
         {
             if (_context.Faculty == null)
                 return Problem("Entity set 'DbContextSchool.Teachers'  is null.");
             if (await _AcademicProgram.Post(academicProgramDto))
-                return CreatedAtAction("GetFaculty", new { id = academicProgramDto.AcademicProgramName }, academicProgramDto);
+                return CreatedAtAction("GetAcademicProgram", new { id = academicProgramDto.AcademicProgramName }, academicProgramDto);
             return NotFound();
         }
 

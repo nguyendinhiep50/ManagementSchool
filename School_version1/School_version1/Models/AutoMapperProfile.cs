@@ -27,6 +27,8 @@ namespace School_version1.Models
             CreateMap<FacultyDto, Faculty>();
             CreateMap<AcademicProgramDto, AcademicProgram>();
             CreateMap<ClassLearnsDto, ClassLearn>();
+            CreateMap<ListStudentClassLearnDto, ListStudentClassLearn>();
+
         }
     }
 }

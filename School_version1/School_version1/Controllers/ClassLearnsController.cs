@@ -59,12 +59,12 @@ namespace School_version1.Controllers
         // POST: api/ClassLearns
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ClassLearn>> PostClassLearn(ClassLearnsDto classLearnsDto)
+        public async Task<ActionResult<ClassLearnsDto>> PostClassLearn(ClassLearnsDto classLearnsDto)
         {
             if (_context.ClassLearns == null)
                 return Problem("Entity set 'DbContextSchool.Teachers'  is null.");
             if (await _classLearn.Post(classLearnsDto))
-                return CreatedAtAction("GetFaculty", new { id = classLearnsDto.ClassLearnName }, classLearnsDto);
+                return CreatedAtAction("GetClassLearns", new { id = classLearnsDto.ClassLearnName }, classLearnsDto);
             return NotFound();
         }
 

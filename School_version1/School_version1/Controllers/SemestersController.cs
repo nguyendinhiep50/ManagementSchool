@@ -60,12 +60,12 @@ namespace School_version1.Controllers
         // POST: api/Semesters
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Semester>> PostSemester(SemesterDto semesterDto)
+        public async Task<ActionResult<SemesterDto>> PostSemester(SemesterDto semesterDto)
         {
             if (_context.Semesters == null)
-                return Problem("Entity set 'DbContextSchool.Teachers'  is null.");
+                return Problem("Entity set 'DbContextSchool.Semesters'  is null.");
             if (await _iSemesters.Post(semesterDto))
-                return CreatedAtAction("GetTeacher", new { id = semesterDto.SemesterName }, semesterDto);
+                return CreatedAtAction("GetSemester", new { id = semesterDto.SemesterName }, semesterDto);
             return NotFound();
         }
         // DELETE: api/Semesters/5

@@ -20,6 +20,7 @@ builder.Services.AddScoped<ISemesters, SemesterBLL>();
 builder.Services.AddScoped<IFaculty, FacultyBLL>();
 builder.Services.AddScoped<IAcademicProgram, AcademicProgramBLL>();
 builder.Services.AddScoped<IClassLearn, ClassLearnsBLL>();
+builder.Services.AddScoped<IListStudentClassLearn, ListStudentClassLearnsBLL>();
 
 
 

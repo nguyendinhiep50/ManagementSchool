@@ -60,7 +60,7 @@ namespace School_version1.Controllers
         // POST: api/Teachers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Teacher>> PostTeacher(TeacherDto TeacherDto)
+        public async Task<ActionResult<TeacherDto>> PostTeacher(TeacherDto TeacherDto)
         {
             if (_context.Teachers == null)
                 return Problem("Entity set 'DbContextSchool.Teachers'  is null.");

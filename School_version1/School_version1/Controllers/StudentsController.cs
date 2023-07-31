@@ -100,7 +100,7 @@ namespace School_version1.Controllers
         // POST: api/Students
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Student>> PostStudent(StudentAddDto StudentAddDto)
+        public async Task<ActionResult<StudentAddDto>> PostStudent(StudentAddDto StudentAddDto)
         {
             if (_context.Students == null)
                 return Problem("Entity set 'DbContextSchool.Students'  is null.");
