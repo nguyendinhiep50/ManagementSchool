@@ -3,7 +3,7 @@ import {} from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Layout, theme, Col, Row } from "antd";
 import NavbarManagement from "../NavbarManagement";
-import AddStudent from "./AddTeacher.tsx";
+import AddFaculty from "./AddFaculty.tsx";
 
 function ManagementStudent() {
   const { Content } = Layout;
@@ -23,8 +23,8 @@ function ManagementStudent() {
               background: colorBgContainer,
             }}
           >
-            <h1>Add Teacher</h1>
-            <AddStudent />
+            <h1>Add Faculty</h1>
+            <AddFaculty />
 
             <Row></Row>
           </Content>

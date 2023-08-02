@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import ListFaculty from "./ListFaculty.tsx";
 import {} from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Layout, theme, Col, Row } from "antd";
-import NavbarManagement from "../NavbarManagement";
-import AddStudent from "./AddTeacher.tsx";
+import NavbarManagement from "../NavbarManagement.js";
 
-function ManagementStudent() {
+function ListStudent() {
   const { Content } = Layout;
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
   return (
     <>
       <Layout>
@@ -23,8 +24,8 @@ function ManagementStudent() {
               background: colorBgContainer,
             }}
           >
-            <h1>Add Teacher</h1>
-            <AddStudent />
+            <h1>List Faculty</h1>
+            <ListFaculty />
 
             <Row></Row>
           </Content>
@@ -33,4 +34,4 @@ function ManagementStudent() {
     </>
   );
 }
-export default ManagementStudent;
+export default ListStudent;

@@ -1,5 +1,5 @@
 import React from "react";
-import LayoutStudent from "./ListStudent.js";
+import LayoutStudent from "./ListStudent.tsx";
 import {} from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Layout, theme, Col, Row } from "antd";

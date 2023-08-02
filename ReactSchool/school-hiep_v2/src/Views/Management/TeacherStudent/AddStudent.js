@@ -3,7 +3,7 @@ import {} from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Layout, theme, Col, Row } from "antd";
 import NavbarManagement from "../NavbarManagement";
-import AddStudent from "./AddStudent";
+import AddStudent from "./AddStudent.tsx";
 
 function ManagementStudent() {
   const { Content } = Layout;

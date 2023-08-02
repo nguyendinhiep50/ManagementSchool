@@ -8,6 +8,12 @@ import AddStudent from "./Views/Management/TeacherStudent/AddStudent";
 import ListStudent from "./Views/Management/TeacherStudent/ListStudent";
 import AddTeacher from "./Views/Management/TeacherStudent/AddTeacher";
 import ListTeacher from "./Views/Management/TeacherStudent/ListTeacher";
+import AddSemester from "./Views/Management/SemesterSubjectFaculty/AddSemester";
+import ListSemester from "./Views/Management/SemesterSubjectFaculty/ListSemester";
+import AddFaculty from "./Views/Management/SemesterSubjectFaculty/AddFaculty";
+import ListFaculty from "./Views/Management/SemesterSubjectFaculty/ListFaculty";
+import AddSubject from "./Views/Management/SemesterSubjectFaculty/AddSubject";
+import ListSubject from "./Views/Management/SemesterSubjectFaculty/ListSubject";
 
 function App() {
   return (
@@ -32,6 +38,28 @@ function App() {
       </Routes>
       <Routes>
         <Route path="/ListTeacher" element={<ListTeacher />} />
+      </Routes>
+      <Routes>
+        <Route path="/ListTeacher" element={<ListTeacher />} />
+      </Routes>
+
+      <Routes>
+        <Route path="/AddSemester" element={<AddSemester />} />
+      </Routes>
+      <Routes>
+        <Route path="/ListSemester" element={<ListSemester />} />
+      </Routes>
+      <Routes>
+        <Route path="/AddFaculty" element={<AddFaculty />} />
+      </Routes>
+      <Routes>
+        <Route path="/ListFaculty" element={<ListFaculty />} />
+      </Routes>
+      <Routes>
+        <Route path="/AddSubject" element={<AddSubject />} />
+      </Routes>
+      <Routes>
+        <Route path="/ListSubject" element={<ListSubject />} />
       </Routes>
     </Router>
   );

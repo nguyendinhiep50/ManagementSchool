@@ -4,8 +4,7 @@ import {
   NotificationOutlined,
   UserOutlined,
   ReadOutlined,
-  OneToOneOutlined,
-  ExperimentOutlined,
+  DatabaseOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 
@@ -17,7 +16,7 @@ const { Sider } = Layout;
 const items1: MenuProps["items"] = [
   "Account",
   "Teacher Student",
-  "Semesters ,Subject Faculty",
+  "Semesters,Subject,Faculty",
   "Class learn",
 ].map((key, index) => ({
   key,
@@ -33,30 +32,32 @@ function generateArrayList(key) {
   } else if (key === "Teacher Student") {
     return [
       { key: "AddStudent", value: "Add Student" },
-      { key: "ListStudent", value: "List Student" },
       { key: "AddTeacher", value: "Add Teacher" },
+      { key: "ListStudent", value: "List Student" },
       { key: "ListTeacher", value: "List Teacher" },
     ];
-  } else if (key === "Semesters ,Subject Faculty") {
+  } else if (key === "Semesters,Subject,Faculty") {
     return [
-      { key: "ManagementHK", value: "quản lý học kì" },
-      { key: "ManagementClass", value: "quản lý lớp" },
-      { key: "ManagementSubject", value: "quản lý môn học" },
-      { key: "ManagementCourses", value: "quản lý khóa học" },
+      { key: "AddSemester", value: "Add Semester" },
+      { key: "AddFaculty", value: "Add Faculty" },
+      { key: "AddSubject", value: "Add Subject" },
+      { key: "ListSemester", value: "List Semester" },
+      { key: "ListFaculty", value: "List Faculty" },
+      { key: "ListSubject", value: "List Subject" },
     ];
   } else if (key === "Class learn") {
     return [
-      { key: "ManagementHK", value: "quản lý học kì" },
-      { key: "ManagementClass", value: "quản lý lớp" },
-      { key: "ManagementSubject", value: "quản lý môn học" },
-      { key: "ManagementCourses", value: "quản lý khóa học" },
+      { key: "AddStudent_Class", value: "Add Student Class" },
+      { key: "AddClassLearn", value: "Add Class Learn" },
+      { key: "ListStudent_Class", value: "List Student Class" },
+      { key: "ListClassLearn", value: "List Class Learn" },
     ];
   }
 }
 const items2: MenuProps["items"] = [
   UserOutlined,
   LaptopOutlined,
-  NotificationOutlined,
+  DatabaseOutlined,
   ReadOutlined,
   // OneToOneOutlined,
   // ExperimentOutlined,
