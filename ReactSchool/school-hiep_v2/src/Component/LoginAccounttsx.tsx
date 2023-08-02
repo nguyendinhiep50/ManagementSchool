@@ -45,7 +45,7 @@ const App: React.FC = () => {
 
       <Form.Item>
         <Button type="primary" htmlType="submit" className="login-form-button">
-          <Link to="/IndexManagement">
+          <Link to="/ManagementStudent">
             <i className="fa fa-shopping-cart"></i> Login
           </Link>
         </Button>

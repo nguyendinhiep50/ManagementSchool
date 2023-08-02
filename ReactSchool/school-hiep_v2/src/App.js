@@ -4,10 +4,10 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import LoginAccount from "./Component/LoginAccount";
 import ManagementStudent from "./Views/Management/ManagementStudent";
 import ChangePassword from "./Views/Management/ChangePassword";
-import AddStudent from "./Views/Management/AddStudent";
-import ListStudent from "./Views/Management/ListStudent";
-import AddTeacher from "./Views/Management/AddTeacher";
-import ListTeacher from "./Views/Management/ListTeacher";
+import AddStudent from "./Views/Management/TeacherStudent/AddStudent";
+import ListStudent from "./Views/Management/TeacherStudent/ListStudent";
+import AddTeacher from "./Views/Management/TeacherStudent/AddTeacher";
+import ListTeacher from "./Views/Management/TeacherStudent/ListTeacher";
 
 function App() {
   return (
