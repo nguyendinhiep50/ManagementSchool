@@ -1,14 +1,17 @@
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using School_version1.Context;
 using School_version1.Entities;
 using School_version1.Interface;
+using School_version1.Models.DTOs;
+using School_version1.Repositories;
 using School_version1.Services;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
 builder.Services.AddControllers();
 builder.Services.AddDbContext<DbContextSchool>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolHiep")));
@@ -21,7 +24,8 @@ builder.Services.AddScoped<IFaculty, FacultyBLL>();
 builder.Services.AddScoped<IAcademicProgram, AcademicProgramBLL>();
 builder.Services.AddScoped<IClassLearn, ClassLearnsBLL>();
 builder.Services.AddScoped<IListStudentClassLearn, ListStudentClassLearnsBLL>();
-
+builder.Services.AddScoped<IBaseRepositories<Management, ManagementDto>, BaseRepositories<Management, ManagementDto>>();
+builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 
 
 
