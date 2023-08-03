@@ -22,7 +22,7 @@ namespace School_version1.Models
             CreateMap<TeacherDto, Teacher>() 
                  .ForMember(x => x.TeacherPassword, opt => opt.MapFrom(src => "12345"))
                  .ForMember(x => x.TeacherStatus, opt => opt.MapFrom(src => true));
-            CreateMap<Subject, SubjectDto>();
+            CreateMap<SubjectDto, Subject>();
             CreateMap<SemesterDto, Semester>();
             CreateMap<FacultyDto, Faculty>();
             CreateMap<AcademicProgramDto, AcademicProgram>();
