@@ -13,5 +13,26 @@ namespace School_version1.Services
         public AcademicProgramBLL(DbContextSchool db, IMapper mapper) : base(db, mapper)
         {
         }
+
+        public async Task<List<AcademicProgramSPDto>> GetProgramLearn()
+        {
+            Guid id = Guid.NewGuid();
+            var program = await _db.AcademicPrograms
+                .Include(p => p.Faculty)
+                .Include(x => x.Subject).ToListAsync();
+            var result = _mapper.Map<List<AcademicProgramSPDto>>(program).ToList();
+            return  result;
+        }
+        public async Task<List<AcademicProgramSPDto>> GetProgramLearnFaculty(Guid FacultyId)
+        {
+            Guid id = Guid.NewGuid();
+            var program = await _db.AcademicPrograms
+                .Include(p => p.Faculty)
+                .Include(x => x.Subject)
+                .Where(x=>x.FacultyId == FacultyId && x.TimeEndAcademicProgram > DateTime.Now)
+                .ToListAsync();
+            var result = _mapper.Map<List<AcademicProgramSPDto>>(program).ToList();
+            return result;
+        }
     }
 }

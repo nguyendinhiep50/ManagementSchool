@@ -22,11 +22,11 @@ namespace School_version1.Entities
         public virtual Semester Semester { get; set; }
         [ForeignKey("Faculty")]
         public Guid FacultyId { get; set; }
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual Faculty Faculty { get; set; }
         [ForeignKey("Subject")]
         public Guid SubjectId { get; set; }
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual Subject Subject { get; set; }
 
     }

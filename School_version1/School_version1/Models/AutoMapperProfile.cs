@@ -26,6 +26,12 @@ namespace School_version1.Models
             CreateMap<SemesterDto, Semester>();
             CreateMap<FacultyDto, Faculty>();
             CreateMap<AcademicProgramDto, AcademicProgram>();
+            CreateMap<AcademicProgram, AcademicProgramSPDto>()
+                .ForMember(x => x.SubjectName, opt => opt.MapFrom(src => src.Subject.SubjectName))
+                .ForMember(x => x.SubjectId, opt => opt.MapFrom(src => src.Subject.Id))
+                .ForMember(x => x.SubjectCredit, opt => opt.MapFrom(src => src.Subject.SubjectCredit))
+                .ForMember(x => x.SubjectMandatory, opt => opt.MapFrom(src => src.Subject.SubjectMandatory))
+                .ForMember(x => x.FacultyName, opt => opt.MapFrom(src => src.Faculty.FacultyName));
             CreateMap<ClassLearnsDto, ClassLearn>();
             CreateMap<ListStudentClassLearnDto, ListStudentClassLearn>();
             CreateMap<ManagementDto, Management>();

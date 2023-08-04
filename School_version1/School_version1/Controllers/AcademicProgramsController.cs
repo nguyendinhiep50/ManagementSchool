@@ -31,7 +31,17 @@ namespace School_version1.Controllers
         {
             return await _AcademicProgram.GetAll();
         }
-
+        // GET: api/AcademicPrograms
+        [HttpGet("ProgramLearn")]
+        public async Task<ActionResult<IEnumerable<AcademicProgramSPDto>>> GetProgramLearn()
+        {
+            return await _AcademicProgram.GetProgramLearn();
+        }
+        [HttpGet("ProgramLearnFaculty")]
+        public async Task<ActionResult<IEnumerable<AcademicProgramSPDto>>> GetProgramLearnFaculty(Guid facultyId)
+        {
+            return await _AcademicProgram.GetProgramLearnFaculty(facultyId);
+        }
         // GET: api/AcademicPrograms/5
         [HttpGet("{id}")]
         public async Task<ActionResult<AcademicProgram>> GetAcademicProgram(Guid id)
