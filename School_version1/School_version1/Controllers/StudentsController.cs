@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using School_version1.Context;
 using School_version1.Entities;
 using School_version1.Interface;
@@ -50,8 +54,6 @@ namespace School_version1.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Student>> GetStudent(Guid id)
         {
-            var student = await _context.Students.FindAsync(id);
-
             if (_context.Students == null)
             {
                 return NotFound();
@@ -81,7 +83,36 @@ namespace School_version1.Controllers
             }
             return await _iStudent.GetAllStudentsInFaculty(id);
         }
-
+        // lấy thông tin thông qua token
+        [HttpGet("user")]
+        public async Task<ActionResult<Student>> GetUserInfo(String stringToken)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("nguyendinhiep_key_longdaithonglong"));
+            var userIdClaim123 = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            var username13 = User.FindFirst(ClaimTypes.Name)?.Value;
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = key,
+                ValidateIssuer = false,
+                ValidateAudience = false
+            };
+            try
+            {
+                // Giải mã token và trả về thông tin bên trong dưới dạng ClaimsPrincipal
+                var claimsPrincipal = tokenHandler.ValidateToken(stringToken, tokenValidationParameters, out var validatedToken);
+                var userIdClaim = claimsPrincipal.Identities.FirstOrDefault().Name;
+                if (userIdClaim != null && Guid.TryParse(userIdClaim, out Guid userId))
+                    return await _iStudent.Get(userId);
+            }
+            catch (SecurityTokenException)
+            {
+                // Nếu giải mã token gặp lỗi, xử lý lỗi tại đây
+                return null;
+            }
+            return null;
+        }
 
         // PUT: api/Students/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -108,7 +139,37 @@ namespace School_version1.Controllers
                 return CreatedAtAction("GetStudent", new { id = StudentAddDto.StudentName }, StudentAddDto);
             return NotFound();
         }
+        [HttpPost("login")]
+        public IActionResult LoginStudent(LoginDto loginAccount)
+        {
+            if (_context.Students == null)
+                return Problem("Entity set 'DbContextSchool.Students'  is null.");
+            var kqLogin = _iStudent.PostLoginToken(loginAccount);
+            if (kqLogin != null)
+            {
+                // Tạo một claim chứa thông tin về người dùng (có thể là id, tên, v.v.)
+                var claims = new[]
+                {
+                new Claim(ClaimTypes.Name, kqLogin.Id.ToString())
+            };
 
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("nguyendinhiep_key_longdaithonglong"));
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                // Tạo access token bằng JWT
+                var token = new JwtSecurityToken(
+                    issuer: "your-issuer",
+                    audience: "your-audience",
+                    claims: claims,
+                    expires: DateTime.UtcNow.AddMinutes(30),
+                    signingCredentials: creds
+                );
+
+                return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+            }
+
+            return BadRequest("Invalid username or password.");
+        }
         // DELETE: api/Students/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStudent(Guid id)

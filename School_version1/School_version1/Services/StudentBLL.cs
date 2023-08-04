@@ -1,11 +1,16 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using NuGet.Protocol.Plugins;
 using School_version1.Context;
+
 using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace School_version1.Services
 {
@@ -30,6 +35,16 @@ namespace School_version1.Services
                 st.Faculty = _db.Faculty.Find(id);
             return _mapper.Map<List<StudentDto>>(students).ToList();
         }
+
+        public async Task<StudentDto> PostLoginToken(LoginDto loginAccount)
+        {
+            var student = await _db.Students.Where(x=>x.StudentPassword == loginAccount.PassWorld && x.StudentEmail == loginAccount.LoginEmail).FirstOrDefaultAsync();
+            return _mapper.Map<StudentDto>(student);
+        }
+        //public async Task<StudentDto> GetLoginInfo(string Token)
+        //{
+            
+        //} 
 
         public async Task<StudentDto> GetStudentFaculty(Guid id)
         {
