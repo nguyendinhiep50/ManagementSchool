@@ -38,8 +38,18 @@ namespace School_version1.Services
 
         public async Task<StudentDto> PostLoginToken(LoginDto loginAccount)
         {
-            var student = await _db.Students.Where(x=>x.StudentPassword == loginAccount.PassWorld && x.StudentEmail == loginAccount.LoginEmail).FirstOrDefaultAsync();
-            return _mapper.Map<StudentDto>(student);
+            try
+            {
+                var student = await _db.Students.Where(x=>x.StudentPassword == loginAccount.PassWorld && x.StudentEmail == loginAccount.LoginEmail).FirstOrDefaultAsync();
+                return _mapper.Map<StudentDto>(student);
+            }
+            catch (Exception)
+            {
+                return null;
+                throw;
+            }
+                return null;
+            
         }
         //public async Task<StudentDto> GetLoginInfo(string Token)
         //{

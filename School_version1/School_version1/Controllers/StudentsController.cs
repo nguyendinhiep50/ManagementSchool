@@ -140,11 +140,11 @@ namespace School_version1.Controllers
             return NotFound();
         }
         [HttpPost("login")]
-        public IActionResult LoginStudent(LoginDto loginAccount)
+        public async Task<IActionResult> LoginStudent(LoginDto loginAccount)
         {
             if (_context.Students == null)
                 return Problem("Entity set 'DbContextSchool.Students'  is null.");
-            var kqLogin = _iStudent.PostLoginToken(loginAccount);
+            var kqLogin = await _iStudent.PostLoginToken(loginAccount);
             if (kqLogin != null)
             {
                 // Tạo một claim chứa thông tin về người dùng (có thể là id, tên, v.v.)
