@@ -22,12 +22,16 @@ namespace School_version1.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("School_version1.Models.ObjectData.AcademicProgram", b =>
+            modelBuilder.Entity("School_version1.Entities.AcademicProgram", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
+
+                    b.Property<string>("AcademicProgramName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("FacultyId")
                         .HasColumnType("uniqueidentifier");
@@ -52,7 +56,7 @@ namespace School_version1.Migrations
                     b.ToTable("AcademicPrograms");
                 });
 
-            modelBuilder.Entity("School_version1.Models.ObjectData.ClassLearn", b =>
+            modelBuilder.Entity("School_version1.Entities.ClassLearn", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -80,7 +84,7 @@ namespace School_version1.Migrations
                     b.ToTable("ClassLearns");
                 });
 
-            modelBuilder.Entity("School_version1.Models.ObjectData.Faculty", b =>
+            modelBuilder.Entity("School_version1.Entities.Faculty", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -96,7 +100,7 @@ namespace School_version1.Migrations
                     b.ToTable("Faculty");
                 });
 
-            modelBuilder.Entity("School_version1.Models.ObjectData.ListStudentClassLearn", b =>
+            modelBuilder.Entity("School_version1.Entities.ListStudentClassLearn", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -118,7 +122,7 @@ namespace School_version1.Migrations
                     b.ToTable("ListStudentClassLearns");
                 });
 
-            modelBuilder.Entity("School_version1.Models.ObjectData.Management", b =>
+            modelBuilder.Entity("School_version1.Entities.Management", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -142,7 +146,7 @@ namespace School_version1.Migrations
                     b.ToTable("Management");
                 });
 
-            modelBuilder.Entity("School_version1.Models.ObjectData.Semester", b =>
+            modelBuilder.Entity("School_version1.Entities.Semester", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -167,7 +171,7 @@ namespace School_version1.Migrations
                     b.ToTable("Semesters");
                 });
 
-            modelBuilder.Entity("School_version1.Models.ObjectData.Student", b =>
+            modelBuilder.Entity("School_version1.Entities.Student", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -216,7 +220,7 @@ namespace School_version1.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("School_version1.Models.ObjectData.Subject", b =>
+            modelBuilder.Entity("School_version1.Entities.Subject", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -238,7 +242,7 @@ namespace School_version1.Migrations
                     b.ToTable("Subjects");
                 });
 
-            modelBuilder.Entity("School_version1.Models.ObjectData.Teacher", b =>
+            modelBuilder.Entity("School_version1.Entities.Teacher", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -277,65 +281,21 @@ namespace School_version1.Migrations
                     b.ToTable("Teachers");
                 });
 
-            modelBuilder.Entity("School_version1.Models.ObjectView.StudentView", b =>
+            modelBuilder.Entity("School_version1.Entities.AcademicProgram", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("FacultyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("SchoolYear")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StudentAdress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StudentBirthDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("StudentDateCome")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("StudentEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StudentImage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StudentName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StudentPassword")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StudentPhone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("StudentStatus")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("StudentViews");
-                });
-
-            modelBuilder.Entity("School_version1.Models.ObjectData.AcademicProgram", b =>
-                {
-                    b.HasOne("School_version1.Models.ObjectData.Faculty", "Faculty")
+                    b.HasOne("School_version1.Entities.Faculty", "Faculty")
                         .WithMany()
                         .HasForeignKey("FacultyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("School_version1.Models.ObjectData.Semester", "Semester")
+                    b.HasOne("School_version1.Entities.Semester", "Semester")
                         .WithMany()
                         .HasForeignKey("SemesterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("School_version1.Models.ObjectData.Subject", "Subject")
+                    b.HasOne("School_version1.Entities.Subject", "Subject")
                         .WithMany()
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -348,15 +308,15 @@ namespace School_version1.Migrations
                     b.Navigation("Subject");
                 });
 
-            modelBuilder.Entity("School_version1.Models.ObjectData.ClassLearn", b =>
+            modelBuilder.Entity("School_version1.Entities.ClassLearn", b =>
                 {
-                    b.HasOne("School_version1.Models.ObjectData.AcademicProgram", "AcademicProgram")
+                    b.HasOne("School_version1.Entities.AcademicProgram", "AcademicProgram")
                         .WithMany()
                         .HasForeignKey("AcademicProgramId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("School_version1.Models.ObjectData.Teacher", "Teacher")
+                    b.HasOne("School_version1.Entities.Teacher", "Teacher")
                         .WithMany()
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -367,15 +327,15 @@ namespace School_version1.Migrations
                     b.Navigation("Teacher");
                 });
 
-            modelBuilder.Entity("School_version1.Models.ObjectData.ListStudentClassLearn", b =>
+            modelBuilder.Entity("School_version1.Entities.ListStudentClassLearn", b =>
                 {
-                    b.HasOne("School_version1.Models.ObjectData.ClassLearn", "ClassLearn")
+                    b.HasOne("School_version1.Entities.ClassLearn", "ClassLearn")
                         .WithMany()
                         .HasForeignKey("ClassLearnId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("School_version1.Models.ObjectData.Student", "Student")
+                    b.HasOne("School_version1.Entities.Student", "Student")
                         .WithMany("ListStudentClassLearns")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -386,10 +346,10 @@ namespace School_version1.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("School_version1.Models.ObjectData.Student", b =>
+            modelBuilder.Entity("School_version1.Entities.Student", b =>
                 {
-                    b.HasOne("School_version1.Models.ObjectData.Faculty", "Faculty")
-                        .WithMany("Students")
+                    b.HasOne("School_version1.Entities.Faculty", "Faculty")
+                        .WithMany()
                         .HasForeignKey("FacultyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -397,12 +357,7 @@ namespace School_version1.Migrations
                     b.Navigation("Faculty");
                 });
 
-            modelBuilder.Entity("School_version1.Models.ObjectData.Faculty", b =>
-                {
-                    b.Navigation("Students");
-                });
-
-            modelBuilder.Entity("School_version1.Models.ObjectData.Student", b =>
+            modelBuilder.Entity("School_version1.Entities.Student", b =>
                 {
                     b.Navigation("ListStudentClassLearns");
                 });

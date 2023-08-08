@@ -1,6 +1,11 @@
-﻿namespace School_version1.Interface
+﻿using School_version1.Entities;
+using School_version1.Models.DTOs;
+
+namespace School_version1.Interface
 {
-    public class IAcademicProgram
+    public interface IAcademicProgram : IEntityService<AcademicProgram, AcademicProgramDto>
     {
+        Task<List<AcademicProgramSPDto>> GetProgramLearn();
+        Task<List<AcademicProgramSPDto>> GetProgramLearnFaculty(Guid FacultyId);
     }
 }

@@ -1,13 +1,9 @@
-﻿using School_version1.Models.ObjectData;
+﻿using School_version1.Entities;
+using School_version1.Models.DTOs;
 
 namespace School_version1.Interface
 {
-    public interface ITeacher
-    {
-        Task<List<Teacher>> GetAllTeacher();
-        Task<Teacher> GetTeacher(Guid id);
-        Task<Boolean> DeleteTeacher(Guid id);
-        Task<Boolean> PostTeacher(Teacher teacher);
-        Task<Teacher> PutTeacher(Guid id, Teacher teacher);
+    public interface ITeacher : IEntityService<Teacher, TeacherDto>
+    { 
     }
 }

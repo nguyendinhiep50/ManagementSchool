@@ -1,99 +1,67 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using NuGet.Protocol.Plugins;
 using School_version1.Context;
+
+using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
-using School_version1.Models.ObjectData;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace School_version1.Services
 {
-    public class StudentBLL:IStudent
+    public class StudentBLL : BaseEntityService<Student, StudentAddDto>, IStudent
     {
-        private readonly DbContextSchool _Db;
-        private readonly IMapper _mapper;
-
-        public StudentBLL(DbContextSchool db,IMapper mapper)
+        public StudentBLL(DbContextSchool db, IMapper mapper) : base(db, mapper)
         {
-            _Db = db;
-            _mapper = mapper;
-        }
-
-        public async Task<bool> DeleteStudent(Guid id)
-        {
-            try
-            {
-                var student = await _Db.Students.FindAsync(id);
-                _Db.Students.Remove(student);
-                await _Db.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-                throw;
-            }
-            return true;
-        }
-
-        public async Task<List<Student>> GetAllStudent()
-        {
-
-            return await _Db.Students.ToListAsync();
         }
 
         public async Task<List<StudentDto>> GetAllStudentFaculty()
         {
-
-            var students = _Db.Students.ToList();
-            foreach (var st in students) 
-                st.Faculty = _Db.Faculty.Find(st.FacultyId); 
+            var students = _db.Students.ToList();
+            foreach (var st in students)
+                st.Faculty = _db.Faculty.Find(st.FacultyId);
             return _mapper.Map<List<StudentDto>>(students).ToList();
         }
 
-        public async Task<Student> GetStudent(Guid id)
+        public async Task<List<StudentDto>> GetAllStudentsInFaculty(Guid id)
         {
-            return await _Db.Students.FindAsync(id);
+            var students = await _db.Students.Where(x => x.FacultyId == id).ToListAsync();
+            foreach (var st in students)
+                st.Faculty = _db.Faculty.Find(id);
+            return _mapper.Map<List<StudentDto>>(students).ToList();
         }
 
-        public async Task<StudentDto> GetStudentFaculty(Guid id)
-        {
-            var student = await _Db.Students.FindAsync(id);
-            student.Faculty = await _Db.Faculty.FindAsync(student.FacultyId);
-            return _mapper.Map<StudentDto>(student);
-        }
-
-        public async Task<Boolean> PostStudent(Student student)
+        public async Task<StudentDto> PostLoginToken(LoginDto loginAccount)
         {
             try
             {
-                //student.PasswordStudent = "123";
-                //student.StatusStudent = true;
-                //student.SchoolYear = 1;
-                //student.DateComeShoool = DateTime.Now;
-                _Db.Students.Add(student);
-                await _Db.SaveChangesAsync();
+                var student = await _db.Students.Where(x=>x.StudentPassword == loginAccount.PassWorld && x.StudentEmail == loginAccount.LoginEmail).FirstOrDefaultAsync();
+                return _mapper.Map<StudentDto>(student);
             }
             catch (Exception)
             {
-                return false;
+                return null;
+                throw;
             }
-            return true;
+                return null;
+            
+        }
+        //public async Task<StudentDto> GetLoginInfo(string Token)
+        //{
+            
+        //} 
+
+        public async Task<StudentDto> GetStudentFaculty(Guid id)
+        {
+            var student = await _db.Students.FindAsync(id);
+            student.Faculty = await _db.Faculty.FindAsync(student.FacultyId);
+            return _mapper.Map<StudentDto>(student);
         }
 
-        public async Task<Student> PutStudent(Guid id, Student student)
-        {
-            _Db.Entry(student).State = EntityState.Modified;
-            try
-            {
-                await _Db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return null;
-            }
-            return student;
-        }
     }
 }

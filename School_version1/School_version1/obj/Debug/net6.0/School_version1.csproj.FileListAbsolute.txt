@@ -498,3 +498,8 @@ D:\File_PhanMem\API_CORE_6\ProjectSchool_CV\ManagementSchool\School_version1\Sch
 D:\File_PhanMem\API_CORE_6\ProjectSchool_CV\ManagementSchool\School_version1\School_version1\obj\Debug\net6.0\ref\School_version1.dll
 D:\File_PhanMem\API_CORE_6\ProjectSchool_CV\ManagementSchool\School_version1\School_version1\bin\Debug\net6.0\AutoMapper.dll
 D:\File_PhanMem\API_CORE_6\ProjectSchool_CV\ManagementSchool\School_version1\School_version1\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+D:\File_PhanMem\API_CORE_6\ProjectSchool_CV\ManagementSchool\School_version1\School_version1\bin\Debug\net6.0\MediatR.dll
+D:\File_PhanMem\API_CORE_6\ProjectSchool_CV\ManagementSchool\School_version1\School_version1\bin\Debug\net6.0\MediatR.Contracts.dll
+D:\File_PhanMem\API_CORE_6\ProjectSchool_CV\ManagementSchool\School_version1\School_version1\bin\Debug\net6.0\MediatR.Extensions.Microsoft.DependencyInjection.dll
+D:\File_PhanMem\API_CORE_6\ProjectSchool_CV\ManagementSchool\School_version1\School_version1\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\File_PhanMem\API_CORE_6\ProjectSchool_CV\ManagementSchool\School_version1\School_version1\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
