@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using School_version1.Context;
-using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
 
@@ -27,14 +20,14 @@ namespace School_version1.Controllers
 
         // GET: api/Teachers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Teacher>>> GetAllTeachers()
+        public async Task<ActionResult<IEnumerable<TeacherDto>>> GetAllTeachers()
         {
             return await _iTeacher.GetAll();
         }
 
         // GET: api/Teachers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Teacher>> GetTeacher(Guid id)
+        public async Task<ActionResult<TeacherDto>> GetTeacher(Guid id)
         {
             if (_context.Teachers == null)
             {
@@ -46,13 +39,13 @@ namespace School_version1.Controllers
         // PUT: api/Teachers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTeacher(Guid id, Teacher teacher)
+        public async Task<IActionResult> PutTeacher(Guid id, TeacherDto TeacherDto)
         {
-            if (id != teacher.Id)
+            if (id != TeacherDto.TeacherId)
             {
                 return BadRequest();
             }
-            if (await _iTeacher.Put(id, teacher) != null)
+            if (await _iTeacher.Put(id, TeacherDto) != null)
                 return NoContent();
             return NotFound();
         }
@@ -60,7 +53,7 @@ namespace School_version1.Controllers
         // POST: api/Teachers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TeacherDto>> PostTeacher(TeacherDto TeacherDto)
+        public async Task<ActionResult<TeacherDto>> PostTeacher(TeacherAddDto TeacherDto)
         {
             if (_context.Teachers == null)
                 return Problem("Entity set 'DbContextSchool.Teachers'  is null.");

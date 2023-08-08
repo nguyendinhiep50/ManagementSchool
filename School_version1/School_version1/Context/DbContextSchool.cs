@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using School_version1.Entities;
-using School_version1.Interface;
 
 namespace School_version1.Context
 {
-    public class DbContextSchool:DbContext
+    public class DbContextSchool : DbContext
     {
         public DbContextSchool() { }
-        public DbContextSchool(DbContextOptions<DbContextSchool> options):base(options) { 
+        public DbContextSchool(DbContextOptions<DbContextSchool> options) : base(options)
+        {
         }
         public DbSet<AcademicProgram> AcademicPrograms { get; set; }
         public DbSet<ClassLearn> ClassLearns { get; set; }

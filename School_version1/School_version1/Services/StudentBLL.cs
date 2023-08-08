@@ -1,20 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using NuGet.Protocol.Plugins;
 using School_version1.Context;
 
 using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace School_version1.Services
 {
-    public class StudentBLL : BaseEntityService<Student, StudentAddDto>, IStudent
+    public class StudentBLL : BaseEntityService<Student, StudentDto, StudentAddDto>, IStudent
     {
         public StudentBLL(DbContextSchool db, IMapper mapper) : base(db, mapper)
         {
@@ -40,7 +34,7 @@ namespace School_version1.Services
         {
             try
             {
-                var student = await _db.Students.Where(x=>x.StudentPassword == loginAccount.PassWorld && x.StudentEmail == loginAccount.LoginEmail).FirstOrDefaultAsync();
+                var student = await _db.Students.Where(x => x.StudentPassword == loginAccount.PassWorld && x.StudentEmail == loginAccount.LoginEmail).FirstOrDefaultAsync();
                 return _mapper.Map<StudentDto>(student);
             }
             catch (Exception)
@@ -48,12 +42,12 @@ namespace School_version1.Services
                 return null;
                 throw;
             }
-                return null;
-            
+            return null;
+
         }
         //public async Task<StudentDto> GetLoginInfo(string Token)
         //{
-            
+
         //} 
 
         public async Task<StudentDto> GetStudentFaculty(Guid id)

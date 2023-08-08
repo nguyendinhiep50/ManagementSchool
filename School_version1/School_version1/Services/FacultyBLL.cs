@@ -9,7 +9,7 @@ using School_version1.Models.DTOs;
 namespace School_version1.Services
 {
     
-    public class FacultyBLL : BaseEntityService<Faculty, FacultyDto> ,IFaculty
+    public class FacultyBLL : BaseEntityService<Faculty, FacultyDto,FacultyAddDto> ,IFaculty
     {
         public FacultyBLL(DbContextSchool db, IMapper mapper) : base(db, mapper)
         {

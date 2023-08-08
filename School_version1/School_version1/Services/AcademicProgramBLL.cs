@@ -8,7 +8,7 @@ using School_version1.Models.DTOs;
 
 namespace School_version1.Services
 {
-    public class AcademicProgramBLL : BaseEntityService<AcademicProgram, AcademicProgramDto> ,IAcademicProgram
+    public class AcademicProgramBLL : BaseEntityService<AcademicProgram, AcademicProgramDto,AcademicProgramAddDto> ,IAcademicProgram
     {
         public AcademicProgramBLL(DbContextSchool db, IMapper mapper) : base(db, mapper)
         {
@@ -34,5 +34,6 @@ namespace School_version1.Services
             var result = _mapper.Map<List<AcademicProgramSPDto>>(program).ToList();
             return result;
         }
+
     }
 }

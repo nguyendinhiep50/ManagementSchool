@@ -25,6 +25,7 @@ namespace School_version1.Models
             CreateMap<SubjectDto, Subject>();
             CreateMap<SemesterDto, Semester>();
             CreateMap<FacultyDto, Faculty>();
+
             CreateMap<AcademicProgramDto, AcademicProgram>();
             CreateMap<AcademicProgram, AcademicProgramSPDto>()
                 .ForMember(x => x.SubjectName, opt => opt.MapFrom(src => src.Subject.SubjectName))
@@ -32,11 +33,31 @@ namespace School_version1.Models
                 .ForMember(x => x.SubjectCredit, opt => opt.MapFrom(src => src.Subject.SubjectCredit))
                 .ForMember(x => x.SubjectMandatory, opt => opt.MapFrom(src => src.Subject.SubjectMandatory))
                 .ForMember(x => x.FacultyName, opt => opt.MapFrom(src => src.Faculty.FacultyName));
+
+
             CreateMap<ClassLearnsDto, ClassLearn>();
             CreateMap<ListStudentClassLearnDto, ListStudentClassLearn>();
             CreateMap<ManagementDto, Management>();
 
-
+            // change list
+            CreateMap<AcademicProgram, AcademicProgramDto>()
+                .ForMember(x => x.AcademicProgramId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<Faculty, FacultyDto>()
+                .ForMember(x => x.FacultyId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<ClassLearn, ClassLearnsDto>()
+                .ForMember(x => x.ClassLearnsId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<ListStudentClassLearn, ListStudentClassLearnDto>()
+                .ForMember(x => x.ListStudentClassLearnId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<Management, ManagementDto>()
+                .ForMember(x => x.ManagementId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<Semester, SemesterDto>()
+                .ForMember(x => x.SemesterId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<Student, StudentDto>()
+                .ForMember(x => x.StudentId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<Subject, SubjectDto>()
+                .ForMember(x => x.SubjectId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<Teacher, TeacherDto>()
+                .ForMember(x => x.TeacherId, opt => opt.MapFrom(src => src.Id));
         }
     }
 }

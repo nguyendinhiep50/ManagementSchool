@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using NuGet.DependencyResolver;
+﻿using Microsoft.AspNetCore.Mvc;
 using School_version1.Context;
-using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
 
@@ -27,14 +19,14 @@ namespace School_version1.Controllers
 
         // GET: api/Semesters
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Semester>>> GetSemesters()
+        public async Task<ActionResult<IEnumerable<SemesterDto>>> GetSemesters()
         {
-            return await _iSemesters.GetAll(); 
+            return await _iSemesters.GetAll();
         }
 
         // GET: api/Semesters/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Semester>> GetSemester(Guid id)
+        public async Task<ActionResult<SemesterDto>> GetSemester(Guid id)
         {
             if (_context.Teachers == null)
             {
@@ -46,13 +38,13 @@ namespace School_version1.Controllers
         // PUT: api/Semesters/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSemester(Guid id, Semester semester)
+        public async Task<IActionResult> PutSemester(Guid id, SemesterDto SemesterDto)
         {
-            if (id != semester.Id)
+            if (id != SemesterDto.SemesterId)
             {
                 return BadRequest();
             }
-            if (await _iSemesters.Put(id, semester) != null)
+            if (await _iSemesters.Put(id, SemesterDto) != null)
                 return NoContent();
             return NotFound();
         }
@@ -60,7 +52,7 @@ namespace School_version1.Controllers
         // POST: api/Semesters
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<SemesterDto>> PostSemester(SemesterDto semesterDto)
+        public async Task<ActionResult<SemesterDto>> PostSemester(SemesterAddDto semesterDto)
         {
             if (_context.Semesters == null)
                 return Problem("Entity set 'DbContextSchool.Semesters'  is null.");

@@ -1,8 +1,7 @@
 ﻿namespace School_version1.Models.DTOs
 {
-    public class ClassLearnsDto
+    public class ClassLearnsAddDto
     {
-        public Guid ClassLearnsId { get; set; }
         public string ClassLearnName { get; set; }
         public int ClassLearnEnrollment { get; set; }
         public Guid AcademicProgramId { get; set; }

@@ -1,11 +1,13 @@
-﻿namespace School_version1.Interface
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace School_version1.Interface
 {
-    public interface IEntityService<T, TDto> where T : class where TDto : class
+    public interface IEntityService<T,TDto, TAddOrUpdateDto> where T : class where TDto : class where TAddOrUpdateDto : class
     {
-        Task<List<T>> GetAll();
-        Task<T> Get(Guid id);
+        Task<List<TDto>> GetAll();
+        Task<TDto> Get(Guid id);
         Task<bool> Delete(Guid id);
-        Task<bool> Post(TDto dto);
-        Task<T> Put(Guid id, T objectT);
+        Task<bool> Post(TAddOrUpdateDto dto);
+        Task<bool> Put(Guid id, TDto objectT);
     }
 }

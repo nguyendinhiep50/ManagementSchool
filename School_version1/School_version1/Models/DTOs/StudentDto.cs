@@ -2,7 +2,7 @@
 {
     public class StudentDto
     {
-        public Guid Id { get; set; }
+        public Guid StudentId { get; set; }
         public string StudentName { get; set; }
         public string StudentImage { get; set; }
         public DateTime StudentBirthDate { get; set; }

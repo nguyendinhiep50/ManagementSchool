@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGeneration.Design;
 using School_version1.Context;
+using School_version1.Models.DTOs;
 
 namespace School_version1.Services
 {
-    public abstract class BaseEntityService<T, TDto> where T : class where TDto : class
+    public abstract class BaseEntityService<T, TDto, TAddOrUpdateDto> where T : class where TDto : class where TAddOrUpdateDto : class
     {
         protected DbContextSchool _db { get; private set; }  // can use when inherit
         protected IMapper _mapper;
@@ -33,17 +35,20 @@ namespace School_version1.Services
             }
         }
 
-        public virtual Task<T> Get(Guid id)
+        public virtual async Task<TDto> Get(Guid id)
         {
-            return _db.Set<T>().FindAsync(id).AsTask();
+            var entity = await _db.Set<T>().FindAsync(id);
+
+            return _mapper.Map<T, TDto>(entity);
         }
 
-        public virtual Task<List<T>> GetAll()
+        public virtual async Task<List<TDto>> GetAll()
         {
-            return _db.Set<T>().ToListAsync();
+            var entity = await _db.Set<T>().ToListAsync(); 
+            return _mapper.Map<List<TDto>>(entity).ToList();
         }
 
-        public virtual async Task<bool> Post(TDto dto)
+        public virtual async Task<bool> Post(TAddOrUpdateDto dto)
         {
             try
             {
@@ -58,17 +63,25 @@ namespace School_version1.Services
             }
         }
 
-        public virtual async Task<T> Put(Guid id, T entity)
+        public virtual async Task<bool> Put(Guid id, TDto addOrUpdateDto)
         {
-            _db.Entry(entity).State = EntityState.Modified;
+            var dataEntity = await _db.Set<T>().FindAsync(id);
+
+            if (dataEntity == null)
+            {
+                return false;
+            }
+
+            _db.Entry(dataEntity).State = EntityState.Modified;
+            _mapper.Map<TDto, T>(addOrUpdateDto, dataEntity);
             try
             {
                 await _db.SaveChangesAsync();
-                return entity;
+                return true;
             }
             catch (DbUpdateConcurrencyException)
             {
-                return null;
+                return false;
             }
         }
     }

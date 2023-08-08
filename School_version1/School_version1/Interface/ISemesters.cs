@@ -3,7 +3,7 @@ using School_version1.Models.DTOs;
 
 namespace School_version1.Interface
 {
-    public interface ISemesters : IEntityService<Semester, SemesterDto>
+    public interface ISemesters : IEntityService<SemesterDto, SemesterDto,SemesterAddDto>
     { 
     }
 }

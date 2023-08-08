@@ -3,7 +3,7 @@ using School_version1.Models.DTOs;
 
 namespace School_version1.Interface
 {
-    public interface IStudent : IEntityService<Student, StudentAddDto>
+    public interface IStudent : IEntityService<Student,StudentDto,StudentAddDto>
     {
         Task<List<StudentDto>> GetAllStudentFaculty();
         Task<StudentDto> GetStudentFaculty(Guid id);

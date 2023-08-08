@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Plugins;
+﻿using Microsoft.AspNetCore.Mvc;
 using School_version1.Context;
-using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
+
+
 
 namespace School_version1.Controllers
 {
@@ -27,7 +21,7 @@ namespace School_version1.Controllers
 
         // GET: api/AcademicPrograms
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AcademicProgram>>> GetAcademicPrograms()
+        public async Task<ActionResult<IEnumerable<AcademicProgramDto>>> GetAcademicPrograms()
         {
             return await _AcademicProgram.GetAll();
         }
@@ -44,7 +38,7 @@ namespace School_version1.Controllers
         }
         // GET: api/AcademicPrograms/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<AcademicProgram>> GetAcademicProgram(Guid id)
+        public async Task<ActionResult<AcademicProgramDto>> GetAcademicProgram(Guid id)
         {
             if (_context.AcademicPrograms == null)
             {
@@ -56,9 +50,9 @@ namespace School_version1.Controllers
         // PUT: api/AcademicPrograms/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAcademicProgram(Guid id, AcademicProgram academicProgram)
+        public async Task<IActionResult> PutAcademicProgram(Guid id, AcademicProgramDto academicProgram)
         {
-            if (id != academicProgram.Id)
+            if (id != academicProgram.FacultyId)
             {
                 return BadRequest();
             }
@@ -70,12 +64,12 @@ namespace School_version1.Controllers
         // POST: api/AcademicPrograms
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<AcademicProgramDto>> PostAcademicProgram(AcademicProgramDto academicProgramDto)
+        public async Task<ActionResult<AcademicProgramDto>> PostAcademicProgram(AcademicProgramAddDto academicProgramDto)
         {
             if (_context.Faculty == null)
                 return Problem("Entity set 'DbContextSchool.Teachers'  is null.");
             if (await _AcademicProgram.Post(academicProgramDto))
-                return CreatedAtAction("GetAcademicProgram", new { id = academicProgramDto.AcademicProgramName }, academicProgramDto);
+                return CreatedAtAction("GetAcademicProgram", new { id = academicProgramDto.FacultyId }, academicProgramDto);
             return NotFound();
         }
 

@@ -11,9 +11,9 @@ namespace LearnCQRS.Commands
     }
     public class DeleteStudentHandler : IRequestHandler<DeleteStudentCommand, Guid>
     {
-        private readonly IBaseRepositories<Management, ManagementDto> _studentRepository;
+        private readonly IBaseRepositories<Management, ManagementDto,ManagementAddDto> _studentRepository;
 
-        public DeleteStudentHandler(IBaseRepositories<Management, ManagementDto> studentRepository)
+        public DeleteStudentHandler(IBaseRepositories<Management, ManagementDto, ManagementAddDto> studentRepository)
         {
             _studentRepository = studentRepository;
         }
@@ -24,7 +24,7 @@ namespace LearnCQRS.Commands
             if (studentDetails == null)
                 return default;
 
-            return await _studentRepository.Delete(studentDetails.Id);
+            return await _studentRepository.Delete(studentDetails.ManagementId);
         }
     }
 }

@@ -2,12 +2,12 @@
 
 namespace School_version1.Repositories
 {
-    public interface IBaseRepositories<T, TDto> where T : class where TDto : class
+    public interface IBaseRepositories<T, TDto,TAddOrUpdateDto> where T : class where TDto : class where TAddOrUpdateDto : class
     {
-        Task<List<T>> GetAll();
-        Task<T> Get(Guid id);
+        Task<List<TDto>> GetAll();
+        Task<TDto> Get(Guid id);
         Task<Guid> Delete(Guid id);
-        Task<TDto> Post(TDto dto);
-        Task<T> Put(Guid id, T objectT);
+        Task<TAddOrUpdateDto> Post(TAddOrUpdateDto dto);
+        Task<TDto> Put(Guid id, TDto objectT);
     }
 }

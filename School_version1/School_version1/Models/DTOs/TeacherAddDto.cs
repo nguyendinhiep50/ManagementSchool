@@ -1,8 +1,7 @@
 ﻿namespace School_version1.Models.DTOs
 {
-    public class TeacherDto
+    public class TeacherAddDto
     {
-        public Guid TeacherId { get; set; }
         public string TeacherName { get; set; }
         public string TeacherImage { get; set; }
         public string TeacherEmail { get; set; }

@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LearnCQRS.Commands;
+﻿using LearnCQRS.Commands;
 using LearnCQRS.Queries;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using School_version1.Context;
-using School_version1.Entities;
-using School_version1.Interface;
 using School_version1.Models.DTOs;
 
 namespace School_version1.Controllers
@@ -29,14 +20,14 @@ namespace School_version1.Controllers
 
         // GET: api/Managements
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Management>>> GetManagements()
+        public async Task<ActionResult<IEnumerable<ManagementDto>>> GetManagements()
         {
             return await mediator.Send(new GetManagementListQuery());
         }
 
         // GET: api/Managements/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Management>> GetManagement(Guid id)
+        public async Task<ActionResult<ManagementDto>> GetManagement(Guid id)
         {
             var studentDetails = await mediator.Send(new GetManagementByIdQuery() { Id = id });
 
@@ -45,10 +36,10 @@ namespace School_version1.Controllers
 
         // PUT: api/Managements/5
         [HttpPut]
-        public async Task<Management> UpdateStudentAsync(Management management)
+        public async Task<ManagementDto> UpdateStudentAsync(ManagementDto management)
         {
             var isStudentDetailUpdated = await mediator.Send(new UpdateStudentCommand(
-               management.Id,
+               management.ManagementId,
                management.ManagementName,
                management.ManagementEmail,
                management.ManagementPassword));
@@ -58,7 +49,7 @@ namespace School_version1.Controllers
         // POST: api/Managements
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ManagementDto>> PostManagement(ManagementDto managementDto)
+        public async Task<ActionResult<ManagementAddDto>> PostManagement(ManagementDto managementDto)
         {
             var studentDetail = await mediator.Send(new CreateManagementCommand(
                 managementDto.ManagementName,

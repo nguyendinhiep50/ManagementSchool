@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using School_version1.Context;
-using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
 
@@ -25,14 +18,14 @@ namespace School_version1.Controllers
         }
         // GET: api/Faculties
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Faculty>>> GetFaculty()
+        public async Task<ActionResult<IEnumerable<FacultyDto>>> GetFaculty()
         {
             return await _faculty.GetAll();
         }
 
         // GET: api/Faculties/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Faculty>> GetFaculty(Guid id)
+        public async Task<ActionResult<FacultyDto>> GetFaculty(Guid id)
         {
             if (_context.Faculty == null)
             {
@@ -44,9 +37,9 @@ namespace School_version1.Controllers
         // PUT: api/Faculties/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFaculty(Guid id, Faculty faculty)
+        public async Task<IActionResult> PutFaculty(Guid id, FacultyDto faculty)
         {
-            if (id != faculty.Id)
+            if (id != faculty.FacultyId)
             {
                 return BadRequest();
             }
@@ -58,7 +51,7 @@ namespace School_version1.Controllers
         // POST: api/Faculties
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Faculty>> PostFaculty(FacultyDto facultyDto)
+        public async Task<ActionResult<FacultyDto>> PostFaculty(FacultyAddDto facultyDto)
         {
             if (_context.Faculty == null)
                 return Problem("Entity set 'DbContextSchool.Teachers'  is null.");

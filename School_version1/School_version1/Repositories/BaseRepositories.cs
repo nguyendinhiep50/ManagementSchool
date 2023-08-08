@@ -8,7 +8,7 @@ using School_version1.Models.DTOs;
 
 namespace School_version1.Repositories
 {
-    public class BaseRepositories<T, TDto> : IBaseRepositories<T, TDto> where T : class where TDto : class
+    public class BaseRepositories<T, TDto, TAddOrUpdateDto> : IBaseRepositories<T, TDto, TAddOrUpdateDto> where T : class where TDto : class where TAddOrUpdateDto : class
     {
         protected DbContextSchool _db { get; private set; }  // can use when inherit
         protected IMapper _mapper;
@@ -37,17 +37,19 @@ namespace School_version1.Repositories
             }
         }
 
-        public virtual Task<T> Get(Guid id)
+        public virtual async Task<TDto> Get(Guid id)
         {
-            return _db.Set<T>().FindAsync(id).AsTask();
+            var Result = await _db.Set<T>().FindAsync(id).AsTask();
+            return _mapper.Map<TDto>(Result);
         }
 
-        public virtual Task<List<T>> GetAll()
+        public virtual async Task<List<TDto>> GetAll()
         {
-            return _db.Set<T>().ToListAsync();
+            var Result = await _db.Set<T>().ToListAsync();
+            return _mapper.Map<List<TDto>>(Result);
         }
 
-        public virtual async Task<TDto> Post(TDto dto)
+        public virtual async Task<TAddOrUpdateDto> Post(TAddOrUpdateDto dto)
         {
             try
             {
@@ -62,7 +64,7 @@ namespace School_version1.Repositories
             }
         }
 
-        public virtual async Task<T> Put(Guid id, T entity)
+        public virtual async Task<TDto> Put(Guid id, TDto entity)
         {
             _db.Entry(entity).State = EntityState.Modified;
             try

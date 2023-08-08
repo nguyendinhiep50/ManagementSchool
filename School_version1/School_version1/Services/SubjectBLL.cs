@@ -8,7 +8,7 @@ using School_version1.Models.DTOs;
 
 namespace School_version1.Services
 {
-    public class SubjectBLL : BaseEntityService<Subject, SubjectDto> ,ISubject
+    public class SubjectBLL : BaseEntityService<Subject, SubjectDto,SubjectAddDto> ,ISubject
     {
         public SubjectBLL(DbContextSchool db, IMapper mapper) : base(db, mapper)
         {

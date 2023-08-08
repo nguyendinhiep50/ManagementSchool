@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Plugins;
+﻿using Microsoft.AspNetCore.Mvc;
 using School_version1.Context;
-using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
 
@@ -27,16 +19,16 @@ namespace School_version1.Controllers
 
         // GET: api/ListStudentClassLearns
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ListStudentClassLearn>>> GetListStudentClassLearns()
+        public async Task<ActionResult<IEnumerable<ListStudentClassLearnDto>>> GetListStudentClassLearns()
         {
             return await _listStudentClassLearn.GetAll();
         }
 
         // GET: api/ListStudentClassLearns/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ListStudentClassLearn>> GetListStudentClassLearn(Guid id)
+        public async Task<ActionResult<ListStudentClassLearnDto>> GetListStudentClassLearn(Guid id)
         {
-            if(_context.ListStudentClassLearns == null)
+            if (_context.ListStudentClassLearns == null)
             {
                 return NotFound();
             }
@@ -46,9 +38,9 @@ namespace School_version1.Controllers
         // PUT: api/ListStudentClassLearns/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutListStudentClassLearn(Guid id, ListStudentClassLearn listStudentClassLearn)
+        public async Task<IActionResult> PutListStudentClassLearn(Guid id, ListStudentClassLearnDto listStudentClassLearn)
         {
-            if (id != listStudentClassLearn.Id)
+            if (id != listStudentClassLearn.ListStudentClassLearnId)
             {
                 return BadRequest();
             }
@@ -60,7 +52,7 @@ namespace School_version1.Controllers
         // POST: api/ListStudentClassLearns
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ListStudentClassLearnDto>> PostListStudentClassLearn(ListStudentClassLearnDto listStudentClassLearnDto)
+        public async Task<ActionResult<ListStudentClassLearnDto>> PostListStudentClassLearn(ListStudentClassLearnAddDto listStudentClassLearnDto)
         {
             if (_context.ListStudentClassLearns == null)
                 return Problem("Entity set 'DbContextSchool.Teachers'  is null.");
@@ -69,7 +61,7 @@ namespace School_version1.Controllers
             return NotFound();
         }
 
-            // DELETE: api/ListStudentClassLearns/5
+        // DELETE: api/ListStudentClassLearns/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteListStudentClassLearn(Guid id)
         {
@@ -77,6 +69,6 @@ namespace School_version1.Controllers
                 return NoContent();
             return NotFound();
         }
-  
+
     }
 }

@@ -7,7 +7,7 @@ using School_version1.Repositories;
 
 namespace School_version1.Services
 {
-    public class ManagementBLL : BaseRepositories<Management, ManagementDto>, IBaseRepositories<Management, ManagementDto>
+    public class ManagementBLL : BaseRepositories<Management, ManagementDto, ManagementAddDto>, IBaseRepositories<Management, ManagementDto,ManagementAddDto>
     {
         public ManagementBLL(DbContextSchool db, IMapper mapper) : base(db, mapper)
         {

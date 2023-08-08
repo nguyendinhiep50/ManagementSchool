@@ -27,7 +27,7 @@ builder.Services.AddScoped<IFaculty, FacultyBLL>();
 builder.Services.AddScoped<IAcademicProgram, AcademicProgramBLL>();
 builder.Services.AddScoped<IClassLearn, ClassLearnsBLL>();
 builder.Services.AddScoped<IListStudentClassLearn, ListStudentClassLearnsBLL>();
-builder.Services.AddScoped<IBaseRepositories<Management, ManagementDto>, BaseRepositories<Management, ManagementDto>>();
+builder.Services.AddScoped<IBaseRepositories<Management, ManagementDto,ManagementAddDto>, BaseRepositories<Management, ManagementDto,ManagementAddDto>>();
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 
 

@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Plugins;
+﻿using Microsoft.AspNetCore.Mvc;
 using School_version1.Context;
-using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
 
@@ -26,14 +18,14 @@ namespace School_version1.Controllers
         }
         // GET: api/ClassLearns
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ClassLearn>>> GetClassLearns()
+        public async Task<ActionResult<IEnumerable<ClassLearnsDto>>> GetClassLearns()
         {
             return await _classLearn.GetAll();
         }
 
         // GET: api/ClassLearns/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ClassLearn>> GetClassLearn(Guid id)
+        public async Task<ActionResult<ClassLearnsDto>> GetClassLearn(Guid id)
         {
             if (_context.Faculty == null)
             {
@@ -45,9 +37,9 @@ namespace School_version1.Controllers
         // PUT: api/ClassLearns/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutClassLearn(Guid id, ClassLearn classLearn)
+        public async Task<IActionResult> PutClassLearn(Guid id, ClassLearnsDto classLearn)
         {
-            if (id != classLearn.Id)
+            if (id != classLearn.ClassLearnsId)
             {
                 return BadRequest();
             }
@@ -59,7 +51,7 @@ namespace School_version1.Controllers
         // POST: api/ClassLearns
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ClassLearnsDto>> PostClassLearn(ClassLearnsDto classLearnsDto)
+        public async Task<ActionResult<ClassLearnsDto>> PostClassLearn(ClassLearnsAddDto classLearnsDto)
         {
             if (_context.ClassLearns == null)
                 return Problem("Entity set 'DbContextSchool.Teachers'  is null.");
@@ -72,7 +64,7 @@ namespace School_version1.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteClassLearn(Guid id)
         {
-            if  (await _classLearn.Delete(id))
+            if (await _classLearn.Delete(id))
                 return NoContent();
             return NotFound();
 

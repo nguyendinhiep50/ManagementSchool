@@ -1,8 +1,7 @@
 ﻿namespace School_version1.Models.DTOs
 {
-    public class AcademicProgramDto
+    public class AcademicProgramAddDto
     {
-        public Guid AcademicProgramId { get; set; }
         public string AcademicProgramName { get; set; }
         public DateTime TimeEndAcademicProgram { get; set; }
         public Guid SemesterId { get; set; }

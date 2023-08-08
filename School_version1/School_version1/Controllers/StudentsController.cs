@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using School_version1.Context;
-using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace School_version1.Controllers
 {
@@ -31,7 +24,7 @@ namespace School_version1.Controllers
 
         // GET: api/Students
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
+        public async Task<ActionResult<IEnumerable<StudentDto>>> GetStudents()
         {
             if (_context.Students == null)
             {
@@ -52,7 +45,7 @@ namespace School_version1.Controllers
 
         // GET: api/Students/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Student>> GetStudent(Guid id)
+        public async Task<ActionResult<StudentDto>> GetStudent(Guid id)
         {
             if (_context.Students == null)
             {
@@ -85,7 +78,7 @@ namespace School_version1.Controllers
         }
         // lấy thông tin thông qua token
         [HttpGet("user")]
-        public async Task<ActionResult<Student>> GetUserInfo(String stringToken)
+        public async Task<ActionResult<StudentDto>> GetUserInfo(String stringToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("nguyendinhiep_key_longdaithonglong"));
@@ -117,9 +110,9 @@ namespace School_version1.Controllers
         // PUT: api/Students/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudent(Guid id, Student student)
+        public async Task<IActionResult> PutStudent(Guid id, StudentDto student)
         {
-            if (id != student.Id)
+            if (id != student.StudentId)
             {
                 return BadRequest();
             }
@@ -150,7 +143,7 @@ namespace School_version1.Controllers
                 // Tạo một claim chứa thông tin về người dùng (có thể là id, tên, v.v.)
                 var claims = new[]
                 {
-                new Claim(ClaimTypes.Name, kqLogin.Id.ToString())
+                new Claim(ClaimTypes.Name, kqLogin.StudentId.ToString())
             };
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("nguyendinhiep_key_longdaithonglong"));

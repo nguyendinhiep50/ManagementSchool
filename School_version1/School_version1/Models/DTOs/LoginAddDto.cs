@@ -1,10 +1,8 @@
 ﻿namespace School_version1.Models.DTOs
 {
-    public class LoginDto
+    public class LoginAddDto
     {
-        public Guid LoginId { get; set; }
         public string LoginEmail { get; set; }
         public string PassWorld { get; set; }
-
     }
 }
