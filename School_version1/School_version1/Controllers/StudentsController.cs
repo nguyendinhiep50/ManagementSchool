@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using LearnCQRS.Queries;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using School_version1.Context;
@@ -100,7 +102,10 @@ namespace School_version1.Controllers
                 var claimsPrincipal = tokenHandler.ValidateToken(stringToken, tokenValidationParameters, out var validatedToken);
                 var userIdClaim = claimsPrincipal.Identities.FirstOrDefault().Name;
                 if (userIdClaim != null && Guid.TryParse(userIdClaim, out Guid userId))
-                    return await _iStudent.Get(userId);
+                {
+                    var result = await _iStudent.Get(userId);
+                    return result; 
+                } 
             }
             catch (SecurityTokenException)
             {

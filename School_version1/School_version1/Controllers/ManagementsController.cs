@@ -88,8 +88,12 @@ namespace School_version1.Controllers
                 // Giải mã token và trả về thông tin bên trong dưới dạng ClaimsPrincipal
                 var claimsPrincipal = tokenHandler.ValidateToken(stringToken, tokenValidationParameters, out var validatedToken);
                 var userIdClaim = claimsPrincipal.Identities.FirstOrDefault().Name;
-                if (userIdClaim != null && Guid.TryParse(userIdClaim, out Guid userId))
-                    return await mediator.Send(new GetManagementByIdQuery() { Id = userId });
+                if (userIdClaim != null && Guid.TryParse(userIdClaim, out Guid IdManagement))
+                {
+                    Guid hayne = IdManagement;
+                    var result = await mediator.Send(new GetManagementByIdQuery() { Id = IdManagement });
+                    return result;
+                }
             }
             catch (SecurityTokenException)
             {
@@ -108,7 +112,7 @@ namespace School_version1.Controllers
                 // Tạo một claim chứa thông tin về người dùng (có thể là id, tên, v.v.)
                 var claims = new[]
                 {
-                new Claim(ClaimTypes.Name, kqLogin.LoginId.ToString()),
+                new Claim(ClaimTypes.Name, kqLogin.ManagementId.ToString()),
                 new Claim(ClaimTypes.Role, "Admin")
             };
 
