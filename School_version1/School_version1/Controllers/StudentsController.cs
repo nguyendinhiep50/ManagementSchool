@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using School_version1.Context;
 using School_version1.Interface;
@@ -11,6 +12,7 @@ namespace School_version1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class StudentsController : ControllerBase
     {
         private readonly DbContextSchool _context;
@@ -21,30 +23,30 @@ namespace School_version1.Controllers
             _context = context;
             _iStudent = iStudent;
         }
-
-        // GET: api/Students
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<StudentDto>>> GetStudents()
+ 
+        [HttpGet("TakeCountAll")] 
+        public async Task<ActionResult<int>> GetTakeCountAll()
         {
             if (_context.Students == null)
             {
                 return NotFound();
             }
-            return await _iStudent.GetAll();
+            return await _iStudent.GetAllCount();
         }
         // GET: api/Students
-        [HttpGet("Take Name Faculty")]
-        public async Task<ActionResult<IEnumerable<StudentDto>>> GetStudentsFaculty()
+        [HttpGet("TakeNameFaculty")] 
+        public async Task<ActionResult<IEnumerable<StudentDto>>> GetStudentsFaculty(int pages,int size)
         {
             if (_context.Students == null)
             {
                 return NotFound();
             }
-            return await _iStudent.GetAllStudentFaculty();
+            return await _iStudent.GetAllStudentFaculty(pages,size);
         }
 
         // GET: api/Students/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<StudentDto>> GetStudent(Guid id)
         {
             if (_context.Students == null)
@@ -77,7 +79,8 @@ namespace School_version1.Controllers
             return await _iStudent.GetAllStudentsInFaculty(id);
         }
         // lấy thông tin thông qua token
-        [HttpGet("user")]
+        [HttpGet("InfoFromToken")]
+        [AllowAnonymous]        
         public async Task<ActionResult<StudentDto>> GetUserInfo(String stringToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -124,6 +127,7 @@ namespace School_version1.Controllers
         // POST: api/Students
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<StudentAddDto>> PostStudent(StudentAddDto StudentAddDto)
         {
             if (_context.Students == null)
@@ -133,10 +137,10 @@ namespace School_version1.Controllers
             return NotFound();
         }
         [HttpPost("login")]
-        public async Task<IActionResult> LoginStudent(LoginDto loginAccount)
+        [AllowAnonymous]
+        public async Task<IActionResult> LoginStudent(LoginAddDto loginAccount)
         {
-            if (_context.Students == null)
-                return Problem("Entity set 'DbContextSchool.Students'  is null.");
+
             var kqLogin = await _iStudent.PostLoginToken(loginAccount);
             if (kqLogin != null)
             {

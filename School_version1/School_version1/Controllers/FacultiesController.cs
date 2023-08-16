@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using School_version1.Context;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
@@ -7,6 +8,7 @@ namespace School_version1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class FacultiesController : ControllerBase
     {
         private readonly DbContextSchool _context;
@@ -18,13 +20,15 @@ namespace School_version1.Controllers
         }
         // GET: api/Faculties
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<FacultyDto>>> GetFaculty()
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<FacultyDto>>> GetFaculty(int pages)
         {
-            return await _faculty.GetAll();
+            return await _faculty.GetAll(pages);
         }
 
         // GET: api/Faculties/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<FacultyDto>> GetFaculty(Guid id)
         {
             if (_context.Faculty == null)

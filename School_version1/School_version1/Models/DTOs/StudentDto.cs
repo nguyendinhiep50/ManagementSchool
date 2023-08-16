@@ -7,6 +7,7 @@
         public string StudentImage { get; set; }
         public DateTime StudentBirthDate { get; set; }
         public string FacultyName { get; set; }
+        public Guid FacultyId { get; set; }
 
     }
 }

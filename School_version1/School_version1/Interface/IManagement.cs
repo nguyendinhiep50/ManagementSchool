@@ -6,5 +6,9 @@ namespace School_version1.Interface
 {
     public interface IManagement : IBaseRepositories<Management, ManagementDto,ManagementAddDto>
     {
+        Task<ManagementDto> LoginToken(LoginAddDto dto);
+
     }
+
+
 }

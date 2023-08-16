@@ -1,30 +1,32 @@
-﻿using School_version1.Models.DTOs;
-using AutoMapper;
+﻿using AutoMapper;
 using School_version1.Entities;
+using School_version1.Models.DTOs;
 
 namespace School_version1.Models
 {
-    public class AutoMapperProfile:Profile
+    public class AutoMapperProfile : Profile
     {
-        public AutoMapperProfile() {
-            CreateMap<Student, StudentDto>(); 
+        public AutoMapperProfile()
+        {
+            CreateMap<Student, StudentDto>();
 
-                    // use check value in object student and studentDto
-                 //.ForAllMembers(x => x.Condition((src, dest, value)=>dest.FacultyName !=null));
-            CreateMap<StudentAddDto, Student>()  
+            // use check value in object student and studentDto
+            //.ForAllMembers(x => x.Condition((src, dest, value)=>dest.FacultyName !=null));
+            CreateMap<StudentAddDto, Student>()
                  .ForMember(x => x.StudentImage, opt => opt.MapFrom(src => string.Empty))
-                 .ForMember(x => x.StudentPassword, opt => opt.MapFrom(src =>"123"))
+                 .ForMember(x => x.StudentPassword, opt => opt.MapFrom(src => "123"))
                  .ForMember(x => x.StudentPhone, opt => opt.MapFrom(src => string.Empty))
                  .ForMember(x => x.StudentAdress, opt => opt.MapFrom(src => string.Empty))
                  .ForMember(x => x.SchoolYear, opt => opt.MapFrom(src => 1))
                  .ForMember(x => x.StudentDateCome, opt => opt.MapFrom(src => DateTime.Now));
             CreateMap<Teacher, TeacherDto>();
-            CreateMap<TeacherDto, Teacher>() 
+            CreateMap<TeacherAddDto, Teacher>()
+                .ForMember(x => x.TeacherPassword, opt => opt.MapFrom(src => "123"))
+                .ForMember(x => x.TeacherStatus, opt => opt.MapFrom(src => true));
+
+            CreateMap<TeacherDto, Teacher>()
                  .ForMember(x => x.TeacherPassword, opt => opt.MapFrom(src => "12345"))
                  .ForMember(x => x.TeacherStatus, opt => opt.MapFrom(src => true));
-            CreateMap<SubjectDto, Subject>();
-            CreateMap<SemesterDto, Semester>();
-            CreateMap<FacultyDto, Faculty>();
 
             CreateMap<AcademicProgramDto, AcademicProgram>();
             CreateMap<AcademicProgram, AcademicProgramSPDto>()
@@ -33,10 +35,6 @@ namespace School_version1.Models
                 .ForMember(x => x.SubjectCredit, opt => opt.MapFrom(src => src.Subject.SubjectCredit))
                 .ForMember(x => x.SubjectMandatory, opt => opt.MapFrom(src => src.Subject.SubjectMandatory))
                 .ForMember(x => x.FacultyName, opt => opt.MapFrom(src => src.Faculty.FacultyName));
-
-
-            CreateMap<ClassLearnsDto, ClassLearn>();
-            CreateMap<ListStudentClassLearnDto, ListStudentClassLearn>();
             CreateMap<ManagementDto, Management>();
 
             // change list
@@ -53,11 +51,27 @@ namespace School_version1.Models
             CreateMap<Semester, SemesterDto>()
                 .ForMember(x => x.SemesterId, opt => opt.MapFrom(src => src.Id));
             CreateMap<Student, StudentDto>()
-                .ForMember(x => x.StudentId, opt => opt.MapFrom(src => src.Id));
+                .ForMember(x => x.StudentId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(x => x.FacultyName, opt => opt.MapFrom(src => src.Faculty.FacultyName));
+            CreateMap<StudentAddDto, Student>();
             CreateMap<Subject, SubjectDto>()
                 .ForMember(x => x.SubjectId, opt => opt.MapFrom(src => src.Id));
             CreateMap<Teacher, TeacherDto>()
                 .ForMember(x => x.TeacherId, opt => opt.MapFrom(src => src.Id));
+
+            // convert from StudentDto to Student
+            CreateMap<StudentDto, Student>();
+            CreateMap<TeacherDto, Teacher>();
+            CreateMap<SubjectAddDto, Subject>();
+            CreateMap<FacultyAddDto, Faculty>();
+            CreateMap<SemesterAddDto, Semester>(); 
+            CreateMap<FacultyDto, Faculty>();
+            CreateMap<ClassLearnsDto, ClassLearn>();
+            CreateMap<ListStudentClassLearnDto, ListStudentClassLearn>();
+            CreateMap<SemesterDto, Semester>();
+
+
+
         }
     }
 }

@@ -1,12 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LearnCQRS.Queries;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using School_version1.Context;
+using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace School_version1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class SubjectsController : ControllerBase
     {
         private readonly DbContextSchool _context;
@@ -19,13 +28,47 @@ namespace School_version1.Controllers
 
         // GET: api/Subjects
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SubjectDto>>> GetAllSubjects()
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<SubjectDto>>> GetAllSubjects(int pages)
         {
-            return await _iSubject.GetAll();
+            return await _iSubject.GetAll(pages);
+        }
+        //Get Subject for Student with Fauclty 
+        // thêm cái kiểm tra xem đăng kí chưa và tạo class mới để có dữ liệu chưa đăng kí
+        [HttpGet("TakeSubjectForStudent")]
+        [AllowAnonymous]
+        public async Task<List<SubjectDto>> GetSubjectInStudent(string tokenStudent)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("nguyendinhiep_key_longdaithonglong"));
+            var userIdClaim123 = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            var username13 = User.FindFirst(ClaimTypes.Name)?.Value;
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = key,
+                ValidateIssuer = false,
+                ValidateAudience = false
+            };
+            try
+            {
+                // Giải mã token và trả về thông tin bên trong dưới dạng ClaimsPrincipal
+                var claimsPrincipal = tokenHandler.ValidateToken(tokenStudent, tokenValidationParameters, out var validatedToken);
+                var userIdClaim = claimsPrincipal.Identities.FirstOrDefault().Name;
+                if (userIdClaim != null && Guid.TryParse(userIdClaim, out Guid userId))
+                    return await _iSubject.GetSubjectStudentFauclty(userId);
+            }
+            catch (SecurityTokenException)
+            {
+                // Nếu giải mã token gặp lỗi, xử lý lỗi tại đây
+                return null;
+            }
+            return null; 
         }
 
         // GET: api/Subjects/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<SubjectDto>> GetSubject(Guid id)
         {
             if (_context.Teachers == null)

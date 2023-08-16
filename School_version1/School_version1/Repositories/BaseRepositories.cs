@@ -77,5 +77,19 @@ namespace School_version1.Repositories
                 return null;
             }
         }
+        public virtual async Task<TDto> LoginToken(LoginAddDto dto)
+        {
+            try
+            {
+                var Login = await _db.Managements.Where(x => x.ManagementEmail == dto.LoginEmail && x.ManagementPassword == dto.PassWorld).FirstOrDefaultAsync();
+                return _mapper.Map<TDto>(Login);
+            }
+            catch (Exception)
+            {
+                return null;
+                throw;
+            }
+            return null;
+        }
     }
 }

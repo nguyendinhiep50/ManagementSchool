@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using School_version1.Context;
 
@@ -14,12 +15,11 @@ namespace School_version1.Services
         {
         }
 
-        public async Task<List<StudentDto>> GetAllStudentFaculty()
+        public async Task<List<StudentDto>> GetAllStudentFaculty(int page,int size)
         {
-            var students = _db.Students.ToList();
-            foreach (var st in students)
-                st.Faculty = _db.Faculty.Find(st.FacultyId);
-            return _mapper.Map<List<StudentDto>>(students).ToList();
+            int PagesSkip = (page -1)  * size;
+            var entity = await _db.Set<Student>().Include(x=>x.Faculty).Skip(PagesSkip).Take(size).ToListAsync();
+            return _mapper.Map<List<StudentDto>>(entity).ToList();
         }
 
         public async Task<List<StudentDto>> GetAllStudentsInFaculty(Guid id)
@@ -30,7 +30,7 @@ namespace School_version1.Services
             return _mapper.Map<List<StudentDto>>(students).ToList();
         }
 
-        public async Task<StudentDto> PostLoginToken(LoginDto loginAccount)
+        public async Task<StudentDto> PostLoginToken(LoginAddDto loginAccount)
         {
             try
             {
@@ -43,12 +43,7 @@ namespace School_version1.Services
                 throw;
             }
             return null;
-
         }
-        //public async Task<StudentDto> GetLoginInfo(string Token)
-        //{
-
-        //} 
 
         public async Task<StudentDto> GetStudentFaculty(Guid id)
         {
@@ -57,5 +52,9 @@ namespace School_version1.Services
             return _mapper.Map<StudentDto>(student);
         }
 
+        public Task<List<StudentDto>> GetAllStudenShowNameFaculty()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

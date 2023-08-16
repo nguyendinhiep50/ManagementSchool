@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using School_version1.Context;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
@@ -9,6 +10,7 @@ namespace School_version1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AcademicProgramsController : ControllerBase
     {
         private readonly DbContextSchool _context;
@@ -21,9 +23,10 @@ namespace School_version1.Controllers
 
         // GET: api/AcademicPrograms
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AcademicProgramDto>>> GetAcademicPrograms()
+        public async Task<ActionResult<IEnumerable<AcademicProgramDto>>> GetAcademicPrograms(int pages)
         {
-            return await _AcademicProgram.GetAll();
+            //_AcademicProgram.ValidateJwtToken()
+            return await _AcademicProgram.GetAll(pages);
         }
         // GET: api/AcademicPrograms
         [HttpGet("ProgramLearn")]

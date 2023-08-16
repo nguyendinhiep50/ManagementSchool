@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using School_version1.Context;
 using School_version1.Entities;
 using School_version1.Interface;
@@ -12,5 +13,7 @@ namespace School_version1.Services
         public ManagementBLL(DbContextSchool db, IMapper mapper) : base(db, mapper)
         {
         }
+
+
     }
 }

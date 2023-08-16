@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using School_version1.Context;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
@@ -7,6 +8,7 @@ namespace School_version1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class SemestersController : ControllerBase
     {
         private readonly DbContextSchool _context;
@@ -19,9 +21,9 @@ namespace School_version1.Controllers
 
         // GET: api/Semesters
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SemesterDto>>> GetSemesters()
+        public async Task<ActionResult<IEnumerable<SemesterDto>>> GetSemesters(int pages)
         {
-            return await _iSemesters.GetAll();
+            return await _iSemesters.GetAll(pages);
         }
 
         // GET: api/Semesters/5

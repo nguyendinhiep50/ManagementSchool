@@ -42,10 +42,17 @@ namespace School_version1.Services
             return _mapper.Map<T, TDto>(entity);
         }
 
-        public virtual async Task<List<TDto>> GetAll()
+        public virtual async Task<List<TDto>> GetAll(int Page)
         {
-            var entity = await _db.Set<T>().ToListAsync(); 
+            // skip 10
+            int PagesSkip = Page * 10;
+            var entity = await _db.Set<T>().Skip(PagesSkip).Take(10).ToListAsync(); 
             return _mapper.Map<List<TDto>>(entity).ToList();
+        }
+        public virtual async Task<int> GetAllCount()
+        {
+            var entity = await _db.Set<T>().CountAsync();
+            return entity;
         }
 
         public virtual async Task<bool> Post(TAddOrUpdateDto dto)
@@ -71,7 +78,6 @@ namespace School_version1.Services
             {
                 return false;
             }
-
             _db.Entry(dataEntity).State = EntityState.Modified;
             _mapper.Map<TDto, T>(addOrUpdateDto, dataEntity);
             try
