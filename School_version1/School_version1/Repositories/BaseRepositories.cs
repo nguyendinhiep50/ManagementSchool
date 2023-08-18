@@ -64,19 +64,30 @@ namespace School_version1.Repositories
             }
         }
 
-        public virtual async Task<TDto> Put(Guid id, TDto entity)
+        public virtual async Task<Boolean> Put(Guid id, TDto entity)
         {
-            _db.Entry(entity).State = EntityState.Modified;
+            var dataEntity = await _db.Set<T>().FindAsync(id);
+
+            if (dataEntity == null)
+            {
+                return false;
+            }
+
+            _mapper.Map(entity, dataEntity); // Cập nhật thuộc tính của đối tượng đã tải
+
+            _db.Entry(dataEntity).State = EntityState.Modified; // Đánh dấu đối tượng đã thay đổi
+
             try
             {
                 await _db.SaveChangesAsync();
-                return entity;
+                return true;
             }
             catch (DbUpdateConcurrencyException)
             {
-                return null;
+                return false;
             }
         }
+
         public virtual async Task<TDto> LoginToken(LoginAddDto dto)
         {
             try

@@ -5,7 +5,7 @@ using School_version1.Repositories;
 
 namespace LearnCQRS.Commands
 {
-    public class UpdateManagementCommand : IRequest<ManagementDto>
+    public class UpdateManagementCommand : IRequest<Boolean>
     {
         public Guid Id { get; set; }
         public string ManagementName { get; set; }
@@ -20,7 +20,7 @@ namespace LearnCQRS.Commands
             ManagementPassword = managementPassword;
         }
     }
-    public class UpdateStudentHandler : IRequestHandler<UpdateManagementCommand, ManagementDto>
+    public class UpdateStudentHandler : IRequestHandler<UpdateManagementCommand, Boolean>
     {
         private readonly IBaseRepositories<Management, ManagementDto,ManagementAddDto> _studentRepository;
 
@@ -28,7 +28,7 @@ namespace LearnCQRS.Commands
         {
             _studentRepository = studentRepository;
         }
-        public async Task<ManagementDto> Handle(UpdateManagementCommand command, CancellationToken cancellationToken)
+        public async Task<Boolean> Handle(UpdateManagementCommand command, CancellationToken cancellationToken)
         {
             var studentDetails = await _studentRepository.Get(command.Id);
             if (studentDetails == null)

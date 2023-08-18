@@ -94,11 +94,19 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("AdminPolicy", policy =>
     {
         policy.RequireRole("Admin");
+        policy.RequireRole("Teacher");
+        policy.RequireRole("Student");
+
     });
 
     options.AddPolicy("TeacherPolicy", policy =>
     {
         policy.RequireRole("Teacher");
+        policy.RequireRole("Student");
+    });
+    options.AddPolicy("StudentPolicy", policy =>
+    { 
+        policy.RequireRole("Student");
     });
 });
 

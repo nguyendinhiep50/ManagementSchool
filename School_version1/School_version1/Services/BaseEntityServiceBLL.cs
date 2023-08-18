@@ -78,8 +78,9 @@ namespace School_version1.Services
             {
                 return false;
             }
-            _db.Entry(dataEntity).State = EntityState.Modified;
             _mapper.Map<TDto, T>(addOrUpdateDto, dataEntity);
+
+            _db.Entry(dataEntity).State = EntityState.Modified;
             try
             {
                 await _db.SaveChangesAsync();

@@ -36,7 +36,8 @@ namespace School_version1.Controllers
             return await _iStudent.GetAllCount();
         }
         // GET: api/Students
-        [HttpGet("TakeNameFaculty")] 
+        [HttpGet("TakeNameFaculty")]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<StudentDto>>> GetStudentsFaculty(int pages,int size)
         {
             if (_context.Students == null)
@@ -152,7 +153,10 @@ namespace School_version1.Controllers
                 // Tạo một claim chứa thông tin về người dùng (có thể là id, tên, v.v.)
                 var claims = new[]
                 {
-                new Claim(ClaimTypes.Name, kqLogin.StudentId.ToString())
+                new Claim(ClaimTypes.Name, kqLogin.StudentId.ToString()),
+                new Claim(ClaimTypes.Role, "Admin"),
+                new Claim(ClaimTypes.Role, "Student"),
+
             };
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("nguyendinhiep_key_longdaithonglong"));

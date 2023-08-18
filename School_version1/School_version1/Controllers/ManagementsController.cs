@@ -2,10 +2,10 @@
 using LearnCQRS.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc; 
 using Microsoft.IdentityModel.Tokens;
 using School_version1.Commands;
+using School_version1.Entities;
 using School_version1.Models.DTOs;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -15,7 +15,7 @@ namespace School_version1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Admin, Stundent")]
     public class ManagementsController : ControllerBase
     {
         private readonly IMediator mediator;
@@ -39,8 +39,8 @@ namespace School_version1.Controllers
         }
 
         // PUT: api/Managements/5
-        [HttpPut]
-        public async Task<ManagementDto> UpdateStudentAsync(ManagementDto management)
+        [HttpPut("{id}")]
+        public async Task<Boolean> UpdateStudentAsync(Guid id, ManagementDto management)
         {
             var isStudentDetailUpdated = await mediator.Send(new UpdateManagementCommand(
                management.ManagementId,
@@ -48,6 +48,21 @@ namespace School_version1.Controllers
                management.ManagementEmail,
                management.ManagementPassword));
             return isStudentDetailUpdated;
+        }
+        [HttpPut("ChangePassword")]
+        public async Task<IActionResult> ChangePassword(string newpassword, LoginAddDto login)
+        { 
+            var kqLogin = await mediator.Send(new LoginManagementCommand(login));
+            if (kqLogin != null)
+            {
+                var isStudentDetailUpdated = await mediator.Send(new UpdateManagementCommand(
+                kqLogin.ManagementId,
+                kqLogin.ManagementName,
+                kqLogin.ManagementEmail,
+                kqLogin.ManagementPassword= newpassword));
+                return NoContent();
+            }
+            return NotFound();
         }
 
         // POST: api/Managements
@@ -103,7 +118,7 @@ namespace School_version1.Controllers
             return null;
         }
         [HttpPost("login")]
-        [AllowAnonymous]
+        [AllowAnonymousAttribute]
         public async Task<IActionResult> LoginStudent(LoginAddDto loginAccount)
         {
             var kqLogin = await mediator.Send(new LoginManagementCommand(loginAccount));
@@ -113,7 +128,9 @@ namespace School_version1.Controllers
                 var claims = new[]
                 {
                 new Claim(ClaimTypes.Name, kqLogin.ManagementId.ToString()),
-                new Claim(ClaimTypes.Role, "Admin")
+                new Claim(ClaimTypes.Role, "Admin"),
+                //new Claim(ClaimTypes.Role, "Teacher"),
+                new Claim(ClaimTypes.Role, "Student"), 
             };
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("nguyendinhiep_key_longdaithonglong"));
@@ -126,8 +143,7 @@ namespace School_version1.Controllers
                     claims: claims,
                     expires: DateTime.UtcNow.AddMinutes(30),
                     signingCredentials: creds
-                );
-
+                ); 
                 return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
             }
 

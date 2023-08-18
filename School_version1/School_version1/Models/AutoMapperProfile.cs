@@ -42,8 +42,15 @@ namespace School_version1.Models
                 .ForMember(x => x.AcademicProgramId, opt => opt.MapFrom(src => src.Id));
             CreateMap<Faculty, FacultyDto>()
                 .ForMember(x => x.FacultyId, opt => opt.MapFrom(src => src.Id));
+
+
             CreateMap<ClassLearn, ClassLearnsDto>()
                 .ForMember(x => x.ClassLearnsId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<ClassLearnsDto, ClassLearn>();
+            // convert ClassLearnsAddDto => ClassLearn
+            CreateMap<ClassLearn, ClassLearnsAddDto>();
+            CreateMap<ClassLearnsAddDto, ClassLearn>();
+
             CreateMap<ListStudentClassLearn, ListStudentClassLearnDto>()
                 .ForMember(x => x.ListStudentClassLearnId, opt => opt.MapFrom(src => src.Id));
             CreateMap<Management, ManagementDto>()
@@ -58,6 +65,8 @@ namespace School_version1.Models
                 .ForMember(x => x.SubjectId, opt => opt.MapFrom(src => src.Id));
             CreateMap<Teacher, TeacherDto>()
                 .ForMember(x => x.TeacherId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<SubjectDto, Subject>()
+                .ForMember(x=>x.Id ,opt => opt.MapFrom(src=>src.SubjectId));
 
             // convert from StudentDto to Student
             CreateMap<StudentDto, Student>();
@@ -66,7 +75,8 @@ namespace School_version1.Models
             CreateMap<FacultyAddDto, Faculty>();
             CreateMap<SemesterAddDto, Semester>(); 
             CreateMap<FacultyDto, Faculty>();
-            CreateMap<ClassLearnsDto, ClassLearn>();
+
+
             CreateMap<ListStudentClassLearnDto, ListStudentClassLearn>();
             CreateMap<SemesterDto, Semester>();
 
