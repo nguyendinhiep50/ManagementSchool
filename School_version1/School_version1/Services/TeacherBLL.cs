@@ -12,19 +12,19 @@ namespace School_version1.Services
         public TeacherBLL(DbContextSchool db, IMapper mapper) : base(db, mapper)
         {
         }
-        public async Task<TeacherDto> PostLoginToken(LoginAddDto loginAccount)
-        {
-            try
-            {
-                var teacher = await _db.Teachers.Where(x => x.TeacherPassword == loginAccount.PassWorld && x.TeacherEmail == loginAccount.LoginEmail).FirstOrDefaultAsync();
-                return _mapper.Map<TeacherDto>(teacher);
-            }
-            catch (Exception)
-            {
-                return null;
-                throw;
-            }
-            return null;
-        }
+        //public async Task<TeacherDto> PostLoginToken(LoginAddDto loginAccount)
+        //{
+        //    try
+        //    {
+        //        var teacher = await _db.Teachers.Where(x => x.TeacherPassword == loginAccount.PassWorld && x.TeacherEmail == loginAccount.LoginEmail).FirstOrDefaultAsync();
+        //        return _mapper.Map<TeacherDto>(teacher);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return null;
+        //        throw;
+        //    }
+        //    return null;
+        //}
     } 
 }

@@ -42,36 +42,36 @@ namespace School_version1.Controllers
             }
             return await _iTeacher.Get(id);
         }
-        [HttpGet("InfoFromToken")]
-        [AllowAnonymous]
-        public async Task<ActionResult<TeacherDto>> GetInfoFromToken(String stringToken)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("nguyendinhiep_key_longdaithonglong"));
-            var userIdClaim123 = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-            var username13 = User.FindFirst(ClaimTypes.Name)?.Value;
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = key,
-                ValidateIssuer = false,
-                ValidateAudience = false
-            };
-            try
-            {
-                // Giải mã token và trả về thông tin bên trong dưới dạng ClaimsPrincipal
-                var claimsPrincipal = tokenHandler.ValidateToken(stringToken, tokenValidationParameters, out var validatedToken);
-                var userIdClaim = claimsPrincipal.Identities.FirstOrDefault().Name;
-                if (userIdClaim != null && Guid.TryParse(userIdClaim, out Guid userId))
-                    return await _iTeacher.Get(userId);
-            }
-            catch (SecurityTokenException)
-            {
-                // Nếu giải mã token gặp lỗi, xử lý lỗi tại đây
-                return null;
-            }
-            return null;
-        }
+        //[HttpGet("InfoFromToken")]
+        //[AllowAnonymous]
+        //public async Task<ActionResult<TeacherDto>> GetInfoFromToken(String stringToken)
+        //{
+        //    var tokenHandler = new JwtSecurityTokenHandler();
+        //    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("nguyendinhiep_key_longdaithonglong"));
+        //    var userIdClaim123 = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+        //    var username13 = User.FindFirst(ClaimTypes.Name)?.Value;
+        //    var tokenValidationParameters = new TokenValidationParameters
+        //    {
+        //        ValidateIssuerSigningKey = true,
+        //        IssuerSigningKey = key,
+        //        ValidateIssuer = false,
+        //        ValidateAudience = false
+        //    };
+        //    try
+        //    {
+        //        // Giải mã token và trả về thông tin bên trong dưới dạng ClaimsPrincipal
+        //        var claimsPrincipal = tokenHandler.ValidateToken(stringToken, tokenValidationParameters, out var validatedToken);
+        //        var userIdClaim = claimsPrincipal.Identities.FirstOrDefault().Name;
+        //        if (userIdClaim != null && Guid.TryParse(userIdClaim, out Guid userId))
+        //            return await _iTeacher.Get(userId);
+        //    }
+        //    catch (SecurityTokenException)
+        //    {
+        //        // Nếu giải mã token gặp lỗi, xử lý lỗi tại đây
+        //        return null;
+        //    }
+        //    return null;
+        //}
         // PUT: api/Teachers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -97,36 +97,36 @@ namespace School_version1.Controllers
                 return CreatedAtAction("GetTeacher", new { id = TeacherDto.TeacherName }, TeacherDto);
             return NotFound();
         }
-        [HttpPost("login")]
-        [AllowAnonymous]
-        public async Task<IActionResult> LoginStudent(LoginAddDto loginAccount)
-        {
-            var kqLogin = await _iTeacher.PostLoginToken(loginAccount);
-            if (kqLogin != null)
-            {
-                // Tạo một claim chứa thông tin về người dùng (có thể là id, tên, v.v.)
-                var claims = new[]
-                {
-                new Claim(ClaimTypes.Name, kqLogin.TeacherId.ToString())
-            };
+        //[HttpPost("login")]
+        //[AllowAnonymous]
+        //public async Task<IActionResult> LoginStudent(LoginAddDto loginAccount)
+        //{
+        //    var kqLogin = await _iTeacher.PostLoginToken(loginAccount);
+        //    if (kqLogin != null)
+        //    {
+        //        // Tạo một claim chứa thông tin về người dùng (có thể là id, tên, v.v.)
+        //        var claims = new[]
+        //        {
+        //        new Claim(ClaimTypes.Name, kqLogin.TeacherId.ToString())
+        //    };
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("nguyendinhiep_key_longdaithonglong"));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        //        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("nguyendinhiep_key_longdaithonglong"));
+        //        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                // Tạo access token bằng JWT
-                var token = new JwtSecurityToken(
-                    issuer: "your-issuer",
-                    audience: "your-audience",
-                    claims: claims,
-                    expires: DateTime.UtcNow.AddMinutes(30),
-                    signingCredentials: creds
-                );
+        //        // Tạo access token bằng JWT
+        //        var token = new JwtSecurityToken(
+        //            issuer: "your-issuer",
+        //            audience: "your-audience",
+        //            claims: claims,
+        //            expires: DateTime.UtcNow.AddMinutes(30),
+        //            signingCredentials: creds
+        //        );
 
-                return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
-            }
+        //        return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+        //    }
 
-            return BadRequest("Invalid username or password.");
-        }
+        //    return BadRequest("Invalid username or password.");
+        //}
 
         // DELETE: api/Teachers/5
         [HttpDelete("{id}")]

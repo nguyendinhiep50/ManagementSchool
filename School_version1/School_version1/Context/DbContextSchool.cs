@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using School_version1.Entities;
 
 namespace School_version1.Context
 {
-    public class DbContextSchool : DbContext
+    public class DbContextSchool : IdentityDbContext<CustomIdentityUser>
     {
         public DbContextSchool() { }
         public DbContextSchool(DbContextOptions<DbContextSchool> options) : base(options)
@@ -71,10 +73,22 @@ namespace School_version1.Context
                         .HasOne(x => x.Student)
                         .WithMany(x => x.ListStudentClassLearns)
                         .HasForeignKey(x => x.StudentId).OnDelete(DeleteBehavior.Restrict);
-            //modelBuilder.Entity<Faculty>()
-            //           .HasOne(x => x.fa)
-            //           .WithMany(x => x.)
-            //           .HasForeignKey(x => x.StudentId).OnDelete(DeleteBehavior.Restrict);
+            //// Cấu hình quan hệ giữa AspNetUsers và Management
+            //modelBuilder.Entity<CustomIdentityUser>()
+            //    .HasOne(u => u.Management)
+            //    .WithOne()
+            //    .HasForeignKey<Management>(m => m.AppLogin.Id );
+
+            //// Cấu hình quan hệ giữa AspNetUsers và Teacher
+            //modelBuilder.Entity<CustomIdentityUser>()
+            //    .HasOne(u => u.Teacher)
+            //    .WithOne()
+            //    .HasForeignKey<Teacher>(t => t.AppLogin.Id);
+            //// Cấu hình quan hệ giữa AspNetUsers và Student
+            //modelBuilder.Entity<CustomIdentityUser>()
+            //    .HasOne(u => u.Student)
+            //    .WithOne()
+            //    .HasForeignKey<Student>(t => t.AppLogin.Id);
         }
         public DbSet<Management>? Management { get; set; }
 

@@ -30,20 +30,20 @@ namespace School_version1.Services
             return _mapper.Map<List<StudentDto>>(students).ToList();
         }
 
-        public async Task<StudentDto> PostLoginToken(LoginAddDto loginAccount)
-        {
-            try
-            {
-                var student = await _db.Students.Where(x => x.StudentPassword == loginAccount.PassWorld && x.StudentEmail == loginAccount.LoginEmail).FirstOrDefaultAsync();
-                return _mapper.Map<StudentDto>(student);
-            }
-            catch (Exception)
-            {
-                return null;
-                throw;
-            }
-            return null;
-        }
+        //public async Task<StudentDto> PostLoginToken(LoginAddDto loginAccount)
+        //{
+        //    try
+        //    {
+        //        var student = await _db.Students.Where(x => x.StudentPassword == loginAccount.PassWorld && x.StudentEmail == loginAccount.LoginEmail).FirstOrDefaultAsync();
+        //        return _mapper.Map<StudentDto>(student);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return null;
+        //        throw;
+        //    }
+        //    return null;
+        //}
 
         public async Task<StudentDto> GetStudentFaculty(Guid id)
         {

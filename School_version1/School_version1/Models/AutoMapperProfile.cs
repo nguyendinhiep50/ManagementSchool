@@ -13,19 +13,15 @@ namespace School_version1.Models
             // use check value in object student and studentDto
             //.ForAllMembers(x => x.Condition((src, dest, value)=>dest.FacultyName !=null));
             CreateMap<StudentAddDto, Student>()
-                 .ForMember(x => x.StudentImage, opt => opt.MapFrom(src => string.Empty))
-                 .ForMember(x => x.StudentPassword, opt => opt.MapFrom(src => "123"))
-                 .ForMember(x => x.StudentPhone, opt => opt.MapFrom(src => string.Empty))
+                 .ForMember(x => x.StudentImage, opt => opt.MapFrom(src => string.Empty)) 
                  .ForMember(x => x.StudentAdress, opt => opt.MapFrom(src => string.Empty))
                  .ForMember(x => x.SchoolYear, opt => opt.MapFrom(src => 1))
                  .ForMember(x => x.StudentDateCome, opt => opt.MapFrom(src => DateTime.Now));
             CreateMap<Teacher, TeacherDto>();
-            CreateMap<TeacherAddDto, Teacher>()
-                .ForMember(x => x.TeacherPassword, opt => opt.MapFrom(src => "123"))
+            CreateMap<TeacherAddDto, Teacher>() 
                 .ForMember(x => x.TeacherStatus, opt => opt.MapFrom(src => true));
 
-            CreateMap<TeacherDto, Teacher>()
-                 .ForMember(x => x.TeacherPassword, opt => opt.MapFrom(src => "12345"))
+            CreateMap<TeacherDto, Teacher>() 
                  .ForMember(x => x.TeacherStatus, opt => opt.MapFrom(src => true));
 
             CreateMap<AcademicProgramDto, AcademicProgram>();

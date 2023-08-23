@@ -9,7 +9,7 @@ namespace School_version1.Interface
         Task<List<StudentDto>> GetAllStudenShowNameFaculty();
         Task<StudentDto> GetStudentFaculty(Guid id);
         Task<List<StudentDto>> GetAllStudentsInFaculty(Guid id);
-        Task<StudentDto> PostLoginToken(LoginAddDto loginAccont);
+        //Task<StudentDto> PostLoginToken(LoginAddDto loginAccont);
         //Task<StudentDto> GetLoginInfo(string Token);
 
 

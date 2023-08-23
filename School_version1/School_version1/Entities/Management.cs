@@ -8,10 +8,8 @@ namespace School_version1.Entities
     {
         [Required]
         [Column(TypeName = "Nvarchar(100)")]
-        public string ManagementName { get; set; }
-        [Required]
-        public string ManagementEmail { get; set; }
-        [Required]
-        public string ManagementPassword { get; set; }
+        public string ManagementName { get; set; } 
+        [ForeignKey("CustomIdentityUser")]
+        public virtual CustomIdentityUser AppLogin { get; set; }
     }
 }

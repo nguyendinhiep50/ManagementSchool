@@ -12,13 +12,7 @@ namespace School_version1.Entities
         [Column(TypeName = "Nvarchar(100)")]
         public string StudentName { get; set; }
         public string StudentImage { get; set; }
-        [Required]
-        [Column(TypeName = "Nvarchar(100)")]
-        public string StudentEmail { get; set; }
-        [DefaultValue("12345")]
-        public string StudentPassword { get; set; }
-        public DateTime StudentBirthDate { get; set; }
-        public string StudentPhone { get; set; }
+        public DateTime StudentBirthDate { get; set; } 
         public string StudentAdress { get; set; }
         [JsonIgnore]
         [DefaultValue(0)]
@@ -32,5 +26,8 @@ namespace School_version1.Entities
         public virtual Faculty Faculty { get; set; }
         [JsonIgnore]
         public virtual ICollection<ListStudentClassLearn> ListStudentClassLearns { get; set; }
+ 
+        [ForeignKey("CustomIdentityUser")]
+        public virtual CustomIdentityUser AppLogin { get; set; }
     }
 }

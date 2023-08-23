@@ -1,5 +1,6 @@
 ﻿using LearnCQRS.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -14,8 +15,7 @@ namespace School_version1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
-    public class StudentsController : ControllerBase
+     public class StudentsController : ControllerBase
     {
         private readonly DbContextSchool _context;
         private readonly IStudent _iStudent;
@@ -26,7 +26,9 @@ namespace School_version1.Controllers
             _iStudent = iStudent;
         }
  
-        [HttpGet("TakeCountAll")] 
+        [HttpGet("TakeCountAll")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize]
         public async Task<ActionResult<int>> GetTakeCountAll()
         {
             if (_context.Students == null)
@@ -37,7 +39,7 @@ namespace School_version1.Controllers
         }
         // GET: api/Students
         [HttpGet("TakeNameFaculty")]
-        [AllowAnonymous]
+        [Authorize(Roles ="Student")]
         public async Task<ActionResult<IEnumerable<StudentDto>>> GetStudentsFaculty(int pages,int size)
         {
             if (_context.Students == null)
@@ -48,8 +50,7 @@ namespace School_version1.Controllers
         }
 
         // GET: api/Students/5
-        [HttpGet("{id}")]
-        [AllowAnonymous]
+        [HttpGet("{id}")] 
         public async Task<ActionResult<StudentDto>> GetStudent(Guid id)
         {
             if (_context.Students == null)
@@ -81,40 +82,40 @@ namespace School_version1.Controllers
             }
             return await _iStudent.GetAllStudentsInFaculty(id);
         }
-        // lấy thông tin thông qua token
-        [HttpGet("InfoFromToken")]
-        [AllowAnonymous]        
-        public async Task<ActionResult<StudentDto>> GetUserInfo(String stringToken)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("nguyendinhiep_key_longdaithonglong"));
-            var userIdClaim123 = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-            var username13 = User.FindFirst(ClaimTypes.Name)?.Value;
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = key,
-                ValidateIssuer = false,
-                ValidateAudience = false
-            };
-            try
-            {
-                // Giải mã token và trả về thông tin bên trong dưới dạng ClaimsPrincipal
-                var claimsPrincipal = tokenHandler.ValidateToken(stringToken, tokenValidationParameters, out var validatedToken);
-                var userIdClaim = claimsPrincipal.Identities.FirstOrDefault().Name;
-                if (userIdClaim != null && Guid.TryParse(userIdClaim, out Guid userId))
-                {
-                    var result = await _iStudent.Get(userId);
-                    return result; 
-                } 
-            }
-            catch (SecurityTokenException)
-            {
-                // Nếu giải mã token gặp lỗi, xử lý lỗi tại đây
-                return null;
-            }
-            return null;
-        }
+        //// lấy thông tin thông qua token
+        //[HttpGet("InfoFromToken")]
+        //[AllowAnonymous]        
+        //public async Task<ActionResult<StudentDto>> GetUserInfo(String stringToken)
+        //{
+        //    var tokenHandler = new JwtSecurityTokenHandler();
+        //    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("nguyendinhiep_key_longdaithonglong"));
+        //    var userIdClaim123 = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+        //    var username13 = User.FindFirst(ClaimTypes.Name)?.Value;
+        //    var tokenValidationParameters = new TokenValidationParameters
+        //    {
+        //        ValidateIssuerSigningKey = true,
+        //        IssuerSigningKey = key,
+        //        ValidateIssuer = false,
+        //        ValidateAudience = false
+        //    };
+        //    try
+        //    {
+        //        // Giải mã token và trả về thông tin bên trong dưới dạng ClaimsPrincipal
+        //        var claimsPrincipal = tokenHandler.ValidateToken(stringToken, tokenValidationParameters, out var validatedToken);
+        //        var userIdClaim = claimsPrincipal.Identities.FirstOrDefault().Name;
+        //        if (userIdClaim != null && Guid.TryParse(userIdClaim, out Guid userId))
+        //        {
+        //            var result = await _iStudent.Get(userId);
+        //            return result; 
+        //        } 
+        //    }
+        //    catch (SecurityTokenException)
+        //    {
+        //        // Nếu giải mã token gặp lỗi, xử lý lỗi tại đây
+        //        return null;
+        //    }
+        //    return null;
+        //}
 
         // PUT: api/Students/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -132,8 +133,7 @@ namespace School_version1.Controllers
 
         // POST: api/Students
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        [Authorize]
+        [HttpPost] 
         public async Task<ActionResult<StudentAddDto>> PostStudent(StudentAddDto StudentAddDto)
         {
             if (_context.Students == null)
@@ -142,41 +142,7 @@ namespace School_version1.Controllers
                 return CreatedAtAction("GetStudent", new { id = StudentAddDto.StudentName }, StudentAddDto);
             return NotFound();
         }
-        [HttpPost("login")]
-        [AllowAnonymous]
-        public async Task<IActionResult> LoginStudent(LoginAddDto loginAccount)
-        {
 
-            var kqLogin = await _iStudent.PostLoginToken(loginAccount);
-            if (kqLogin != null)
-            {
-                // Tạo một claim chứa thông tin về người dùng (có thể là id, tên, v.v.)
-                var claims = new[]
-                {
-                new Claim(ClaimTypes.Name, kqLogin.StudentId.ToString()),
-                new Claim(ClaimTypes.Role, "Admin"),
-                new Claim(ClaimTypes.Role, "Student"),
-
-            };
-
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("nguyendinhiep_key_longdaithonglong"));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-                // Tạo access token bằng JWT
-                var token = new JwtSecurityToken(
-                    issuer: "your-issuer",
-                    audience: "your-audience",
-                    claims: claims,
-                    expires: DateTime.UtcNow.AddMinutes(30),
-                    signingCredentials: creds
-                );
-
-                return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
-            }
-
-            return BadRequest("Invalid username or password.");
-        }
-        // DELETE: api/Students/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStudent(Guid id)
         {

@@ -2,7 +2,7 @@
 {
     public class LoginAddDto
     {
-        public string LoginEmail { get; set; }
+        public string NameLogin { get; set; }
         public string PassWorld { get; set; }
     }
 }

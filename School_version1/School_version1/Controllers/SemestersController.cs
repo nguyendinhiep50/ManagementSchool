@@ -8,7 +8,7 @@ namespace School_version1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class SemestersController : ControllerBase
     {
         private readonly DbContextSchool _context;
@@ -20,7 +20,7 @@ namespace School_version1.Controllers
         }
 
         // GET: api/Semesters
-        [HttpGet]
+        [HttpGet("GetSemesters")] 
         public async Task<ActionResult<IEnumerable<SemesterDto>>> GetSemesters(int pages)
         {
             return await _iSemesters.GetAll(pages);
