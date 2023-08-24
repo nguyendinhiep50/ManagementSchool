@@ -27,16 +27,16 @@ builder.Services.AddDbContext<DbContextSchool>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolHiep")));
 
 builder.Services.AddScoped<DbContextSchool>();
-builder.Services.AddScoped<IStudent,StudentBLL>();
-builder.Services.AddScoped<ITeacher, TeacherBLL>();
-builder.Services.AddScoped<ISubject, SubjectBLL>();
-builder.Services.AddScoped<ISemesters, SemesterBLL>();
-builder.Services.AddScoped<IFaculty, FacultyBLL>();
-builder.Services.AddScoped<IAcademicProgram, AcademicProgramBLL>();
-builder.Services.AddScoped<IClassLearn, ClassLearnsBLL>();
-builder.Services.AddScoped<IListStudentClassLearn, ListStudentClassLearnsBLL>();
+builder.Services.AddScoped<IStudent,StudentServices>();
+builder.Services.AddScoped<ITeacher, TeacherServices>();
+builder.Services.AddScoped<ISubject, SubjectServices>();
+builder.Services.AddScoped<ISemesters, SemesterServices>();
+builder.Services.AddScoped<IFaculty, FacultyServices>();
+builder.Services.AddScoped<IAcademicProgram, AcademicProgramServices>();
+builder.Services.AddScoped<IClassLearn, ClassLearnsServices>();
+builder.Services.AddScoped<IListStudentClassLearn, ListStudentClassLearnsServices>();
 builder.Services.AddScoped<IBaseRepositories<Management, ManagementDto,ManagementAddDto>, BaseRepositories<Management, ManagementDto,ManagementAddDto>>();
-builder.Services.AddScoped<ILoginAccountRepository, LoginAccountRepository>();
+builder.Services.AddScoped<ILoginAccountRepository, LoginAccountServices>();
 
 builder.Services.AddScoped<UserManager<CustomIdentityUser>>();
 

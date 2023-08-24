@@ -5,6 +5,5 @@ namespace School_version1.Interface
 {
     public interface ITeacher : IEntityService<TeacherDto, TeacherDto,TeacherAddDto>
     {
-        //Task<TeacherDto> PostLoginToken(LoginAddDto loginAccont);
     }
 }

@@ -2,9 +2,9 @@
 {
     public class SupportLogin
     {
-        public string LoginEmail { get; set; }
-        public string PassWorld { get; set; }
-        public string PassWorldNew { get; set; }
+        public string LoginName { get; set; }
+        public string PassWord { get; set; }
+        public string PassWordNew { get; set; }
 
     }
 }

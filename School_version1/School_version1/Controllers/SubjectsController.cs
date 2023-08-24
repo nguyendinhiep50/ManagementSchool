@@ -15,7 +15,7 @@ namespace School_version1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Management")]
     public class SubjectsController : ControllerBase
     {
         private readonly DbContextSchool _context;

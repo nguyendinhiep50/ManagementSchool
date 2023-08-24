@@ -9,6 +9,7 @@ namespace School_version1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy ="Management")]
     public class ManagementsController : ControllerBase
     {
         private readonly IMediator mediator;

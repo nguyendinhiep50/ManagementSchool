@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using School_version1.Entities;
 using School_version1.Models.DTOs;
+using System.Collections;
+using System.Security.Claims;
 
 namespace School_version1.Interface
 {
@@ -20,6 +22,11 @@ namespace School_version1.Interface
         public Task<List<CustomIdentityUser>> CheckAccount();
         public Task<List<string>> CheckRoleUserID(string IdUser);
 
+        // take Info from Token
+        public Task<Object> TakeInfoAccount(string Token);
+
+        // resetPassword
+        public Task<Boolean> ResetPassword(SupportLogin ResetPassword);
 
     }
 }

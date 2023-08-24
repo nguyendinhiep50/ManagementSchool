@@ -4,7 +4,7 @@
     {
         public Guid LoginId { get; set; }
         public string LoginEmail { get; set; }
-        public string PassWorld { get; set; }
+        public string PassWord { get; set; }
 
     }
 }

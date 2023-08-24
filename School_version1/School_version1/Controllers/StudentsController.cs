@@ -15,7 +15,8 @@ namespace School_version1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-     public class StudentsController : ControllerBase
+    [Authorize(Roles = "Student")]
+    public class StudentsController : ControllerBase
     {
         private readonly DbContextSchool _context;
         private readonly IStudent _iStudent;
@@ -26,9 +27,7 @@ namespace School_version1.Controllers
             _iStudent = iStudent;
         }
  
-        [HttpGet("TakeCountAll")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [Authorize]
+        [HttpGet("TakeCountAll")] 
         public async Task<ActionResult<int>> GetTakeCountAll()
         {
             if (_context.Students == null)
@@ -39,7 +38,6 @@ namespace School_version1.Controllers
         }
         // GET: api/Students
         [HttpGet("TakeNameFaculty")]
-        [Authorize(Roles ="Student")]
         public async Task<ActionResult<IEnumerable<StudentDto>>> GetStudentsFaculty(int pages,int size)
         {
             if (_context.Students == null)

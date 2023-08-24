@@ -3,6 +3,6 @@
     public class LoginAddDto
     {
         public string NameLogin { get; set; }
-        public string PassWorld { get; set; }
+        public string PassWord { get; set; }
     }
 }

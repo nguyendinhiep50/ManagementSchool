@@ -1,13 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
+using System.Security.Claims;
 
 namespace School_version1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Management")]
     public class LoginController : ControllerBase
     {
         private readonly ILoginAccountRepository accountRepo;
@@ -96,19 +98,25 @@ namespace School_version1.Controllers
 
             return Unauthorized();
         }
-        // check info password        // có thể xóa
-        [HttpGet("check")]
-        public async Task<List<string>> check(string UserID)
+        // Check Info Account
+        [HttpGet("TakeInfoFromToken")]
+        public async Task<Object> TakeInfoAccount(string Token)
         {
-            var result = await accountRepo.CheckRoleUserID(UserID);
+            var ketqua = await accountRepo.TakeInfoAccount(Token);
+            return ketqua;
+        }
+        // reset password
+        [AllowAnonymous]
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword(SupportLogin resetpassword)
+        {
+            var result = await accountRepo.ResetPassword(resetpassword);
             if (result != null)
             {
-                return result;
+                return Ok(result);
             }
 
-            return null;
+            return Unauthorized();
         }
-        // Check Info Account
-
     }
 }
