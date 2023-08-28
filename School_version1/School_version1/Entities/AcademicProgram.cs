@@ -15,7 +15,7 @@ namespace School_version1.Entities
         [Required]
         public string AcademicProgramName { get; set; }
         [Required]
-        public DateTime TimeEndAcademicProgram { get; set; }
+        public DateTime AcademicProgramTimeEnd { get; set; }
         [ForeignKey("Semester")]
         public Guid SemesterId { get; set; }
         [JsonIgnore]

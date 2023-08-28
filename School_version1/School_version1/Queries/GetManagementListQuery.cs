@@ -1,26 +1,33 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using School_version1.Entities;
 using School_version1.Models.DTOs;
 using School_version1.Repositories;
+using System.Drawing;
+using System.Security.Policy;
 
 namespace LearnCQRS.Queries
 {
     public class GetManagementListQuery : IRequest<List<ManagementDto>>
     {
         public Guid Id { get; set; }
+        public int Size { get; set; }
+        public int Page { get; set; }
     }
+
     public class GetManagementListHandler : IRequestHandler<GetManagementListQuery, List<ManagementDto>>
     {
-        private readonly IBaseRepositories<Management, ManagementDto, ManagementAddDto> _studentRepository;
+        private readonly IBaseRepositories<Management, ManagementDto, ManagementAddDto> _ManagementRepository;
 
         public GetManagementListHandler(IBaseRepositories<Management, ManagementDto, ManagementAddDto> studentRepository)
         {
-            _studentRepository = studentRepository;
+            _ManagementRepository = studentRepository;
         }
 
         public async Task<List<ManagementDto>> Handle(GetManagementListQuery query, CancellationToken cancellationToken)
         {
-            return await _studentRepository.GetAll();
+            return await _ManagementRepository.GetAll(query.Size, query.Page);
         }
     }
 }
+ 

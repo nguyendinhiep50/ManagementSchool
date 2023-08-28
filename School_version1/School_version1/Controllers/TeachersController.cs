@@ -26,11 +26,19 @@ namespace School_version1.Controllers
 
         // GET: api/Teachers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TeacherDto>>> GetAllTeachers(int pages)
+        public async Task<ActionResult<IEnumerable<TeacherDto>>> GetAllTeachers(int pages,int size)
         {
-            return await _iTeacher.GetAll(pages);
+            return await _iTeacher.GetAll(pages, size);
         }
-
+        [HttpGet("TakeCountAll")]
+        public async Task<ActionResult<int>> GetTakeCountAll()
+        {
+            if (_context.Students == null)
+            {
+                return NotFound();
+            }
+            return await _iTeacher.GetAllCount();
+        }
         // GET: api/Teachers/5
         [HttpGet("{id}")]
         [AllowAnonymous]

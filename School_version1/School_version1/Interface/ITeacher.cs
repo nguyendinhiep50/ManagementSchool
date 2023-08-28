@@ -3,7 +3,7 @@ using School_version1.Models.DTOs;
 
 namespace School_version1.Interface
 {
-    public interface ITeacher : IEntityService<TeacherDto, TeacherDto,TeacherAddDto>
+    public interface ITeacher : IEntityService<Teacher, TeacherDto,TeacherAddDto>
     {
     }
 }

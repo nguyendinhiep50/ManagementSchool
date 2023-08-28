@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
-using System.Security.Claims;
 
 namespace School_version1.Controllers
 {
@@ -21,7 +20,7 @@ namespace School_version1.Controllers
         // add user
         // admin
         [HttpPost("RegisteredAccount")]
-        public async Task<IActionResult> RegisteredAccount(RegisteredAccount LoginAdd)
+        public async Task<IActionResult> RegisteredAccount(AccountRegisterDto LoginAdd)
         {
             var result = await accountRepo.RegisterdAccount(LoginAdd);
             if (result.Succeeded)
@@ -30,7 +29,7 @@ namespace School_version1.Controllers
 
                 return Ok(result.Succeeded);
             }
-            
+
             return Unauthorized();
         }
         //admin
@@ -62,7 +61,7 @@ namespace School_version1.Controllers
         // admin
         // update user
         [HttpPut("UpdateUser")]
-        public async Task<IActionResult> UpdateUser(SupportLogin model)
+        public async Task<IActionResult> UpdateUser(AccountResetPassword model)
         {
             var result = await accountRepo.UpdateUser(model);
             if (result != null)
@@ -71,24 +70,11 @@ namespace School_version1.Controllers
             }
             return Unauthorized();
         }
-        // admin
-        // add role 
-        [HttpPost("AddRoleUser")]
-        public async Task<IActionResult> AddRoleUser(string Email,string NameRole)
-        {
-            var result = await accountRepo.AddUserRole(Email, NameRole);
-            if (result != null)
-            {
-                return Ok(result);
-            }
-
-            return Unauthorized();
-        }
         // login 
         // token
         [AllowAnonymous]
         [HttpPost("LoginAccount")]
-        public async Task<IActionResult> LoginAccount(LoginAddDto LoginUser)
+        public async Task<IActionResult> LoginAccount(AccountLoginDto LoginUser)
         {
             var result = await accountRepo.SignInAsync(LoginUser);
             if (result != null)
@@ -108,9 +94,35 @@ namespace School_version1.Controllers
         // reset password
         [AllowAnonymous]
         [HttpPost("ResetPassword")]
-        public async Task<IActionResult> ResetPassword(SupportLogin resetpassword)
+        public async Task<IActionResult> ResetPassword(AccountResetPassword resetpassword)
         {
             var result = await accountRepo.ResetPassword(resetpassword);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+
+            return Unauthorized();
+        }
+        // Add Role Name and Email And Role
+        [HttpPost("AddRoleUser")]
+        public async Task<IActionResult> AddRoleUser(AddRoleAccount AddRoleAccount)
+        {
+            var result = await accountRepo.AddUserRole(AddRoleAccount);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+
+            return Unauthorized();
+        }
+
+        // getList Management Role asp user
+        [HttpGet("TakeUserRole")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ListRoleAccountUser(int pages, int size)
+        { 
+            var result = await accountRepo.ListRoleUser(pages, size);
             if (result != null)
             {
                 return Ok(result);

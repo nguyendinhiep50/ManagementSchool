@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using School_version1.Context;
+using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
 
@@ -21,9 +22,9 @@ namespace School_version1.Controllers
 
         // GET: api/ListStudentClassLearns
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ListStudentClassLearnDto>>> GetListStudentClassLearns(int pages)
+        public async Task<ActionResult<IEnumerable<ListStudentClassLearnDto>>> GetListStudentClassLearns(int pages, int size)
         {
-            return await _listStudentClassLearn.GetAll(pages);
+            return await _listStudentClassLearn.GetAll(pages, size);
         }
 
         // GET: api/ListStudentClassLearns/5
@@ -36,7 +37,15 @@ namespace School_version1.Controllers
             }
             return await _listStudentClassLearn.Get(id);
         }
-
+        [HttpGet("TakeCountAll")]
+        public async Task<ActionResult<int>> GetTakeCountAll()
+        {
+            if (_context.Students == null)
+            {
+                return NotFound();
+            }
+            return await _listStudentClassLearn.GetAllCount();
+        }
         // PUT: api/ListStudentClassLearns/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

@@ -7,7 +7,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace LearnCQRS.Commands
 {
-    public class CreateManagementCommand : IRequest<ManagementAddDto>
+    public class CreateManagementCommand : IRequest<Boolean>
     {
         public string ManagementName { get; set; }
         public string ManagementEmail { get; set; }
@@ -21,7 +21,7 @@ namespace LearnCQRS.Commands
             ManagementPassword = managementPassword; 
         }
     }
-    public class CreateManagementHandler : IRequestHandler<CreateManagementCommand, ManagementAddDto>
+    public class CreateManagementHandler : IRequestHandler<CreateManagementCommand, Boolean>
     {
         private readonly IBaseRepositories<Management, ManagementDto,ManagementAddDto> _studentRepository;
 
@@ -29,7 +29,7 @@ namespace LearnCQRS.Commands
         {
             _studentRepository = studentRepository;
         }
-        public async Task<ManagementAddDto> Handle(CreateManagementCommand command, CancellationToken cancellationToken)
+        public async Task<Boolean> Handle(CreateManagementCommand command, CancellationToken cancellationToken)
         {
             var management = new ManagementAddDto()
             {

@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -12,11 +11,8 @@ using School_version1.Interface;
 using School_version1.Models.DTOs;
 using School_version1.Repositories;
 using School_version1.Services;
-using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
-using System.Security.Claims;
-using System.Text; 
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +23,7 @@ builder.Services.AddDbContext<DbContextSchool>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolHiep")));
 
 builder.Services.AddScoped<DbContextSchool>();
-builder.Services.AddScoped<IStudent,StudentServices>();
+builder.Services.AddScoped<IStudent, StudentServices>();
 builder.Services.AddScoped<ITeacher, TeacherServices>();
 builder.Services.AddScoped<ISubject, SubjectServices>();
 builder.Services.AddScoped<ISemesters, SemesterServices>();
@@ -35,7 +31,7 @@ builder.Services.AddScoped<IFaculty, FacultyServices>();
 builder.Services.AddScoped<IAcademicProgram, AcademicProgramServices>();
 builder.Services.AddScoped<IClassLearn, ClassLearnsServices>();
 builder.Services.AddScoped<IListStudentClassLearn, ListStudentClassLearnsServices>();
-builder.Services.AddScoped<IBaseRepositories<Management, ManagementDto,ManagementAddDto>, BaseRepositories<Management, ManagementDto,ManagementAddDto>>();
+builder.Services.AddScoped<IBaseRepositories<Management, ManagementDto, ManagementAddDto>, BaseRepositories<Management, ManagementDto, ManagementAddDto>>();
 builder.Services.AddScoped<ILoginAccountRepository, LoginAccountServices>();
 
 builder.Services.AddScoped<UserManager<CustomIdentityUser>>();
@@ -87,7 +83,8 @@ builder.Services.AddIdentity<CustomIdentityUser, IdentityRole>()
     .AddDefaultTokenProviders();
 
 // Truy cập IdentityOptions
-builder.Services.Configure<IdentityOptions>(options => {
+builder.Services.Configure<IdentityOptions>(options =>
+{
     // Thiết lập về Password
     options.Password.RequireDigit = false; // Không bắt phải có số
     options.Password.RequireLowercase = false; // Không bắt phải có chữ thường
@@ -109,7 +106,7 @@ builder.Services.Configure<IdentityOptions>(options => {
     // Cấu hình đăng nhập.
     options.SignIn.RequireConfirmedEmail = true; // Cấu hình xác thực địa chỉ email (email phải tồn tại)
     options.SignIn.RequireConfirmedPhoneNumber = false; // Xác thực số điện thoại
- 
+
 });
 
 // Cấu hình Cookie
@@ -156,15 +153,6 @@ builder.Services.AddAuthorization(options =>
         policy.RequireRole("Teacher");
         policy.RequireRole("Student");
     });
-    options.AddPolicy("TeacherPolicy", policy =>
-    { 
-        policy.RequireRole("Teacher");
-        policy.RequireRole("Student");
-    });
-    options.AddPolicy("StudentPolicy", policy =>
-    { 
-        policy.RequireRole("Student");
-    });
 });
 
 
@@ -182,7 +170,7 @@ app.UseAuthorization();
 app.UseCors(MyAllowSpecificOrigins);
 
 app.UseHttpsRedirection();
-  
+
 app.MapControllers();
 
 app.Run();

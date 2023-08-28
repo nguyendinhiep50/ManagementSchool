@@ -24,7 +24,10 @@ namespace School_version1.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            modelBuilder.Entity<Student>()
+            .HasOne(s => s.Faculty)
+            .WithMany(f => f.Student)
+            .HasForeignKey(s => s.FacultyId);
             // Config chitietHD
             //modelBuilder.Entity<SanPham>()
             //    .HasMany(e => e.MaSP)

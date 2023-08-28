@@ -8,5 +8,6 @@
         public DateTime TeacherBirthDate { get; set; }
         public string TeacherPhone { get; set; }
         public string TeacherAdress { get; set; }
+        public Guid CustomIdentityUserID { get; set; }
     }
 }

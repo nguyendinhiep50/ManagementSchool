@@ -29,12 +29,21 @@ namespace School_version1.Controllers
         // GET: api/Subjects
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<SubjectDto>>> GetAllSubjects(int pages)
+        public async Task<ActionResult<IEnumerable<SubjectDto>>> GetAllSubjects(int pages,int size)
         {
-            return await _iSubject.GetAll(pages);
+            return await _iSubject.GetAll(pages,size);
         }
         //Get Subject for Student with Fauclty 
         // thêm cái kiểm tra xem đăng kí chưa và tạo class mới để có dữ liệu chưa đăng kí
+        [HttpGet("TakeCountAll")]
+        public async Task<ActionResult<int>> GetTakeCountAll()
+        {
+            if (_context.Students == null)
+            {
+                return NotFound();
+            }
+            return await _iSubject.GetAllCount();
+        }
         [HttpGet("TakeSubjectForStudent")]
         [AllowAnonymous]
         public async Task<List<SubjectDto>> GetSubjectInStudent(string tokenStudent)

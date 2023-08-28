@@ -80,41 +80,7 @@ namespace School_version1.Controllers
             }
             return await _iStudent.GetAllStudentsInFaculty(id);
         }
-        //// lấy thông tin thông qua token
-        //[HttpGet("InfoFromToken")]
-        //[AllowAnonymous]        
-        //public async Task<ActionResult<StudentDto>> GetUserInfo(String stringToken)
-        //{
-        //    var tokenHandler = new JwtSecurityTokenHandler();
-        //    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("nguyendinhiep_key_longdaithonglong"));
-        //    var userIdClaim123 = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-        //    var username13 = User.FindFirst(ClaimTypes.Name)?.Value;
-        //    var tokenValidationParameters = new TokenValidationParameters
-        //    {
-        //        ValidateIssuerSigningKey = true,
-        //        IssuerSigningKey = key,
-        //        ValidateIssuer = false,
-        //        ValidateAudience = false
-        //    };
-        //    try
-        //    {
-        //        // Giải mã token và trả về thông tin bên trong dưới dạng ClaimsPrincipal
-        //        var claimsPrincipal = tokenHandler.ValidateToken(stringToken, tokenValidationParameters, out var validatedToken);
-        //        var userIdClaim = claimsPrincipal.Identities.FirstOrDefault().Name;
-        //        if (userIdClaim != null && Guid.TryParse(userIdClaim, out Guid userId))
-        //        {
-        //            var result = await _iStudent.Get(userId);
-        //            return result; 
-        //        } 
-        //    }
-        //    catch (SecurityTokenException)
-        //    {
-        //        // Nếu giải mã token gặp lỗi, xử lý lỗi tại đây
-        //        return null;
-        //    }
-        //    return null;
-        //}
-
+        
         // PUT: api/Students/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -123,7 +89,7 @@ namespace School_version1.Controllers
             if (id != student.StudentId)
             {
                 return BadRequest();
-            }
+            } 
             if (await _iStudent.Put(id, student) != null)
                 return NoContent();
             return NotFound();

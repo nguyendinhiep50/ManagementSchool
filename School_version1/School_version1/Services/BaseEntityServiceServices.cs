@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGeneration.Design;
 using School_version1.Context;
@@ -42,11 +43,18 @@ namespace School_version1.Services
             return _mapper.Map<T, TDto>(entity);
         }
 
-        public virtual async Task<List<TDto>> GetAll(int Page)
+        public virtual async Task<List<TDto>> GetAll(int Page,int size)
         {
             // skip 10
-            int PagesSkip = Page * 10;
-            var entity = await _db.Set<T>().Skip(PagesSkip).Take(10).ToListAsync(); 
+            Page = Page < 1 ? 1 : Page;
+            // take all
+            if(size < 1)
+            {
+                var entity2 = await _db.Set<T>().ToListAsync();
+                return _mapper.Map<List<TDto>>(entity2).ToList();
+            }
+            int PagesSkip = (Page - 1) * size;
+            var entity = await _db.Set<T>().Skip(PagesSkip).Take(size).ToListAsync(); 
             return _mapper.Map<List<TDto>>(entity).ToList();
         }
         public virtual async Task<int> GetAllCount()
@@ -73,24 +81,14 @@ namespace School_version1.Services
         public virtual async Task<bool> Put(Guid id, TDto addOrUpdateDto)
         {
             var dataEntity = await _db.Set<T>().FindAsync(id);
-
             if (dataEntity == null)
-            {
-                return false;
-            }
-            _mapper.Map<TDto, T>(addOrUpdateDto, dataEntity);
-
+                return false; // Không tìm thấy thực thể để cập nhật
+            _mapper.Map(addOrUpdateDto, dataEntity);
             _db.Entry(dataEntity).State = EntityState.Modified;
-            try
-            {
-                await _db.SaveChangesAsync();
-                return true;
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return false;
-            }
+            await _db.SaveChangesAsync();
+            return true;
         }
+
     }
 
 }

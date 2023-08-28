@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using School_version1.Context;
+using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
 
@@ -23,16 +24,24 @@ namespace School_version1.Controllers
 
         // GET: api/AcademicPrograms
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AcademicProgramDto>>> GetAcademicPrograms(int pages)
-        {
-            //_AcademicProgram.ValidateJwtToken()
-            return await _AcademicProgram.GetAll(pages);
+        public async Task<ActionResult<IEnumerable<AcademicProgramDto>>> GetAcademicPrograms(int pages,int size)
+        { 
+            return await _AcademicProgram.GetAll(pages,size);
         }
         // GET: api/AcademicPrograms
         [HttpGet("ProgramLearn")]
         public async Task<ActionResult<IEnumerable<AcademicProgramSPDto>>> GetProgramLearn()
         {
             return await _AcademicProgram.GetProgramLearn();
+        }
+        [HttpGet("TakeCountAll")]
+        public async Task<ActionResult<int>> GetTakeCountAll()
+        {
+            if (_context.Students == null)
+            {
+                return NotFound();
+            }
+            return await _AcademicProgram.GetAllCount();
         }
         [HttpGet("ProgramLearnFaculty")]
         public async Task<ActionResult<IEnumerable<AcademicProgramSPDto>>> GetProgramLearnFaculty(Guid facultyId)
@@ -55,7 +64,7 @@ namespace School_version1.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAcademicProgram(Guid id, AcademicProgramDto academicProgram)
         {
-            if (id != academicProgram.FacultyId)
+            if (id != academicProgram.AcademicProgramId)
             {
                 return BadRequest();
             }

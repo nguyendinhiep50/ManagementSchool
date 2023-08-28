@@ -20,9 +20,9 @@ namespace School_version1.Controllers
         }
         // GET: api/Managements
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ManagementDto>>> GetManagements()
+        public async Task<ActionResult<IEnumerable<ManagementDto>>> GetManagements(int page,int size)
         {
-            return await mediator.Send(new GetManagementListQuery());
+            return await mediator.Send(new GetManagementListQuery() { Page=page,Size=size});
         }
 
         // GET: api/Managements/5
@@ -46,7 +46,7 @@ namespace School_version1.Controllers
         // POST: api/Managements
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ManagementAddDto>> PostManagement(ManagementDto managementDto)
+        public async Task<ActionResult<Boolean>> PostManagement(ManagementDto managementDto)
         {
             var studentDetail = await mediator.Send(new CreateManagementCommand(
                 managementDto.ManagementName,

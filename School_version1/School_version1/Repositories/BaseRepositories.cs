@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using School_version1.Context;
 using School_version1.Entities;
@@ -43,24 +44,27 @@ namespace School_version1.Repositories
             return _mapper.Map<TDto>(Result);
         }
 
-        public virtual async Task<List<TDto>> GetAll()
+        public virtual async Task<List<TDto>> GetAll(int page,int size)
         {
-            var Result = await _db.Set<T>().ToListAsync();
+            // skip 10
+            page = page == -1 ? 0 : page;
+            int PagesSkip = (page - 1) * size; 
+            var Result = await _db.Set<T>().Skip(PagesSkip).Take(size).ToListAsync();
             return _mapper.Map<List<TDto>>(Result);
         }
 
-        public virtual async Task<TAddOrUpdateDto> Post(TAddOrUpdateDto dto)
+        public virtual async Task<Boolean> Post(TAddOrUpdateDto dto)
         {
             try
             {
                 var entity = _mapper.Map<T>(dto);
                 _db.Set<T>().Add(entity);
                 await _db.SaveChangesAsync();
-                return dto;
+                return true;
             }
             catch
             {
-                return dto;
+                return false;
             }
         }
 

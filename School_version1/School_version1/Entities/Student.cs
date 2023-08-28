@@ -23,11 +23,13 @@ namespace School_version1.Entities
         [ForeignKey("Faculty")]
         public Guid FacultyId { get; set; }
         [JsonIgnore]
-        public virtual Faculty Faculty { get; set; }
+        //public virtual Faculty Faculty { get; set; }
+        public Faculty Faculty { get; set; }
         [JsonIgnore]
         public virtual ICollection<ListStudentClassLearn> ListStudentClassLearns { get; set; }
- 
         [ForeignKey("CustomIdentityUser")]
-        public virtual CustomIdentityUser AppLogin { get; set; }
+        public string CustomIdentityUserID { get; set; }
+        [JsonIgnore]
+        public virtual CustomIdentityUser CustomIdentityUser { get; set; }
     }
 }

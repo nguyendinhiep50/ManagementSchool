@@ -6,6 +6,6 @@
         public string StudentEmail { get; set; }
         public DateTime StudentBirthDate { get; set; }
         public Guid FacultyId { get; set; }
-
+        public Guid CustomIdentityUserID { get; set; }
     }
 }

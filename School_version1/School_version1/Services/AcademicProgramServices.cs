@@ -29,7 +29,7 @@ namespace School_version1.Services
             var program = await _db.AcademicPrograms
                 .Include(p => p.Faculty)
                 .Include(x => x.Subject)
-                .Where(x=>x.FacultyId == FacultyId && x.TimeEndAcademicProgram > DateTime.Now)
+                .Where(x=>x.FacultyId == FacultyId && x.AcademicProgramTimeEnd > DateTime.Now)
                 .ToListAsync();
             var result = _mapper.Map<List<AcademicProgramSPDto>>(program).ToList();
             return result;

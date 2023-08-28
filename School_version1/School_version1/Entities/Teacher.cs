@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace School_version1.Entities
 {
@@ -19,6 +20,8 @@ namespace School_version1.Entities
         [DefaultValue(true)]
         public bool TeacherStatus { get; set; }
         [ForeignKey("CustomIdentityUser")]
-        public virtual CustomIdentityUser AppLogin { get; set; }
+        public string CustomIdentityUserID { get; set; }
+        [JsonIgnore]
+        public virtual CustomIdentityUser CustomIdentityUser { get; set; }
     }
 }

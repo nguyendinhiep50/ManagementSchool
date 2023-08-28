@@ -166,6 +166,9 @@ namespace School_version1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("AcademicProgramTimeEnd")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("FacultyId")
                         .HasColumnType("uniqueidentifier");
 
@@ -174,9 +177,6 @@ namespace School_version1.Migrations
 
                     b.Property<Guid>("SubjectId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("TimeEndAcademicProgram")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -327,7 +327,7 @@ namespace School_version1.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
-                    b.Property<string>("CustomIdentityUser")
+                    b.Property<string>("CustomIdentityUserID")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ManagementName")
@@ -336,9 +336,9 @@ namespace School_version1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomIdentityUser")
+                    b.HasIndex("CustomIdentityUserID")
                         .IsUnique()
-                        .HasFilter("[CustomIdentityUser] IS NOT NULL");
+                        .HasFilter("[CustomIdentityUserID] IS NOT NULL");
 
                     b.ToTable("Management");
                 });
@@ -375,7 +375,7 @@ namespace School_version1.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
-                    b.Property<string>("CustomIdentityUser")
+                    b.Property<string>("CustomIdentityUserID")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid>("FacultyId")
@@ -405,9 +405,9 @@ namespace School_version1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomIdentityUser")
+                    b.HasIndex("CustomIdentityUserID")
                         .IsUnique()
-                        .HasFilter("[CustomIdentityUser] IS NOT NULL");
+                        .HasFilter("[CustomIdentityUserID] IS NOT NULL");
 
                     b.HasIndex("FacultyId");
 
@@ -443,7 +443,7 @@ namespace School_version1.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
-                    b.Property<string>("CustomIdentityUser")
+                    b.Property<string>("CustomIdentityUserID")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("TeacherAdress")
@@ -465,9 +465,9 @@ namespace School_version1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomIdentityUser")
+                    b.HasIndex("CustomIdentityUserID")
                         .IsUnique()
-                        .HasFilter("[CustomIdentityUser] IS NOT NULL");
+                        .HasFilter("[CustomIdentityUserID] IS NOT NULL");
 
                     b.ToTable("Teachers");
                 });
@@ -590,37 +590,37 @@ namespace School_version1.Migrations
 
             modelBuilder.Entity("School_version1.Entities.Management", b =>
                 {
-                    b.HasOne("School_version1.Entities.CustomIdentityUser", "AppLogin")
+                    b.HasOne("School_version1.Entities.CustomIdentityUser", "CustomIdentityUser")
                         .WithOne("Management")
-                        .HasForeignKey("School_version1.Entities.Management", "CustomIdentityUser");
+                        .HasForeignKey("School_version1.Entities.Management", "CustomIdentityUserID");
 
-                    b.Navigation("AppLogin");
+                    b.Navigation("CustomIdentityUser");
                 });
 
             modelBuilder.Entity("School_version1.Entities.Student", b =>
                 {
-                    b.HasOne("School_version1.Entities.CustomIdentityUser", "AppLogin")
+                    b.HasOne("School_version1.Entities.CustomIdentityUser", "CustomIdentityUser")
                         .WithOne("Student")
-                        .HasForeignKey("School_version1.Entities.Student", "CustomIdentityUser");
+                        .HasForeignKey("School_version1.Entities.Student", "CustomIdentityUserID");
 
                     b.HasOne("School_version1.Entities.Faculty", "Faculty")
-                        .WithMany()
+                        .WithMany("Student")
                         .HasForeignKey("FacultyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AppLogin");
+                    b.Navigation("CustomIdentityUser");
 
                     b.Navigation("Faculty");
                 });
 
             modelBuilder.Entity("School_version1.Entities.Teacher", b =>
                 {
-                    b.HasOne("School_version1.Entities.CustomIdentityUser", "AppLogin")
+                    b.HasOne("School_version1.Entities.CustomIdentityUser", "CustomIdentityUser")
                         .WithOne("Teacher")
-                        .HasForeignKey("School_version1.Entities.Teacher", "CustomIdentityUser");
+                        .HasForeignKey("School_version1.Entities.Teacher", "CustomIdentityUserID");
 
-                    b.Navigation("AppLogin");
+                    b.Navigation("CustomIdentityUser");
                 });
 
             modelBuilder.Entity("School_version1.Entities.CustomIdentityUser", b =>
@@ -630,6 +630,11 @@ namespace School_version1.Migrations
                     b.Navigation("Student");
 
                     b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("School_version1.Entities.Faculty", b =>
+                {
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("School_version1.Entities.Student", b =>

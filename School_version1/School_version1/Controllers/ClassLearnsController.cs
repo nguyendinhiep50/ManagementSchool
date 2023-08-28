@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using School_version1.Context;
+using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
 
@@ -20,11 +21,19 @@ namespace School_version1.Controllers
         }
         // GET: api/ClassLearns
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ClassLearnsDto>>> GetClassLearns(int pages)
+        public async Task<ActionResult<IEnumerable<ClassLearnsDto>>> GetClassLearns(int pages,int size)
         {
-            return await _classLearn.GetAll(pages);
+            return await _classLearn.GetAll(pages,size);
         }
-
+        [HttpGet("TakeCountAll")]
+        public async Task<ActionResult<int>> GetTakeCountAll()
+        {
+            if (_context.Students == null)
+            {
+                return NotFound();
+            }
+            return await _classLearn.GetAllCount();
+        }
         // GET: api/ClassLearns/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ClassLearnsDto>> GetClassLearn(Guid id)
