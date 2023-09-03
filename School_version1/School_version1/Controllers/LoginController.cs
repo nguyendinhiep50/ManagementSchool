@@ -34,11 +34,23 @@ namespace School_version1.Controllers
         }
         //admin
         // get roles
-        [HttpPost("getRoles")]
-        public async Task<IActionResult> getRoles()
+        [HttpGet("getRoleCount")]
+        public async Task<IActionResult> getRoleCount()
         {
-            var result = await accountRepo.GetRoles();
+            var result = await accountRepo.GetRoleCount();
             if (result != null)
+            {
+                return Ok(result);
+            }
+
+            return Unauthorized();
+        }
+        // update role   them cai id vao string [] de check quyen
+        [HttpPut("UpdateRole")]
+        public async Task<IActionResult> updateRole(UserAccountWithRole UserUpdate)
+        {
+            var result = await accountRepo.UpdateUserRole(UserUpdate);
+            if (result == true)
             {
                 return Ok(result);
             }
@@ -130,5 +142,6 @@ namespace School_version1.Controllers
 
             return Unauthorized();
         }
+
     }
 }

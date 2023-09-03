@@ -5,5 +5,6 @@ namespace School_version1.Interface
 {
     public interface ITeacher : IEntityService<Teacher, TeacherDto,TeacherAddDto>
     {
+        Task<List<ClassLearnsDto>> GetClassLearnForTeacher(string token);
     }
 }

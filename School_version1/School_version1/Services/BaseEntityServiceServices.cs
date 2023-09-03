@@ -9,15 +9,13 @@ namespace School_version1.Services
 {
     public abstract class BaseEntityService<T, TDto, TAddOrUpdateDto> where T : class where TDto : class where TAddOrUpdateDto : class
     {
-        protected DbContextSchool _db { get; private set; }  // can use when inherit
+        protected DbContextSchool _db; // can use when inherit
         protected IMapper _mapper;
-
         public BaseEntityService(DbContextSchool db, IMapper mapper)
         {
             _db = db;
             _mapper = mapper;
         }
-
         public virtual async Task<bool> Delete(Guid id)
         {
             try
@@ -35,14 +33,12 @@ namespace School_version1.Services
                 return false;
             }
         }
-
         public virtual async Task<TDto> Get(Guid id)
         {
             var entity = await _db.Set<T>().FindAsync(id);
 
             return _mapper.Map<T, TDto>(entity);
         }
-
         public virtual async Task<List<TDto>> GetAll(int Page,int size)
         {
             // skip 10
@@ -62,7 +58,6 @@ namespace School_version1.Services
             var entity = await _db.Set<T>().CountAsync();
             return entity;
         }
-
         public virtual async Task<bool> Post(TAddOrUpdateDto dto)
         {
             try
@@ -77,7 +72,6 @@ namespace School_version1.Services
                 return false;
             }
         }
-
         public virtual async Task<bool> Put(Guid id, TDto addOrUpdateDto)
         {
             var dataEntity = await _db.Set<T>().FindAsync(id);
@@ -88,7 +82,6 @@ namespace School_version1.Services
             await _db.SaveChangesAsync();
             return true;
         }
-
     }
 
 }

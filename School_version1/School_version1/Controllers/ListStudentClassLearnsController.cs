@@ -12,38 +12,27 @@ namespace School_version1.Controllers
     [Authorize(Roles = "Management")]
     public class ListStudentClassLearnsController : ControllerBase
     {
-        private readonly DbContextSchool _context;
         private readonly IListStudentClassLearn _listStudentClassLearn;
-        public ListStudentClassLearnsController(DbContextSchool context, IListStudentClassLearn listStudentClassLearn)
-        {
-            _context = context;
+        public ListStudentClassLearnsController(IListStudentClassLearn listStudentClassLearn)
+        { 
             _listStudentClassLearn = listStudentClassLearn;
         }
-
         // GET: api/ListStudentClassLearns
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ListStudentClassLearnDto>>> GetListStudentClassLearns(int pages, int size)
         {
             return await _listStudentClassLearn.GetAll(pages, size);
         }
-
         // GET: api/ListStudentClassLearns/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ListStudentClassLearnDto>> GetListStudentClassLearn(Guid id)
         {
-            if (_context.ListStudentClassLearns == null)
-            {
-                return NotFound();
-            }
             return await _listStudentClassLearn.Get(id);
         }
         [HttpGet("TakeCountAll")]
         public async Task<ActionResult<int>> GetTakeCountAll()
         {
-            if (_context.Students == null)
-            {
-                return NotFound();
-            }
+ 
             return await _listStudentClassLearn.GetAllCount();
         }
         // PUT: api/ListStudentClassLearns/5
@@ -64,9 +53,7 @@ namespace School_version1.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<ListStudentClassLearnDto>> PostListStudentClassLearn(ListStudentClassLearnAddDto listStudentClassLearnDto)
-        {
-            if (_context.ListStudentClassLearns == null)
-                return Problem("Entity set 'DbContextSchool.Teachers'  is null.");
+        { 
             if (await _listStudentClassLearn.Post(listStudentClassLearnDto))
                 return CreatedAtAction("GetListStudentClassLearn", new { id = listStudentClassLearnDto.StudentId }, listStudentClassLearnDto);
             return NotFound();
@@ -79,6 +66,13 @@ namespace School_version1.Controllers
             if (await _listStudentClassLearn.Delete(id))
                 return NoContent();
             return NotFound();
+        }
+
+        // Post Student In Class
+        [HttpPost("StudentRegisterClass")]
+        public async Task<ActionResult<string>> StudentRegisterClass(string IdSubject)
+        {
+            string token = HttpContext.Request.Headers["Authorization"];
         }
 
     }

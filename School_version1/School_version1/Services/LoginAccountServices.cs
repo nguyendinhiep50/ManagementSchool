@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using School_version1.Context;
@@ -6,6 +8,7 @@ using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
 using System.Collections;
+using System.Drawing;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -30,11 +33,12 @@ namespace MyApiNetCore6.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<List<IdentityRole>> GetRoles()
+        public async Task<int> GetRoleCount()
         {
-            var roles = await roleManager.Roles.ToListAsync();
-            return roles;
+            var groupedUserRoles = await _dbContext.Users.CountAsync();
+            return groupedUserRoles;
         }
+
 
         // CREATE PASSWORD
         public async Task<Boolean> ResetPassword(AccountResetPassword ResetPassword)
@@ -174,20 +178,31 @@ namespace MyApiNetCore6.Repositories
         {
             var resultUser = await userManager.FindByNameAsync(addRoleAccount.NameAccountUser);
             var resultRole = await roleManager.FindByNameAsync(addRoleAccount.RoleAccountRole);
-            if (resultRole != null && resultUser != null && userManager.FindByEmailAsync(addRoleAccount.EmailAccountUser) !=null)
+            var resultByEmail = await userManager.FindByEmailAsync(addRoleAccount.EmailAccountUser);
+
+            if (resultRole != null && resultUser != null && resultByEmail != null)
             {
                 try
                 {
                     var userRoleResult = await userManager.AddToRoleAsync(resultUser, resultRole.Name);
-                    if (userRoleResult.Succeeded) 
-                        return true; 
+                    if (userRoleResult.Succeeded)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    throw;
-                }             
+                    // Xử lý lỗi ngoại lệ ở đây, ví dụ: ghi log hoặc trả về thông báo lỗi.
+                    //throw ex; // Nếu bạn muốn ném lỗi ra ngoài để xử lý ở lớp gọi hàm này.
+                }
             }
+
             return false;
+
         }
 
         public async Task<IdentityResult> AddInfomationAccount(AccountRegisterDto model)
@@ -265,29 +280,76 @@ namespace MyApiNetCore6.Repositories
                 return null;
             }
         }
+        [AllowAnonymous]
 
         public async Task<List<UserAccountWithRole>> ListRoleUser(int page, int size)
         {
-            var userRoles = await _dbContext.UserRoles
-                .Join(_dbContext.Users, ur => ur.UserId, u => u.Id, (ur, u) => new { ur.RoleId, u.UserName, u.Email, u.Id })
-                .Join(_dbContext.Roles, ur => ur.RoleId, r => r.Id, (ur, r) => new { ur.UserName, ur.Email, RoleName = r.Name })
-                .ToListAsync();
-
-            var groupedUserRoles = userRoles
-                .GroupBy(ur => new { ur.UserName, ur.Email })
-                .Select(group => new UserAccountWithRole
+            var groupedUserRoles = await (
+                from user in _dbContext.Users
+                let roles = (
+                    from ur in _dbContext.UserRoles
+                    join r in _dbContext.Roles on ur.RoleId equals r.Id
+                    where ur.UserId == user.Id
+                    select r.Name
+                ).ToList()
+                select new UserAccountWithRole
                 {
-                    NameUser = group.Key.UserName,
-                    EmailUser = group.Key.Email,
-                    NameRole = group.Select(x => x.RoleName).ToArray()
-                })
-                .Skip((page - 1) * size)
-                .Take(size)
-                .ToList();
+                    NameUser = user.UserName,
+                    EmailUser = user.Email,
+                    RoleManagement = roles.Contains("Management"),
+                    RoleTeacher = roles.Contains("Teacher"),
+                    RoleStudent = roles.Contains("Student"),
+                }
+            )
+            .Skip((page - 1) * size)
+            .Take(size)
+            .ToListAsync();
+
+
+
 
             return groupedUserRoles;
         }
 
 
+        public async Task<bool> UpdateUserRole(UserAccountWithRole roles)
+        {
+            var resultUserName = await userManager.FindByNameAsync(roles.NameUser);
+            var resultUserEmail = await userManager.FindByEmailAsync(roles.EmailUser);
+            // xoa toan bo id cua no
+            // them id role lại cho nó từ đầu
+            // vòng for xoa role 
+            if (resultUserEmail != null && resultUserName != null)
+            {
+                var listRoles = roleManager.Roles.ToList();
+                foreach (var item in listRoles)
+                {
+                    var userRoleResult = await userManager.RemoveFromRoleAsync(resultUserName, item.Name);
+                    if (!userRoleResult.Succeeded)
+                    {
+                        var erro = userRoleResult.Succeeded;
+                    }
+                }
+                List<string> result = new List<string>();
+                if (roles.RoleManagement)
+                    result.Add("Management");
+                if (roles.RoleTeacher)
+                    result.Add("Teacher");
+                if (roles.RoleStudent)
+                    result.Add("Student");
+                foreach (var item in result)
+                {
+                    var userRoleResult = await userManager.AddToRoleAsync(resultUserName, item);
+                    if (!userRoleResult.Succeeded)
+                    {
+                        var erro = userRoleResult.Succeeded;
+                    }
+                }
+            }
+            else
+                return false;
+
+            return true;
+        }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using School_version1.Context;
 using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
+using System.Drawing;
 
 namespace School_version1.Services
 {
@@ -13,8 +15,25 @@ namespace School_version1.Services
         public TeacherServices(DbContextSchool db, IMapper mapper, ILoginAccountRepository repo) : base(db, mapper)
         {
             accountRepo = repo;
-            db = base._db;
-            mapper = base._mapper;
+        }
+
+        public async Task<List<ClassLearnsDto>> GetClassLearnForTeacher(string nameTeacher)
+        {
+            var entity = await _db.ClassLearns
+                            .Where(x => x.TeacherId == (_db.Teachers
+                                                        .Where(x => x.TeacherName == nameTeacher)
+                                                        .Select(x => x.Id).FirstOrDefault()
+                                                        )).ToListAsync();
+            return _mapper.Map<List<ClassLearnsDto>>(entity).ToList();
+        }
+        public async Task<TeacherDto> GetInfomationAccount(string nameTeacher)
+        {
+            var entity = await _db.ClassLearns
+                            .Where(x => x.TeacherId == (_db.Teachers
+                                                        .Where(x => x.TeacherName == nameTeacher)
+                                                        .Select(x => x.Id).FirstOrDefault()
+                                                        )).ToListAsync();
+            return null;
         }
         public override async Task<bool> Post(TeacherAddDto dto)
         {
@@ -36,19 +55,16 @@ namespace School_version1.Services
                 {
                     dto.CustomIdentityUserID = Guid.Parse(user.Id);
                     if (await base.Post(dto))
-                    {
-                        // Add Role "Student"
-                        var Roles = new string[] { "Teacher", "Student" };
+                    { 
                         try
                         {
-                            foreach (var item in Roles)
-                                await accountRepo.AddUserRole(new AddRoleAccount
-                                {
-                                    EmailAccountUser = user.Email,
-                                    RoleAccountRole = item,
-                                    NameAccountUser = user.UserName
-                                });
-                            return true;
+                            var resultEnd = await accountRepo.AddUserRole(new AddRoleAccount
+                            {
+                                EmailAccountUser = user.Email,
+                                RoleAccountRole = "Teacher",
+                                NameAccountUser = user.UserName
+                            });
+                            return resultEnd;
                         }
                         catch (Exception)
                         {

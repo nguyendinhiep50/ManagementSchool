@@ -13,7 +13,7 @@ namespace School_version1.Interface
         public Task<IdentityResult> AddInfomationAccount(AccountRegisterDto model);
         public Task<string> SignInAsync(AccountLoginDto model);
         // take roles
-        public Task<List<IdentityRole>> GetRoles();
+        public Task<int> GetRoleCount();
         public Task<Boolean> DeleteUser(string id);
         public Task<Boolean> UpdateUser(AccountResetPassword model);
 
@@ -30,5 +30,7 @@ namespace School_version1.Interface
         public Task<Boolean> ResetPassword(AccountResetPassword ResetPassword);
         // Find ACcount ID
         public Task<CustomIdentityUser> FindNameAccountID(string id);
+        public Task<Boolean> UpdateUserRole(UserAccountWithRole roles);
+
     }
 }

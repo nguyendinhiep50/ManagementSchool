@@ -16,8 +16,6 @@ namespace School_version1.Services
         public StudentServices(DbContextSchool db, IMapper mapper, ILoginAccountRepository repo) : base(db, mapper)
         {
             accountRepo = repo;
-            db = base._db;
-            mapper = base._mapper;
         }
         // ghi de phuong thuc Post Sinh vien de tao them tai khoan cho sinh vien trong identity
         public override async Task<bool> Post(StudentAddDto dto)

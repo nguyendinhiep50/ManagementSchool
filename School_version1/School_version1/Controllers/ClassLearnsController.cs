@@ -44,6 +44,15 @@ namespace School_version1.Controllers
             }
             return await _classLearn.Get(id);
         }
+        [HttpGet("GetListStudentInClass")]
+        public async Task<ActionResult<List<string>>> GetListStudentInClass(Guid id, int pages, int size)
+        {
+            if (_context.Faculty == null)
+            {
+                return NotFound();
+            }
+            return await _classLearn.GetAllStudentInClassLearn(id,pages,size);
+        }
 
         // PUT: api/ClassLearns/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

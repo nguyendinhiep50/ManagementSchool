@@ -21,6 +21,7 @@ namespace School_version1.Controllers
         private readonly DbContextSchool _context;
         private readonly IStudent _iStudent;
 
+
         public StudentsController(DbContextSchool context, IStudent iStudent)
         {
             _context = context;

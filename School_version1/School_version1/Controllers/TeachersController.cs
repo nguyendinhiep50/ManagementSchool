@@ -18,10 +18,13 @@ namespace School_version1.Controllers
     {
         private readonly DbContextSchool _context;
         private readonly ITeacher _iTeacher;
-        public TeachersController(DbContextSchool context, ITeacher iTeacher)
+        private readonly ISupportToken _supportToken;
+
+        public TeachersController(DbContextSchool context, ITeacher iTeacher, ISupportToken supportToken)
         {
             _context = context;
             _iTeacher = iTeacher;
+            _supportToken = supportToken;
         }
 
         // GET: api/Teachers
@@ -147,6 +150,24 @@ namespace School_version1.Controllers
             if (await _iTeacher.Delete(id))
                 return NoContent();
             return NotFound();
+        }
+
+        // TAKE TOKEN 
+        // REQUEST CLASS LEARN
+        [HttpGet("GetClassLearnForTeacher")]
+        public async Task<ActionResult<List<ClassLearnsDto>>> GetClassLearnForTeacher(string token)
+        {
+            try
+            {
+                var check = await _supportToken.GetSubjectInStudent(token);
+                if (check != null)
+                    return await _iTeacher.GetClassLearnForTeacher(check);
+            }
+            catch (SecurityTokenException)
+            { 
+                return null;
+            }
+            return null;
         }
     }
 }

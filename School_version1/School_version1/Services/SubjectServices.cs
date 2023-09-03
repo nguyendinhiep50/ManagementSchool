@@ -14,9 +14,11 @@ namespace School_version1.Services
         {
         }
 
-        public async Task<List<SubjectDto>> GetSubjectStudentFauclty(Guid student)
+        public async Task<List<SubjectDto>> GetSubjectStudentFauclty(string nameStudent)
         {
-            var Result = await _db.AcademicPrograms.Where(x => x.FacultyId == _db.Students.Find(student).FacultyId)
+            var Result = await _db.AcademicPrograms.Where(x => x.FacultyId == 
+                                                            _db.Students.Where(x=>x.StudentName == nameStudent)
+                                                            .Select(x=>x.FacultyId).FirstOrDefault())
                                              .Select(x=>x.SubjectId)
                                              .ToListAsync();
             var subjectsList = await _db.Subjects

@@ -33,6 +33,7 @@ builder.Services.AddScoped<IClassLearn, ClassLearnsServices>();
 builder.Services.AddScoped<IListStudentClassLearn, ListStudentClassLearnsServices>();
 builder.Services.AddScoped<IBaseRepositories<Management, ManagementDto, ManagementAddDto>, BaseRepositories<Management, ManagementDto, ManagementAddDto>>();
 builder.Services.AddScoped<ILoginAccountRepository, LoginAccountServices>();
+builder.Services.AddScoped<ISupportToken, Handle_TokenServices>();
 
 builder.Services.AddScoped<UserManager<CustomIdentityUser>>();
 

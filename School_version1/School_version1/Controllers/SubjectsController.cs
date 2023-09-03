@@ -1,15 +1,9 @@
-﻿using LearnCQRS.Queries;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using School_version1.Context;
-using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace School_version1.Controllers
 {
@@ -20,18 +14,22 @@ namespace School_version1.Controllers
     {
         private readonly DbContextSchool _context;
         private readonly ISubject _iSubject;
-        public SubjectsController(DbContextSchool context, ISubject iSubject)
+        private readonly ISupportToken _supportToken;
+        public SubjectsController(DbContextSchool context, ISubject iSubject, ISupportToken supportToken)
         {
             _context = context;
             _iSubject = iSubject;
+            _supportToken = supportToken;
+            var currentUser = User; // Thông tin người dùng hiện tại
+            _supportToken.SetCurrentUser(currentUser);
         }
 
         // GET: api/Subjects
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<SubjectDto>>> GetAllSubjects(int pages,int size)
+        public async Task<ActionResult<IEnumerable<SubjectDto>>> GetAllSubjects(int pages, int size)
         {
-            return await _iSubject.GetAll(pages,size);
+            return await _iSubject.GetAll(pages, size);
         }
         //Get Subject for Student with Fauclty 
         // thêm cái kiểm tra xem đăng kí chưa và tạo class mới để có dữ liệu chưa đăng kí
@@ -48,31 +46,17 @@ namespace School_version1.Controllers
         [AllowAnonymous]
         public async Task<List<SubjectDto>> GetSubjectInStudent(string tokenStudent)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("nguyendinhiep_key_longdaithonglong"));
-            var userIdClaim123 = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-            var username13 = User.FindFirst(ClaimTypes.Name)?.Value;
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = key,
-                ValidateIssuer = false,
-                ValidateAudience = false
-            };
             try
-            {
-                // Giải mã token và trả về thông tin bên trong dưới dạng ClaimsPrincipal
-                var claimsPrincipal = tokenHandler.ValidateToken(tokenStudent, tokenValidationParameters, out var validatedToken);
-                var userIdClaim = claimsPrincipal.Identities.FirstOrDefault().Name;
-                if (userIdClaim != null && Guid.TryParse(userIdClaim, out Guid userId))
-                    return await _iSubject.GetSubjectStudentFauclty(userId);
+            { 
+                var check = await _supportToken.GetSubjectInStudent(tokenStudent);
+                if (check != null)
+                    return await _iSubject.GetSubjectStudentFauclty(check);
             }
             catch (SecurityTokenException)
             {
-                // Nếu giải mã token gặp lỗi, xử lý lỗi tại đây
                 return null;
             }
-            return null; 
+            return null;
         }
 
         // GET: api/Subjects/5
