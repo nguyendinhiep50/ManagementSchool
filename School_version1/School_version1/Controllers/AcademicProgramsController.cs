@@ -13,12 +13,10 @@ namespace School_version1.Controllers
     [ApiController]
     [Authorize(Roles = "Management")]
     public class AcademicProgramsController : ControllerBase
-    {
-        private readonly DbContextSchool _context;
+    { 
         private readonly IAcademicProgram _AcademicProgram;
-        public AcademicProgramsController(DbContextSchool context, IAcademicProgram iAcademicProgram)
-        {
-            _context = context;
+        public AcademicProgramsController(IAcademicProgram iAcademicProgram)
+        { 
             _AcademicProgram = iAcademicProgram;
         }
 
@@ -37,10 +35,7 @@ namespace School_version1.Controllers
         [HttpGet("TakeCountAll")]
         public async Task<ActionResult<int>> GetTakeCountAll()
         {
-            if (_context.Students == null)
-            {
-                return NotFound();
-            }
+ 
             return await _AcademicProgram.GetAllCount();
         }
         [HttpGet("ProgramLearnFaculty")]
@@ -52,10 +47,7 @@ namespace School_version1.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<AcademicProgramDto>> GetAcademicProgram(Guid id)
         {
-            if (_context.AcademicPrograms == null)
-            {
-                return NotFound();
-            }
+ 
             return await _AcademicProgram.Get(id);
         }
 
@@ -77,9 +69,7 @@ namespace School_version1.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<AcademicProgramDto>> PostAcademicProgram(AcademicProgramAddDto academicProgramDto)
-        {
-            if (_context.Faculty == null)
-                return Problem("Entity set 'DbContextSchool.Teachers'  is null.");
+        { 
             if (await _AcademicProgram.Post(academicProgramDto))
                 return CreatedAtAction("GetAcademicProgram", new { id = academicProgramDto.FacultyId }, academicProgramDto);
             return NotFound();
@@ -89,13 +79,16 @@ namespace School_version1.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAcademicProgram(Guid id)
         {
-            if (_context.AcademicPrograms == null)
-            {
-                return NotFound();
-            }
+ 
             if (await _AcademicProgram.Delete(id))
                 return NoContent();
             return NotFound();
+        }
+
+        [HttpGet("GetListAcademicProgram")]
+        public async Task<ActionResult<IEnumerable<AcademicProgramListName>>> GetListAcademicProgram(int pages, int size)
+        {
+            return await _AcademicProgram.GetListAcademicProgramPage(pages, size);
         }
     }
 }

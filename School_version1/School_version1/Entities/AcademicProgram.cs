@@ -29,5 +29,6 @@ namespace School_version1.Entities
         //[JsonIgnore]
         public virtual Subject Subject { get; set; }
 
+        public ICollection<ClassLearn> classLearns { get; set; }
     }
 }

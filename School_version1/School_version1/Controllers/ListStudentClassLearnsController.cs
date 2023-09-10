@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Common;
 using School_version1.Context;
 using School_version1.Entities;
 using School_version1.Interface;
@@ -13,9 +14,11 @@ namespace School_version1.Controllers
     public class ListStudentClassLearnsController : ControllerBase
     {
         private readonly IListStudentClassLearn _listStudentClassLearn;
-        public ListStudentClassLearnsController(IListStudentClassLearn listStudentClassLearn)
-        { 
+        private readonly ILoginAccountRepository accountRepo;
+        public ListStudentClassLearnsController(IListStudentClassLearn listStudentClassLearn, ILoginAccountRepository repo)
+        {
             _listStudentClassLearn = listStudentClassLearn;
+            accountRepo = repo;
         }
         // GET: api/ListStudentClassLearns
         [HttpGet]
@@ -31,8 +34,7 @@ namespace School_version1.Controllers
         }
         [HttpGet("TakeCountAll")]
         public async Task<ActionResult<int>> GetTakeCountAll()
-        {
- 
+        { 
             return await _listStudentClassLearn.GetAllCount();
         }
         // PUT: api/ListStudentClassLearns/5
@@ -69,10 +71,24 @@ namespace School_version1.Controllers
         }
 
         // Post Student In Class
-        [HttpPost("StudentRegisterClass")]
-        public async Task<ActionResult<string>> StudentRegisterClass(string IdSubject)
+        [AllowAnonymous]
+        [HttpPost("StudentRegisterClass/{id}")]
+        public async Task<ActionResult<string>> StudentRegisterClass(string id)
         {
-            string token = HttpContext.Request.Headers["Authorization"];
+            var authorizationHeader = HttpContext.Request.Headers["Authorization"].ToString();
+            string token = null;
+
+            if (!string.IsNullOrEmpty(authorizationHeader) && authorizationHeader.StartsWith("Bearer "))
+            {
+                token = authorizationHeader.Substring("Bearer ".Length);
+            }
+            var ketqua = await accountRepo.TakeInfoAccount(token);
+            var StudentInfo = await _listStudentClassLearn.GetStudentId(Guid.Parse(ketqua.Id));
+            var AcademicId =await _listStudentClassLearn.GetAcademicProgramDtos(Guid.Parse(id));
+            var CLassLearnID = await _listStudentClassLearn.AddStudentClassLearn(AcademicId.AcademicProgramId,StudentInfo.StudentId);
+            if(CLassLearnID == null) 
+                return NotFound(); 
+            return Ok(ketqua);
         }
 
     }

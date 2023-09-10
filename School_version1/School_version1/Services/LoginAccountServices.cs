@@ -134,6 +134,7 @@ namespace MyApiNetCore6.Repositories
             try
             {
                 var FindAccountId = await userManager.FindByNameAsync(NameAccount);
+                FindAccountId.Student = await _dbContext.Students.Where(x => x.CustomIdentityUserID == FindAccountId.Id).FirstOrDefaultAsync();
                 return FindAccountId;
             }
             catch (Exception)
@@ -226,7 +227,7 @@ namespace MyApiNetCore6.Repositories
             return roles.ToList();
         }
 
-        public async Task<Object> TakeInfoAccount(string Token)
+        public async Task<CustomIdentityUser> TakeInfoAccount(string Token)
         {
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -245,7 +246,7 @@ namespace MyApiNetCore6.Repositories
                 // Giải mã token và trả về thông tin bên trong dưới dạng ClaimsPrincipal
                 var claimsPrincipal = tokenHandler.ValidateToken(Token, tokenValidationParameters, out var validatedToken);
                 var userIdClaim = claimsPrincipal.Identities.FirstOrDefault().Name;
-                var InfoAccount = await userManager.FindByNameAsync(userIdClaim);
+                var InfoAccount = await userManager.FindByNameAsync(userIdClaim); 
                 var roles = await userManager.GetRolesAsync(InfoAccount);
                 string RoleTemp = "";
                 if (roles != null)
@@ -303,11 +304,7 @@ namespace MyApiNetCore6.Repositories
             )
             .Skip((page - 1) * size)
             .Take(size)
-            .ToListAsync();
-
-
-
-
+            .ToListAsync(); 
             return groupedUserRoles;
         }
 

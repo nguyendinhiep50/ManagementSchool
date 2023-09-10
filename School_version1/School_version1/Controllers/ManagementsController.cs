@@ -4,12 +4,13 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using School_version1.Models.DTOs;
+using School_version1.Queries;
 
 namespace School_version1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Policy ="Management")]
+    [Authorize(Roles = "Management")]
     public class ManagementsController : ControllerBase
     {
         private readonly IMediator mediator;
@@ -60,6 +61,17 @@ namespace School_version1.Controllers
         {
             return await mediator.Send(new DeleteManagementCommand() { Id = Id });
         }
+        [HttpGet("GetManagementInfo")]
+        public async Task<ActionResult<ManagementInfo>> GetManagementInfo()
+        {
+            var authorizationHeader = HttpContext.Request.Headers["Authorization"].ToString();
+            string token = null;
 
+            if (!string.IsNullOrEmpty(authorizationHeader) && authorizationHeader.StartsWith("Bearer "))
+            {
+                token = authorizationHeader.Substring("Bearer ".Length);
+            }
+            return await mediator.Send(new GetManagementInfoQuery() { token = token });
+        }
     }
 }

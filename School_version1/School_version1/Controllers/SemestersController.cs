@@ -11,12 +11,10 @@ namespace School_version1.Controllers
     [ApiController]
     [Authorize(Roles = "Management")]
     public class SemestersController : ControllerBase
-    {
-        private readonly DbContextSchool _context;
+    { 
         private readonly ISemesters _iSemesters;
         public SemestersController(DbContextSchool context, ISemesters iSemesters)
-        {
-            _context = context;
+        { 
             _iSemesters = iSemesters;
         }
 
@@ -28,21 +26,13 @@ namespace School_version1.Controllers
         }
         [HttpGet("TakeCountAll")]
         public async Task<ActionResult<int>> GetTakeCountAll()
-        {
-            if (_context.Students == null)
-            {
-                return NotFound();
-            }
+        { 
             return await _iSemesters.GetAllCount();
         }
         // GET: api/Semesters/5
         [HttpGet("{id}")]
         public async Task<ActionResult<SemesterDto>> GetSemester(Guid id)
-        {
-            if (_context.Teachers == null)
-            {
-                return NotFound();
-            }
+        { 
             return await _iSemesters.Get(id);
         }
 
@@ -64,9 +54,7 @@ namespace School_version1.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<SemesterDto>> PostSemester(SemesterAddDto semesterDto)
-        {
-            if (_context.Semesters == null)
-                return Problem("Entity set 'DbContextSchool.Semesters'  is null.");
+        { 
             if (await _iSemesters.Post(semesterDto))
                 return CreatedAtAction("GetSemester", new { id = semesterDto.SemesterName }, semesterDto);
             return NotFound();
@@ -74,11 +62,7 @@ namespace School_version1.Controllers
         // DELETE: api/Semesters/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSemester(Guid id)
-        {
-            if (_context.Teachers == null)
-            {
-                return NotFound();
-            }
+        { 
             if (await _iSemesters.Delete(id))
                 return NoContent();
             return NotFound();

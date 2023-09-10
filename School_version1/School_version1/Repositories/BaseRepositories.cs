@@ -40,7 +40,7 @@ namespace School_version1.Repositories
 
         public virtual async Task<TDto> Get(Guid id)
         {
-            var Result = await _db.Set<T>().FindAsync(id).AsTask();
+            var Result = await _db.Set<T>().FindAsync(id);
             return _mapper.Map<TDto>(Result);
         }
 
@@ -91,6 +91,9 @@ namespace School_version1.Repositories
                 return false;
             }
         }
+
+
+ 
 
         //public virtual async Task<TDto> LoginToken(LoginAddDto dto)
         //{

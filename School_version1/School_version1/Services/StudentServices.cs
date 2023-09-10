@@ -81,5 +81,16 @@ namespace School_version1.Services
             return _mapper.Map<StudentDto>(student);
         }
 
+        public async Task<StudentInfo> GetInfoAccountStudent(string token)
+        {
+            var student = await accountRepo.TakeInfoAccount(token);
+            var result = await _db.Students
+                       .Include(x => x.CustomIdentityUser)
+                       .Include(x=>x.Faculty)
+                       .Where(x => x.CustomIdentityUser.Id == student.Id)
+                       .FirstOrDefaultAsync();
+            return _mapper.Map<StudentInfo>(result);
+
+        }
     }
 }

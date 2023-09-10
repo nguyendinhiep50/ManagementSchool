@@ -5,6 +5,8 @@ namespace School_version1.Interface
 {
     public interface ISubject : IEntityService<Subject, SubjectDto,SubjectAddDto>
     {
-        Task<List<SubjectDto>> GetSubjectStudentFauclty(string nameStudent);
+        Task<List<SubjectDto>> GetSubjectStudentFaucltyAll(string nameStudent);
+        Task<List<SubjectDto>> GetSubjectStudentFaucltyNoRegister(string nameStudent);
+        Task<List<SubjectDto>> GetSubjectStudentFaucltyRegister(string nameStudent);
     }
 }

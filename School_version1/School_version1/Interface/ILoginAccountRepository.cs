@@ -24,7 +24,7 @@ namespace School_version1.Interface
         public Task<List<string>> CheckRoleUserID(string IdUser);
 
         // take Info from Token
-        public Task<Object> TakeInfoAccount(string Token);
+        public Task<CustomIdentityUser> TakeInfoAccount(string Token);
 
         // resetPassword
         public Task<Boolean> ResetPassword(AccountResetPassword ResetPassword);

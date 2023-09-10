@@ -5,5 +5,8 @@ namespace School_version1.Interface
 { 
     public interface IListStudentClassLearn : IEntityService<ListStudentClassLearn, ListStudentClassLearnDto,ListStudentClassLearnAddDto>
     {
+        Task<AcademicProgramDto> GetAcademicProgramDtos(Guid idSubject);
+        Task<Boolean> AddStudentClassLearn(Guid idAcademicProgram, Guid StudentId);
+        Task<StudentDto> GetStudentId(Guid IdAccount);
     }
 }

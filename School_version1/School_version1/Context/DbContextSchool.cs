@@ -20,6 +20,7 @@ namespace School_version1.Context
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Management> Managements { get; set; }
+        public DbSet<SubjectGrades> SubjectGrades { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,6 +35,9 @@ namespace School_version1.Context
             //    .WithMany(e => e.MaHD)
             //    .UsingEntity<ChiTietHD>();
             modelBuilder.Entity<Student>()
+            .Property(b => b.Id)
+            .HasDefaultValueSql("NEWID()");
+            modelBuilder.Entity<SubjectGrades>()
             .Property(b => b.Id)
             .HasDefaultValueSql("NEWID()");
 

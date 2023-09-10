@@ -1,5 +1,6 @@
 ﻿namespace School_version1.Models.DTOs
 {
+    // làm biếng tách ra :)) nào rảnh FIX
     public class AccountResetPassword
     {
         public string AccountEmail { get; set; }

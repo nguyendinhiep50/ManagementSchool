@@ -15,14 +15,12 @@ namespace School_version1.Controllers
     [ApiController]
     [Authorize(Roles = "Teacher")]
     public class TeachersController : ControllerBase
-    {
-        private readonly DbContextSchool _context;
+    { 
         private readonly ITeacher _iTeacher;
         private readonly ISupportToken _supportToken;
 
-        public TeachersController(DbContextSchool context, ITeacher iTeacher, ISupportToken supportToken)
-        {
-            _context = context;
+        public TeachersController( ITeacher iTeacher, ISupportToken supportToken)
+        { 
             _iTeacher = iTeacher;
             _supportToken = supportToken;
         }
@@ -35,11 +33,7 @@ namespace School_version1.Controllers
         }
         [HttpGet("TakeCountAll")]
         public async Task<ActionResult<int>> GetTakeCountAll()
-        {
-            if (_context.Students == null)
-            {
-                return NotFound();
-            }
+        { 
             return await _iTeacher.GetAllCount();
         }
         // GET: api/Teachers/5
@@ -47,10 +41,7 @@ namespace School_version1.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<TeacherDto>> GetTeacher(Guid id)
         {
-            if (_context.Teachers == null)
-            {
-                return NotFound();
-            }
+ 
             return await _iTeacher.Get(id);
         }
         //[HttpGet("InfoFromToken")]
@@ -95,15 +86,12 @@ namespace School_version1.Controllers
             if (await _iTeacher.Put(id, TeacherDto) != null)
                 return NoContent();
             return NotFound();
-        }
-
+        } 
         // POST: api/Teachers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<TeacherDto>> PostTeacher(TeacherAddDto TeacherDto)
-        {
-            if (_context.Teachers == null)
-                return Problem("Entity set 'DbContextSchool.Teachers'  is null.");
+        { 
             if (await _iTeacher.Post(TeacherDto))
                 return CreatedAtAction("GetTeacher", new { id = TeacherDto.TeacherName }, TeacherDto);
             return NotFound();
@@ -142,24 +130,24 @@ namespace School_version1.Controllers
         // DELETE: api/Teachers/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTeacher(Guid id)
-        {
-            if (_context.Teachers == null)
-            {
-                return NotFound();
-            }
+        { 
             if (await _iTeacher.Delete(id))
                 return NoContent();
             return NotFound();
-        }
-
+        } 
         // TAKE TOKEN 
         // REQUEST CLASS LEARN
         [HttpGet("GetClassLearnForTeacher")]
-        public async Task<ActionResult<List<ClassLearnsDto>>> GetClassLearnForTeacher(string token)
+        public async Task<ActionResult<List<ClassLearnsDto>>> GetClassLearnForTeacher()
         {
             try
             {
-                var check = await _supportToken.GetSubjectInStudent(token);
+                string authorizationHeader = HttpContext.Request.Headers["Authorization"]; 
+                if (!string.IsNullOrEmpty(authorizationHeader) && authorizationHeader.StartsWith("Bearer "))
+                {
+                    authorizationHeader = authorizationHeader.Substring("Bearer ".Length);
+                }
+                var check = await _supportToken.GetSubjectInStudent(authorizationHeader);
                 if (check != null)
                     return await _iTeacher.GetClassLearnForTeacher(check);
             }
@@ -168,6 +156,34 @@ namespace School_version1.Controllers
                 return null;
             }
             return null;
+        }
+        [AllowAnonymous]
+        [HttpGet("ListStudentLearn")]
+        public async Task<ActionResult<List<StudentDto>>> GetListStudentLearn(Guid IdClass)
+        {
+            try
+            {
+                return await _iTeacher.GetListStudents(IdClass);
+            }
+            catch (SecurityTokenException)
+            {
+                return null;
+            }
+            return null;
+        }
+
+        [HttpGet("TakeInfoAccount")]
+        public async Task<ActionResult<TeacherAddDto>> GetInfoAccount()
+        {
+            var authorizationHeader = HttpContext.Request.Headers["Authorization"].ToString();
+            string token = null;
+
+            if (!string.IsNullOrEmpty(authorizationHeader) && authorizationHeader.StartsWith("Bearer "))
+            {
+                token = authorizationHeader.Substring("Bearer ".Length);
+            }            
+
+            return await _iTeacher.GetInfoAccount(token);
         }
     }
 }

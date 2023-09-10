@@ -436,6 +436,48 @@ namespace School_version1.Migrations
                     b.ToTable("Subjects");
                 });
 
+            modelBuilder.Entity("School_version1.Entities.SubjectGrades", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<double>("GPARank1")
+                        .HasColumnType("float");
+
+                    b.Property<double>("GPARank2")
+                        .HasColumnType("float");
+
+                    b.Property<double>("GPARank3")
+                        .HasColumnType("float");
+
+                    b.Property<double>("GPARank4")
+                        .HasColumnType("float");
+
+                    b.Property<Guid?>("ListStudentClassLearnId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("PassSubject")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SubjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ListStudentClassLearnId");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("SubjectGrades");
+                });
+
             modelBuilder.Entity("School_version1.Entities.Teacher", b =>
                 {
                     b.Property<Guid>("Id")
@@ -553,7 +595,7 @@ namespace School_version1.Migrations
             modelBuilder.Entity("School_version1.Entities.ClassLearn", b =>
                 {
                     b.HasOne("School_version1.Entities.AcademicProgram", "AcademicProgram")
-                        .WithMany()
+                        .WithMany("classLearns")
                         .HasForeignKey("AcademicProgramId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -614,6 +656,29 @@ namespace School_version1.Migrations
                     b.Navigation("Faculty");
                 });
 
+            modelBuilder.Entity("School_version1.Entities.SubjectGrades", b =>
+                {
+                    b.HasOne("School_version1.Entities.ListStudentClassLearn", null)
+                        .WithMany("SubjectGrades")
+                        .HasForeignKey("ListStudentClassLearnId");
+
+                    b.HasOne("School_version1.Entities.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("School_version1.Entities.Subject", "Subject")
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Subject");
+                });
+
             modelBuilder.Entity("School_version1.Entities.Teacher", b =>
                 {
                     b.HasOne("School_version1.Entities.CustomIdentityUser", "CustomIdentityUser")
@@ -621,6 +686,11 @@ namespace School_version1.Migrations
                         .HasForeignKey("School_version1.Entities.Teacher", "CustomIdentityUserID");
 
                     b.Navigation("CustomIdentityUser");
+                });
+
+            modelBuilder.Entity("School_version1.Entities.AcademicProgram", b =>
+                {
+                    b.Navigation("classLearns");
                 });
 
             modelBuilder.Entity("School_version1.Entities.CustomIdentityUser", b =>
@@ -635,6 +705,11 @@ namespace School_version1.Migrations
             modelBuilder.Entity("School_version1.Entities.Faculty", b =>
                 {
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("School_version1.Entities.ListStudentClassLearn", b =>
+                {
+                    b.Navigation("SubjectGrades");
                 });
 
             modelBuilder.Entity("School_version1.Entities.Student", b =>

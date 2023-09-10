@@ -19,13 +19,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddControllers();
-builder.Services.AddDbContext<DbContextSchool>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolHiep")));
+builder.Services.AddDbContext<DbContextSchool>(options => 
+        options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolHiep")));
 
 builder.Services.AddScoped<DbContextSchool>();
 builder.Services.AddScoped<IStudent, StudentServices>();
 builder.Services.AddScoped<ITeacher, TeacherServices>();
 builder.Services.AddScoped<ISubject, SubjectServices>();
+builder.Services.AddScoped<ISubjectGrades, SubjectGradesServices>();
 builder.Services.AddScoped<ISemesters, SemesterServices>();
 builder.Services.AddScoped<IFaculty, FacultyServices>();
 builder.Services.AddScoped<IAcademicProgram, AcademicProgramServices>();
@@ -34,7 +35,8 @@ builder.Services.AddScoped<IListStudentClassLearn, ListStudentClassLearnsService
 builder.Services.AddScoped<IBaseRepositories<Management, ManagementDto, ManagementAddDto>, BaseRepositories<Management, ManagementDto, ManagementAddDto>>();
 builder.Services.AddScoped<ILoginAccountRepository, LoginAccountServices>();
 builder.Services.AddScoped<ISupportToken, Handle_TokenServices>();
-
+builder.Services.AddScoped<IManagementRepositories, ManagementRepositories>();
+ 
 builder.Services.AddScoped<UserManager<CustomIdentityUser>>();
 
 

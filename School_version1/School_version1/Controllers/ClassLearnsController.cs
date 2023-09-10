@@ -11,12 +11,10 @@ namespace School_version1.Controllers
     [ApiController]
     [Authorize(Roles = "Management")]
     public class ClassLearnsController : ControllerBase
-    {
-        private readonly DbContextSchool _context;
+    { 
         private readonly IClassLearn _classLearn;
-        public ClassLearnsController(DbContextSchool context, IClassLearn iClassLearn)
-        {
-            _context = context;
+        public ClassLearnsController(  IClassLearn iClassLearn)
+        { 
             _classLearn = iClassLearn;
         }
         // GET: api/ClassLearns
@@ -28,29 +26,20 @@ namespace School_version1.Controllers
         [HttpGet("TakeCountAll")]
         public async Task<ActionResult<int>> GetTakeCountAll()
         {
-            if (_context.Students == null)
-            {
-                return NotFound();
-            }
+ 
             return await _classLearn.GetAllCount();
         }
         // GET: api/ClassLearns/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ClassLearnsDto>> GetClassLearn(Guid id)
         {
-            if (_context.Faculty == null)
-            {
-                return NotFound();
-            }
+ 
             return await _classLearn.Get(id);
         }
         [HttpGet("GetListStudentInClass")]
         public async Task<ActionResult<List<string>>> GetListStudentInClass(Guid id, int pages, int size)
         {
-            if (_context.Faculty == null)
-            {
-                return NotFound();
-            }
+ 
             return await _classLearn.GetAllStudentInClassLearn(id,pages,size);
         }
 
@@ -72,9 +61,7 @@ namespace School_version1.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<ClassLearnsDto>> PostClassLearn(ClassLearnsAddDto classLearnsDto)
-        {
-            if (_context.ClassLearns == null)
-                return Problem("Entity set 'DbContextSchool.Teachers'  is null.");
+        { 
             if (await _classLearn.Post(classLearnsDto))
                 return CreatedAtAction("GetClassLearns", new { id = classLearnsDto.ClassLearnName }, classLearnsDto);
             return NotFound();

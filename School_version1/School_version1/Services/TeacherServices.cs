@@ -16,7 +16,6 @@ namespace School_version1.Services
         {
             accountRepo = repo;
         }
-
         public async Task<List<ClassLearnsDto>> GetClassLearnForTeacher(string nameTeacher)
         {
             var entity = await _db.ClassLearns
@@ -26,6 +25,21 @@ namespace School_version1.Services
                                                         )).ToListAsync();
             return _mapper.Map<List<ClassLearnsDto>>(entity).ToList();
         }
+
+        public async Task<TeacherAddDto> GetInfoAccount(string token)
+        { 
+            var result =await accountRepo.TakeInfoAccount(token);
+            if (result != null)
+            {
+                var AccountTeacher = await _db.Teachers
+                                        .Where(x => x.CustomIdentityUserID == result.Id)
+                                        .Include(x=>x.CustomIdentityUser)
+                                        .FirstOrDefaultAsync(); 
+                return _mapper.Map<TeacherAddDto>(AccountTeacher);
+            }
+            return null;
+        }
+
         public async Task<TeacherDto> GetInfomationAccount(string nameTeacher)
         {
             var entity = await _db.ClassLearns
@@ -34,6 +48,23 @@ namespace School_version1.Services
                                                         .Select(x => x.Id).FirstOrDefault()
                                                         )).ToListAsync();
             return null;
+        }
+        public async Task<List<StudentDto>> GetListStudents(Guid ClassLearnId)
+        {
+            var Students = await _db.ListStudentClassLearns
+                                .Where(x => x.ClassLearnId == ClassLearnId)
+                                .Include(x => x.Student)
+                                .Select(x=> new StudentDto
+                                {
+                                    StudentId = x.StudentId,
+                                    FacultyId = x.Student.FacultyId,
+                                    FacultyName = string.Empty,
+                                    StudentName = x.Student.StudentName,
+                                    StudentBirthDate = x.Student.StudentBirthDate,
+                                    StudentImage = x.Student.StudentImage
+                                })
+                                .ToListAsync();
+            return Students;
         }
         public override async Task<bool> Post(TeacherAddDto dto)
         {
@@ -76,7 +107,5 @@ namespace School_version1.Services
             }
             return false;
         }
-
-
     }
 }

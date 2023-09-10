@@ -47,6 +47,7 @@ namespace School_version1.Controllers
         }
         // update role   them cai id vao string [] de check quyen
         [HttpPut("UpdateRole")]
+
         public async Task<IActionResult> updateRole(UserAccountWithRole UserUpdate)
         {
             var result = await accountRepo.UpdateUserRole(UserUpdate);

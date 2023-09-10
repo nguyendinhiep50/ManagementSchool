@@ -1,15 +1,7 @@
-﻿using LearnCQRS.Queries;
-using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using School_version1.Context;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace School_version1.Controllers
 {
@@ -18,56 +10,40 @@ namespace School_version1.Controllers
     [Authorize(Roles = "Student")]
     public class StudentsController : ControllerBase
     {
-        private readonly DbContextSchool _context;
         private readonly IStudent _iStudent;
 
 
-        public StudentsController(DbContextSchool context, IStudent iStudent)
+        public StudentsController(IStudent iStudent)
         {
-            _context = context;
             _iStudent = iStudent;
         }
- 
-        [HttpGet("TakeCountAll")] 
+
+        [HttpGet("TakeCountAll")]
         public async Task<ActionResult<int>> GetTakeCountAll()
         {
-            if (_context.Students == null)
-            {
-                return NotFound();
-            }
+
             return await _iStudent.GetAllCount();
         }
         // GET: api/Students
         [HttpGet("TakeNameFaculty")]
-        public async Task<ActionResult<IEnumerable<StudentDto>>> GetStudentsFaculty(int pages,int size)
+        public async Task<ActionResult<IEnumerable<StudentDto>>> GetStudentsFaculty(int pages, int size)
         {
-            if (_context.Students == null)
-            {
-                return NotFound();
-            }
-            return await _iStudent.GetAllStudentFaculty(pages,size);
+
+            return await _iStudent.GetAllStudentFaculty(pages, size);
         }
 
         // GET: api/Students/5
-        [HttpGet("{id}")] 
+        [HttpGet("{id}")]
         public async Task<ActionResult<StudentDto>> GetStudent(Guid id)
         {
-            if (_context.Students == null)
-            {
-                return NotFound();
-            }
+
             return await _iStudent.Get(id);
         }
         // GET: api/Students/5
         [HttpGet("Faculty{id}")]
         public async Task<ActionResult<StudentDto>> GetStudentFaculty(Guid id)
         {
-            var student = await _context.Students.FindAsync(id);
 
-            if (_context.Students == null)
-            {
-                return NotFound();
-            }
             return await _iStudent.GetStudentFaculty(id);
         }
 
@@ -75,13 +51,10 @@ namespace School_version1.Controllers
         [HttpGet("StudentInFaculty{id}")]
         public async Task<ActionResult<List<StudentDto>>> GetAllStudentsInFaculty(Guid id)
         {
-            if (_context.Students == null)
-            {
-                return NotFound();
-            }
+
             return await _iStudent.GetAllStudentsInFaculty(id);
         }
-        
+
         // PUT: api/Students/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -90,7 +63,7 @@ namespace School_version1.Controllers
             if (id != student.StudentId)
             {
                 return BadRequest();
-            } 
+            }
             if (await _iStudent.Put(id, student) != null)
                 return NoContent();
             return NotFound();
@@ -98,11 +71,9 @@ namespace School_version1.Controllers
 
         // POST: api/Students
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost] 
+        [HttpPost]
         public async Task<ActionResult<StudentAddDto>> PostStudent(StudentAddDto StudentAddDto)
         {
-            if (_context.Students == null)
-                return Problem("Entity set 'DbContextSchool.Students'  is null.");
             if (await _iStudent.Post(StudentAddDto))
                 return CreatedAtAction("GetStudent", new { id = StudentAddDto.StudentName }, StudentAddDto);
             return NotFound();
@@ -111,13 +82,22 @@ namespace School_version1.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStudent(Guid id)
         {
-            if (_context.Students == null)
-            {
-                return NotFound();
-            }
+
             if (await _iStudent.Delete(id))
                 return NoContent();
             return NotFound();
+        }
+        [HttpGet("TakeInfoStudent")]
+        public async Task<ActionResult<StudentInfo>> GetManagementInfo()
+        {
+            var authorizationHeader = HttpContext.Request.Headers["Authorization"].ToString();
+            string token = null;
+
+            if (!string.IsNullOrEmpty(authorizationHeader) && authorizationHeader.StartsWith("Bearer "))
+            {
+                token = authorizationHeader.Substring("Bearer ".Length);
+            }
+            return await _iStudent.GetInfoAccountStudent(token);
         }
     }
 }

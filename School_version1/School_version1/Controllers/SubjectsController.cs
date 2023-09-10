@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using School_version1.Context;
+using Microsoft.IdentityModel.Tokens; 
 using School_version1.Interface;
 using School_version1.Models.DTOs;
 
@@ -9,15 +8,13 @@ namespace School_version1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Management")]
+    [Authorize(Roles = "Management,Student")]
     public class SubjectsController : ControllerBase
-    {
-        private readonly DbContextSchool _context;
+    { 
         private readonly ISubject _iSubject;
         private readonly ISupportToken _supportToken;
-        public SubjectsController(DbContextSchool context, ISubject iSubject, ISupportToken supportToken)
-        {
-            _context = context;
+        public SubjectsController( ISubject iSubject, ISupportToken supportToken)
+        { 
             _iSubject = iSubject;
             _supportToken = supportToken;
             var currentUser = User; // Thông tin người dùng hiện tại
@@ -25,8 +22,7 @@ namespace School_version1.Controllers
         }
 
         // GET: api/Subjects
-        [HttpGet]
-        [AllowAnonymous]
+        [HttpGet] 
         public async Task<ActionResult<IEnumerable<SubjectDto>>> GetAllSubjects(int pages, int size)
         {
             return await _iSubject.GetAll(pages, size);
@@ -36,21 +32,24 @@ namespace School_version1.Controllers
         [HttpGet("TakeCountAll")]
         public async Task<ActionResult<int>> GetTakeCountAll()
         {
-            if (_context.Students == null)
-            {
-                return NotFound();
-            }
+ 
             return await _iSubject.GetAllCount();
         }
-        [HttpGet("TakeSubjectForStudent")]
-        [AllowAnonymous]
-        public async Task<List<SubjectDto>> GetSubjectInStudent(string tokenStudent)
+        [HttpGet("TakeSubjectForStudent")] 
+        public async Task<List<SubjectDto>> GetSubjectInStudent()
         {
+            var authorizationHeader = HttpContext.Request.Headers["Authorization"].ToString();
+            string token = null;
+
+            if (!string.IsNullOrEmpty(authorizationHeader) && authorizationHeader.StartsWith("Bearer "))
+            {
+                token = authorizationHeader.Substring("Bearer ".Length);
+            }
             try
             { 
-                var check = await _supportToken.GetSubjectInStudent(tokenStudent);
-                if (check != null)
-                    return await _iSubject.GetSubjectStudentFauclty(check);
+                var NameAccount = await _supportToken.GetSubjectInStudent(token);
+                if (NameAccount != null)
+                    return await _iSubject.GetSubjectStudentFaucltyAll(NameAccount);
             }
             catch (SecurityTokenException)
             {
@@ -60,20 +59,18 @@ namespace School_version1.Controllers
         }
 
         // GET: api/Subjects/5
-        [HttpGet("{id}")]
-        [AllowAnonymous]
+        [HttpGet("{id}")] 
+
         public async Task<ActionResult<SubjectDto>> GetSubject(Guid id)
         {
-            if (_context.Teachers == null)
-            {
-                return NotFound();
-            }
+ 
             return await _iSubject.Get(id);
         }
 
         // PUT: api/Subjects/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "Management")]
         public async Task<IActionResult> PutSubject(Guid id, SubjectDto subject)
         {
             if (id != subject.SubjectId)
@@ -88,10 +85,9 @@ namespace School_version1.Controllers
         // POST: api/Subjects
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "Management")]
         public async Task<ActionResult<SubjectDto>> PostSubject(SubjectAddDto subjectdto)
-        {
-            if (_context.Subjects == null)
-                return Problem("Entity set 'DbContextSchool.Subjects'  is null.");
+        { 
             if (await _iSubject.Post(subjectdto))
                 return CreatedAtAction("GetSubject", new { id = subjectdto.SubjectName }, subjectdto);
             return NotFound();
@@ -99,15 +95,46 @@ namespace School_version1.Controllers
 
         // DELETE: api/Subjects/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Management")]
         public async Task<IActionResult> DeleteSubject(Guid id)
         {
-            if (_context.Subjects == null)
-            {
-                return NotFound();
-            }
             if (await _iSubject.Delete(id))
                 return NoContent();
             return NotFound();
         }
+
+        [HttpGet("SubjectNoRegister")] 
+        public async Task<List<SubjectDto>> SubjectNoRegister()
+        {
+            var authorizationHeader = HttpContext.Request.Headers["Authorization"].ToString();
+            string token = null;
+
+            if (!string.IsNullOrEmpty(authorizationHeader) && authorizationHeader.StartsWith("Bearer "))
+            {
+                token = authorizationHeader.Substring("Bearer ".Length);
+            }
+            var NameAccount = await _supportToken.GetSubjectInStudent(token);
+
+            if (NameAccount != null)
+                return await _iSubject.GetSubjectStudentFaucltyNoRegister(NameAccount);
+            return null;
+        }
+        [HttpGet("SubjectRegister")] 
+        public async Task<List<SubjectDto>> SubjectRegister()
+        {
+            var authorizationHeader = HttpContext.Request.Headers["Authorization"].ToString();
+            string token = null;
+
+            if (!string.IsNullOrEmpty(authorizationHeader) && authorizationHeader.StartsWith("Bearer "))
+            {
+                token = authorizationHeader.Substring("Bearer ".Length);
+            }
+            var NameAccount = await _supportToken.GetSubjectInStudent(token);
+
+            if (NameAccount != null)
+                return await _iSubject.GetSubjectStudentFaucltyRegister(NameAccount);
+            return null;
+        }
+ 
     }
 }

@@ -10,5 +10,6 @@ namespace School_version1.Repositories
         Task<Guid> Delete(Guid id);
         Task<Boolean> Post(TAddOrUpdateDto dto);
         Task<Boolean> Put(Guid id, TDto objectT); 
+
     }
 }

@@ -11,12 +11,10 @@ namespace School_version1.Controllers
     [ApiController]
     [Authorize(Roles = "Management")]
     public class FacultiesController : ControllerBase
-    {
-        private readonly DbContextSchool _context;
+    { 
         private readonly IFaculty _faculty;
-        public FacultiesController(DbContextSchool context, IFaculty iFaculty)
-        {
-            _context = context;
+        public FacultiesController( IFaculty iFaculty)
+        { 
             _faculty = iFaculty;
         }
         // GET: api/Faculties
@@ -28,22 +26,14 @@ namespace School_version1.Controllers
         }
         [HttpGet("TakeCountAll")]
         public async Task<ActionResult<int>> GetTakeCountAll()
-        {
-            if (_context.Students == null)
-            {
-                return NotFound();
-            }
+        { 
             return await _faculty.GetAllCount();
         }
         // GET: api/Faculties/5
         [HttpGet("{id}")]
         [AllowAnonymous]
         public async Task<ActionResult<FacultyDto>> GetFaculty(Guid id)
-        {
-            if (_context.Faculty == null)
-            {
-                return NotFound();
-            }
+        { 
             return await _faculty.Get(id);
         }
 
@@ -65,9 +55,7 @@ namespace School_version1.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<FacultyDto>> PostFaculty(FacultyAddDto facultyDto)
-        {
-            if (_context.Faculty == null)
-                return Problem("Entity set 'DbContextSchool.Teachers'  is null.");
+        { 
             if (await _faculty.Post(facultyDto))
                 return CreatedAtAction("GetFaculty", new { id = facultyDto.FacultyName }, facultyDto);
             return NotFound();

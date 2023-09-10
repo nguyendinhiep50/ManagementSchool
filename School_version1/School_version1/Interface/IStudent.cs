@@ -8,5 +8,7 @@ namespace School_version1.Interface
         Task<List<StudentDto>> GetAllStudentFaculty(int page,int size); 
         Task<StudentDto> GetStudentFaculty(Guid id);
         Task<List<StudentDto>> GetAllStudentsInFaculty(Guid id);
+        Task<StudentInfo> GetInfoAccountStudent(string token);
+
     }
 }

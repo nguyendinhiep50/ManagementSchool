@@ -7,5 +7,8 @@ namespace School_version1.Interface
     {
         Task<List<AcademicProgramSPDto>> GetProgramLearn();
         Task<List<AcademicProgramSPDto>> GetProgramLearnFaculty(Guid FacultyId);
+        Task<List<AcademicProgramListName>> GetListAcademicProgramPage(int pages, int size);
+
+
     }
 }
