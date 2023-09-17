@@ -13,16 +13,31 @@ namespace School_version1.Services
     public class Handle_TokenServices : ControllerBase, ISupportToken
     {
         private ClaimsPrincipal _currentUser;
-        public Handle_TokenServices()
-        {
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
+        public Handle_TokenServices(IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor = httpContextAccessor;
+            // Truy cập thông tin xác thực từ HttpContext.Items
+            if (_httpContextAccessor.HttpContext.Items.ContainsKey("Username"))
+            {
+                string username = _httpContextAccessor.HttpContext.Items["Username"].ToString();
+                // Sử dụng thông tin xác thực ở đây
+            }
         }
         public async Task<string> GetSubjectInStudent(string tokenStudent)
-        {
+        { 
+            var authorizationHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString();
+            string token = null;
+
+            if (!string.IsNullOrEmpty(authorizationHeader) && authorizationHeader.StartsWith("Bearer "))
+            {
+                token = authorizationHeader.Substring("Bearer ".Length);
+            }
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("nguyendinhiep_key_longdaithonglong"));
             var tokenHandler = new JwtSecurityTokenHandler();
             SecurityToken validatedToken;
-            var principal = tokenHandler.ValidateToken(tokenStudent, new TokenValidationParameters
+            var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = key,

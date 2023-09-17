@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens; 
-using School_version1.Interface;
+using School_version1.Interface; 
 using School_version1.Models.DTOs;
 
 namespace School_version1.Controllers
@@ -11,14 +11,10 @@ namespace School_version1.Controllers
     [Authorize(Roles = "Management,Student")]
     public class SubjectsController : ControllerBase
     { 
-        private readonly ISubject _iSubject;
-        private readonly ISupportToken _supportToken;
-        public SubjectsController( ISubject iSubject, ISupportToken supportToken)
+        private readonly ISubject _iSubject; 
+        public SubjectsController( ISubject iSubject)
         { 
-            _iSubject = iSubject;
-            _supportToken = supportToken;
-            var currentUser = User; // Thông tin người dùng hiện tại
-            _supportToken.SetCurrentUser(currentUser);
+            _iSubject = iSubject;  
         }
 
         // GET: api/Subjects
@@ -38,18 +34,12 @@ namespace School_version1.Controllers
         [HttpGet("TakeSubjectForStudent")] 
         public async Task<List<SubjectDto>> GetSubjectInStudent()
         {
-            var authorizationHeader = HttpContext.Request.Headers["Authorization"].ToString();
-            string token = null;
+            string username123 = HttpContext.Items["Username"].ToString();
 
-            if (!string.IsNullOrEmpty(authorizationHeader) && authorizationHeader.StartsWith("Bearer "))
-            {
-                token = authorizationHeader.Substring("Bearer ".Length);
-            }
             try
-            { 
-                var NameAccount = await _supportToken.GetSubjectInStudent(token);
-                if (NameAccount != null)
-                    return await _iSubject.GetSubjectStudentFaucltyAll(NameAccount);
+            {  
+                if (username123 != null)
+                    return await _iSubject.GetSubjectStudentFaucltyAll(username123);
             }
             catch (SecurityTokenException)
             {
@@ -106,33 +96,17 @@ namespace School_version1.Controllers
         [HttpGet("SubjectNoRegister")] 
         public async Task<List<SubjectDto>> SubjectNoRegister()
         {
-            var authorizationHeader = HttpContext.Request.Headers["Authorization"].ToString();
-            string token = null;
-
-            if (!string.IsNullOrEmpty(authorizationHeader) && authorizationHeader.StartsWith("Bearer "))
-            {
-                token = authorizationHeader.Substring("Bearer ".Length);
-            }
-            var NameAccount = await _supportToken.GetSubjectInStudent(token);
-
-            if (NameAccount != null)
-                return await _iSubject.GetSubjectStudentFaucltyNoRegister(NameAccount);
+            string username123 = HttpContext.Items["Username"].ToString();
+            if (username123 != null)
+                return await _iSubject.GetSubjectStudentFaucltyNoRegister(username123);
             return null;
         }
         [HttpGet("SubjectRegister")] 
         public async Task<List<SubjectDto>> SubjectRegister()
         {
-            var authorizationHeader = HttpContext.Request.Headers["Authorization"].ToString();
-            string token = null;
-
-            if (!string.IsNullOrEmpty(authorizationHeader) && authorizationHeader.StartsWith("Bearer "))
-            {
-                token = authorizationHeader.Substring("Bearer ".Length);
-            }
-            var NameAccount = await _supportToken.GetSubjectInStudent(token);
-
-            if (NameAccount != null)
-                return await _iSubject.GetSubjectStudentFaucltyRegister(NameAccount);
+            string username123 = HttpContext.Items["Username"].ToString();  
+            if (username123 != null)
+                return await _iSubject.GetSubjectStudentFaucltyRegister(username123); 
             return null;
         }
  

@@ -311,11 +311,16 @@ namespace School_version1.Migrations
                     b.Property<Guid>("StudentId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("SubjectGradesId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClassLearnId");
 
                     b.HasIndex("StudentId");
+
+                    b.HasIndex("SubjectGradesId");
 
                     b.ToTable("ListStudentClassLearns");
                 });
@@ -455,9 +460,6 @@ namespace School_version1.Migrations
                     b.Property<double>("GPARank4")
                         .HasColumnType("float");
 
-                    b.Property<Guid?>("ListStudentClassLearnId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("PassSubject")
                         .HasColumnType("bit");
 
@@ -468,8 +470,6 @@ namespace School_version1.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ListStudentClassLearnId");
 
                     b.HasIndex("StudentId");
 
@@ -625,9 +625,15 @@ namespace School_version1.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("School_version1.Entities.SubjectGrades", "SubjectGrades")
+                        .WithMany()
+                        .HasForeignKey("SubjectGradesId");
+
                     b.Navigation("ClassLearn");
 
                     b.Navigation("Student");
+
+                    b.Navigation("SubjectGrades");
                 });
 
             modelBuilder.Entity("School_version1.Entities.Management", b =>
@@ -658,10 +664,6 @@ namespace School_version1.Migrations
 
             modelBuilder.Entity("School_version1.Entities.SubjectGrades", b =>
                 {
-                    b.HasOne("School_version1.Entities.ListStudentClassLearn", null)
-                        .WithMany("SubjectGrades")
-                        .HasForeignKey("ListStudentClassLearnId");
-
                     b.HasOne("School_version1.Entities.Student", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
@@ -705,11 +707,6 @@ namespace School_version1.Migrations
             modelBuilder.Entity("School_version1.Entities.Faculty", b =>
                 {
                     b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("School_version1.Entities.ListStudentClassLearn", b =>
-                {
-                    b.Navigation("SubjectGrades");
                 });
 
             modelBuilder.Entity("School_version1.Entities.Student", b =>

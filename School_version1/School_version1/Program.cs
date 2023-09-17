@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MyApiNetCore6.Repositories;
+using MyApiNetCore6.Repositories; 
 using School_version1.Context;
 using School_version1.Entities;
-using School_version1.Interface;
+using School_version1.Interface; 
 using School_version1.Models.DTOs;
 using School_version1.Repositories;
 using School_version1.Services;
@@ -38,8 +38,7 @@ builder.Services.AddScoped<ISupportToken, Handle_TokenServices>();
 builder.Services.AddScoped<IManagementRepositories, ManagementRepositories>();
  
 builder.Services.AddScoped<UserManager<CustomIdentityUser>>();
-
-
+ 
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -168,10 +167,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 
 }
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors(MyAllowSpecificOrigins);
+app.UseMiddleware<JwtMiddleware>();
 
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers(); // Cấu hình endpoint cho controllers
+});
 app.UseHttpsRedirection();
 
 app.MapControllers();

@@ -42,7 +42,7 @@ namespace School_version1.Models
             // student
             CreateMap<Student, StudentDto>()
                 .ForMember(x => x.StudentId, opt => opt.MapFrom(src => src.Id))
-                .ForMember(x=>x.FacultyId , opt => opt.MapFrom(src => src.FacultyId))
+                .ForMember(x => x.FacultyId, opt => opt.MapFrom(src => src.FacultyId))
                 .ForMember(x => x.FacultyId, opt => opt.MapFrom(src => src.Faculty.Id))
                 .ForMember(x => x.FacultyName, opt => opt.MapFrom(src => src.Faculty.FacultyName));
             CreateMap<StudentAddDto, Student>()
@@ -60,7 +60,7 @@ namespace School_version1.Models
                 .ForMember(x => x.FacultyId, opt => opt.MapFrom(src => src.Faculty.Id))
                 .ForMember(x => x.PhoneStudent, opt => opt.MapFrom(src => src.CustomIdentityUser.PhoneNumber))
                 .ForMember(x => x.FacultyName, opt => opt.MapFrom(src => src.Faculty.FacultyName));
-            
+
 
             // teacher
             CreateMap<Teacher, TeacherDto>()
@@ -70,13 +70,13 @@ namespace School_version1.Models
             CreateMap<TeacherAddDto, Teacher>()
                 .ForMember(x => x.TeacherStatus, opt => opt.MapFrom(src => true))
                 .ForMember(x => x.CustomIdentityUserID, opt => opt.MapFrom(src => src.CustomIdentityUserID));
-            CreateMap<Teacher, TeacherAddDto>() 
+            CreateMap<Teacher, TeacherAddDto>()
                 .ForMember(x => x.TeacherEmail, opt => opt.MapFrom(src => src.CustomIdentityUser.Email))
                 .ForMember(x => x.TeacherPhone, opt => opt.MapFrom(src => src.CustomIdentityUser.PhoneNumber));
 
             CreateMap<TeacherDto, Teacher>()
                 .ForMember(x => x.TeacherStatus, opt => opt.MapFrom(src => true))
-                .ForMember(x=>x.Id ,opt =>opt.MapFrom(src=>src.TeacherId));
+                .ForMember(x => x.Id, opt => opt.MapFrom(src => src.TeacherId));
 
 
             //subject
@@ -86,7 +86,7 @@ namespace School_version1.Models
                 .ForMember(x => x.Id, opt => opt.MapFrom(src => src.SubjectId));
             CreateMap<SubjectAddDto, Subject>();
 
-             
+
 
             //ListStudentClassLearn
             CreateMap<ListStudentClassLearnDto, ListStudentClassLearn>();
@@ -126,6 +126,8 @@ namespace School_version1.Models
                 .ForMember(x => x.NameManagement, opt => opt.MapFrom(src => src.ManagementName))
                 .ForMember(x => x.EmailManagement, opt => opt.MapFrom(src => src.CustomIdentityUser.Email))
                 .ForMember(x => x.PhoneManagement, opt => opt.MapFrom(src => src.CustomIdentityUser.PhoneNumber));
+
+          
 
         }
     }

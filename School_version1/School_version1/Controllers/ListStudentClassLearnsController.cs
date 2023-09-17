@@ -84,8 +84,8 @@ namespace School_version1.Controllers
             }
             var ketqua = await accountRepo.TakeInfoAccount(token);
             var StudentInfo = await _listStudentClassLearn.GetStudentId(Guid.Parse(ketqua.Id));
-            var AcademicId =await _listStudentClassLearn.GetAcademicProgramDtos(Guid.Parse(id));
-            var CLassLearnID = await _listStudentClassLearn.AddStudentClassLearn(AcademicId.AcademicProgramId,StudentInfo.StudentId);
+            var AcademicId =await _listStudentClassLearn.GetAcademicProgramDtos(Guid.Parse(id)); 
+            var CLassLearnID = await _listStudentClassLearn.AddStudentClassLearn(AcademicId.AcademicProgramId,AcademicId.SubjectId,StudentInfo.StudentId);
             if(CLassLearnID == null) 
                 return NotFound(); 
             return Ok(ketqua);

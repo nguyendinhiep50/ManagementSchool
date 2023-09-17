@@ -15,7 +15,7 @@ namespace School_version1.Entities
         public Guid ClassLearnId { get; set; }
         [JsonIgnore]
         public virtual ClassLearn ClassLearn { get; set; }
-        public ICollection<SubjectGrades> SubjectGrades { get; set; }
+        public virtual SubjectGrades SubjectGrades { get; set; }
 
     }
 }

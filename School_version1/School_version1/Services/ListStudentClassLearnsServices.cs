@@ -24,40 +24,45 @@ namespace School_version1.Services
             return _mapper.Map<AcademicProgramDto>(result);
         }
 
-        public async Task<Boolean> AddStudentClassLearn(Guid idAcademicProgram,Guid StudentId)
+        public async Task<Boolean> AddStudentClassLearn(Guid idAcademicProgram,Guid SubjectId,Guid StudentId)
         {
-            var result = _db.ClassLearns
+            var result = await _db.ClassLearns
                .Where(x => x.AcademicProgramId == idAcademicProgram)
-               .ToList();
+               .FirstOrDefaultAsync();
 
-            // check full class
-            foreach (var item in result)
+            // check full class 
+                // check 
+            var CheckExist = await _db.ListStudentClassLearns.Where(x => x.ClassLearnId == result.Id && x.StudentId == StudentId).ToArrayAsync();
+            int countStudent =await _db.ListStudentClassLearns.Where(x => x.ClassLearnId == result.Id).CountAsync();
+            if (countStudent < result.ClassLearnEnrollment && CheckExist.Count() ==0)
             {
-                int countStudent =await _db.ListStudentClassLearns.Where(x => x.ClassLearnId == item.Id).CountAsync();
-                if (countStudent < item.ClassLearnEnrollment)
+                Guid IDClassLearn = Guid.NewGuid();
+                SubjectGrades subjectGradesNew = new SubjectGrades()
                 {
-                    ListStudentClassLearnAddDto AddStudent = new ListStudentClassLearnAddDto()
-                    {
-                        ClassLearnId = item.Id,
-                        StudentId = StudentId
-                    };
-                    try
-                    {
-                        _db.ListStudentClassLearns.Add(_mapper.Map<ListStudentClassLearn>(AddStudent));
-                        _db.SaveChanges();
-                        return true;
-                    }
-                    catch (Exception)
-                    {
-                        return false;
-                        throw;
-                    }
-
+                    StudentId = StudentId,
+                    SubjectId = SubjectId, 
+                };
+                ListStudentClassLearn AddStudent = new ListStudentClassLearn()
+                {
+                    ClassLearnId = result.Id,
+                    StudentId = StudentId,
+                    Id = IDClassLearn,
+                    SubjectGrades = subjectGradesNew
+                };
+                try
+                {
+                    _db.ListStudentClassLearns.Add(AddStudent);
+                    _db.SaveChangesAsync();
+                    return true;
                 }
-            }
+                catch (Exception)
+                {
+                    return false;
+                    throw;
+                } 
+            } 
             return false;
         }
-
         public async Task<StudentDto> GetStudentId(Guid IdAccount)
         {
             var result = await _db.Students.Where(x => x.CustomIdentityUserID == IdAccount.ToString()).FirstOrDefaultAsync();
