@@ -48,7 +48,7 @@ namespace School_version1.Services
         }
          
 
-    public async Task<SubjectGradesDto> GetSubjectGradesStudentSubject(string IdStudent)
+        public async Task<SubjectGradesDto> GetSubjectGradesStudentSubject(string IdStudent)
         {
             Guid RefreshStudentId = new Guid(IdStudent);
             var result = await _db.SubjectGrades

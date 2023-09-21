@@ -20,7 +20,7 @@ namespace School_version1.Entities
         [DefaultValue(true)]
         public bool TeacherStatus { get; set; }
         [ForeignKey("CustomIdentityUser")]
-        public string CustomIdentityUserID { get; set; }
+        public Guid CustomIdentityUserID { get; set; }
         [JsonIgnore]
         public virtual CustomIdentityUser CustomIdentityUser { get; set; }
     }

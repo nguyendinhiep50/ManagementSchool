@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using Newtonsoft.Json;
+using System.IdentityModel.Tokens.Jwt;
 
 public class JwtMiddleware
 {
@@ -28,9 +29,11 @@ public class JwtMiddleware
 
         // Trích xuất thông tin người dùng từ token
         var username = token.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name")?.Value;
-
+        var UserId = token.Claims.FirstOrDefault(c => c.Type == "jti")?.Value;
         // Lưu thông tin người dùng vào dịch vụ JwtTokenInfo để sử dụng trong Controllers
         context.Items["Username"] = username;
+        context.Items["UserId"] = UserId;
+
         await _next(context);
     }
 

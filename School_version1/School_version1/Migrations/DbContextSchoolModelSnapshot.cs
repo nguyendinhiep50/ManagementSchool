@@ -22,10 +22,11 @@ namespace School_version1.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -49,7 +50,7 @@ namespace School_version1.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,9 +64,8 @@ namespace School_version1.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -74,7 +74,7 @@ namespace School_version1.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -88,9 +88,8 @@ namespace School_version1.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -99,7 +98,7 @@ namespace School_version1.Migrations
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -110,9 +109,8 @@ namespace School_version1.Migrations
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -121,13 +119,13 @@ namespace School_version1.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -136,10 +134,10 @@ namespace School_version1.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -219,8 +217,9 @@ namespace School_version1.Migrations
 
             modelBuilder.Entity("School_version1.Entities.CustomIdentityUser", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -332,8 +331,8 @@ namespace School_version1.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
-                    b.Property<string>("CustomIdentityUserID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("CustomIdentityUserID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ManagementName")
                         .IsRequired()
@@ -342,8 +341,7 @@ namespace School_version1.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CustomIdentityUserID")
-                        .IsUnique()
-                        .HasFilter("[CustomIdentityUserID] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Management");
                 });
@@ -380,8 +378,8 @@ namespace School_version1.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
-                    b.Property<string>("CustomIdentityUserID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("CustomIdentityUserID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("FacultyId")
                         .HasColumnType("uniqueidentifier");
@@ -411,8 +409,7 @@ namespace School_version1.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CustomIdentityUserID")
-                        .IsUnique()
-                        .HasFilter("[CustomIdentityUserID] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("FacultyId");
 
@@ -485,8 +482,8 @@ namespace School_version1.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
-                    b.Property<string>("CustomIdentityUserID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("CustomIdentityUserID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TeacherAdress")
                         .IsRequired()
@@ -508,22 +505,21 @@ namespace School_version1.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CustomIdentityUserID")
-                        .IsUnique()
-                        .HasFilter("[CustomIdentityUserID] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Teachers");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.HasOne("School_version1.Entities.CustomIdentityUser", null)
                         .WithMany()
@@ -532,7 +528,7 @@ namespace School_version1.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.HasOne("School_version1.Entities.CustomIdentityUser", null)
                         .WithMany()
@@ -541,9 +537,9 @@ namespace School_version1.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -556,7 +552,7 @@ namespace School_version1.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.HasOne("School_version1.Entities.CustomIdentityUser", null)
                         .WithMany()
@@ -640,7 +636,9 @@ namespace School_version1.Migrations
                 {
                     b.HasOne("School_version1.Entities.CustomIdentityUser", "CustomIdentityUser")
                         .WithOne("Management")
-                        .HasForeignKey("School_version1.Entities.Management", "CustomIdentityUserID");
+                        .HasForeignKey("School_version1.Entities.Management", "CustomIdentityUserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("CustomIdentityUser");
                 });
@@ -649,7 +647,9 @@ namespace School_version1.Migrations
                 {
                     b.HasOne("School_version1.Entities.CustomIdentityUser", "CustomIdentityUser")
                         .WithOne("Student")
-                        .HasForeignKey("School_version1.Entities.Student", "CustomIdentityUserID");
+                        .HasForeignKey("School_version1.Entities.Student", "CustomIdentityUserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("School_version1.Entities.Faculty", "Faculty")
                         .WithMany("Student")
@@ -685,7 +685,9 @@ namespace School_version1.Migrations
                 {
                     b.HasOne("School_version1.Entities.CustomIdentityUser", "CustomIdentityUser")
                         .WithOne("Teacher")
-                        .HasForeignKey("School_version1.Entities.Teacher", "CustomIdentityUserID");
+                        .HasForeignKey("School_version1.Entities.Teacher", "CustomIdentityUserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("CustomIdentityUser");
                 });

@@ -1,14 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using School_version1.Context;
 using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
-using System.Collections;
-using System.Drawing;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -19,17 +16,17 @@ namespace MyApiNetCore6.Repositories
     {
         private readonly UserManager<CustomIdentityUser> userManager;
         private readonly SignInManager<CustomIdentityUser> signInManager;
-        private readonly RoleManager<IdentityRole> roleManager;
-        private readonly DbContextSchool _dbContext;
+        private readonly RoleManager<IdentityRole<Guid>> roleManager;
+        private readonly DbContextSchool _dbContext; 
 
         private readonly IConfiguration configuration;
 
-        public LoginAccountServices(UserManager<CustomIdentityUser> userManager, DbContextSchool dbContext, SignInManager<CustomIdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public LoginAccountServices( UserManager<CustomIdentityUser> userManager, DbContextSchool dbContext, SignInManager<CustomIdentityUser> signInManager, RoleManager<IdentityRole<Guid>> roleManager, IConfiguration configuration)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.roleManager = roleManager;
-            this.configuration = configuration;
+            this.configuration = configuration; 
             _dbContext = dbContext;
         }
 
@@ -83,7 +80,7 @@ namespace MyApiNetCore6.Repositories
                     var authClaims = new List<Claim>
                         {
                             new Claim(ClaimTypes.Name, model.AccountName),
-                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                            new Claim(JwtRegisteredClaimNames.Jti, result.Id.ToString())
 
                         };
                     // add role token
@@ -134,7 +131,7 @@ namespace MyApiNetCore6.Repositories
             try
             {
                 var FindAccountId = await userManager.FindByNameAsync(NameAccount);
-                FindAccountId.Student = await _dbContext.Students.Where(x => x.CustomIdentityUserID == FindAccountId.Id).FirstOrDefaultAsync();
+                FindAccountId.Student = await _dbContext.Students.Where(x => x.CustomIdentityUserID ==  (FindAccountId.Id)).FirstOrDefaultAsync();
                 return FindAccountId;
             }
             catch (Exception)
@@ -205,6 +202,7 @@ namespace MyApiNetCore6.Repositories
             return false;
 
         }
+
 
         public async Task<IdentityResult> AddInfomationAccount(AccountRegisterDto model)
         {
@@ -304,11 +302,9 @@ namespace MyApiNetCore6.Repositories
             )
             .Skip((page - 1) * size)
             .Take(size)
-            .ToListAsync(); 
-            return groupedUserRoles;
+            .ToListAsync();
+            return groupedUserRoles; 
         }
-
-
         public async Task<bool> UpdateUserRole(UserAccountWithRole roles)
         {
             var resultUserName = await userManager.FindByNameAsync(roles.NameUser);

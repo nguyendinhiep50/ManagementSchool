@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\School_version1.props" />
-</Project>

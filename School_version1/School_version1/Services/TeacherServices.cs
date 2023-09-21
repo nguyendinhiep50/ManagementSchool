@@ -32,7 +32,7 @@ namespace School_version1.Services
             if (result != null)
             {
                 var AccountTeacher = await _db.Teachers
-                                        .Where(x => x.CustomIdentityUserID == result.Id)
+                                        .Where(x => x.CustomIdentityUserID == (result.Id))
                                         .Include(x=>x.CustomIdentityUser)
                                         .FirstOrDefaultAsync(); 
                 return _mapper.Map<TeacherAddDto>(AccountTeacher);
@@ -84,7 +84,7 @@ namespace School_version1.Services
                 var user = await accountRepo.FindNameAccountID(dto.TeacherName);
                 if (user != null)
                 {
-                    dto.CustomIdentityUserID = Guid.Parse(user.Id);
+                    dto.CustomIdentityUserID =(user.Id);
                     if (await base.Post(dto))
                     { 
                         try

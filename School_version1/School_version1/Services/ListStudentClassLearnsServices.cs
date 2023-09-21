@@ -65,7 +65,7 @@ namespace School_version1.Services
         }
         public async Task<StudentDto> GetStudentId(Guid IdAccount)
         {
-            var result = await _db.Students.Where(x => x.CustomIdentityUserID == IdAccount.ToString()).FirstOrDefaultAsync();
+            var result = await _db.Students.Where(x => x.CustomIdentityUserID == IdAccount).FirstOrDefaultAsync();
             return _mapper.Map<StudentDto>(result);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
 
@@ -78,6 +79,13 @@ namespace School_version1.Controllers
                 return CreatedAtAction("GetStudent", new { id = StudentAddDto.StudentName }, StudentAddDto);
             return NotFound();
         }
+        [AllowAnonymous]
+        [HttpPost("PostManyStudent")]
+        public async Task<ActionResult<StudentAddDto>> PostManyStudent(List<StudentAddDto> studentAddDtos)
+        {
+            await _iStudent.PostManyStudent(studentAddDtos);
+            return NotFound();
+        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStudent(Guid id)
@@ -98,6 +106,13 @@ namespace School_version1.Controllers
                 token = authorizationHeader.Substring("Bearer ".Length);
             }
             return await _iStudent.GetInfoAccountStudent(token);
+        }
+        [HttpGet("TakeCourseScore")]
+        public async Task<ActionResult<List<SubjectGradesAddDto>>> TakeCourseScore()
+        {
+            var UserId = HttpContext.Items["UserId"].ToString();
+            var result = await _iStudent.GetTakeCourseScores(Guid.Parse(UserId));
+            return result.ToList();
         }
     }
 }

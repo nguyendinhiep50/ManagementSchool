@@ -5,9 +5,8 @@ using School_version1.Entities;
 
 namespace School_version1.Context
 {
-    public class DbContextSchool : IdentityDbContext<CustomIdentityUser>
+    public class DbContextSchool : IdentityDbContext<CustomIdentityUser, IdentityRole<Guid>, Guid>
     {
-        public DbContextSchool() { }
         public DbContextSchool(DbContextOptions<DbContextSchool> options) : base(options)
         {
         }
@@ -22,8 +21,9 @@ namespace School_version1.Context
         public DbSet<Management> Managements { get; set; }
         public DbSet<SubjectGrades> SubjectGrades { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        {            
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Student>()
             .HasOne(s => s.Faculty)

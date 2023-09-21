@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace School_version1.Services
 {
-    public class SubjectServices : BaseEntityService<Subject, SubjectDto,SubjectAddDto> ,ISubject
+    public class SubjectServices : BaseEntityService<Subject, SubjectDto, SubjectAddDto>, ISubject
     {
         private readonly ILoginAccountRepository accountRepo;
 
@@ -25,19 +25,19 @@ namespace School_version1.Services
         public async Task<List<SubjectDto>> GetSubjectStudentFaucltyAll(string nameStudent)
         {
             // check xem mo lop hay chua
-            var InfoAccount =await accountRepo.FindNameAccountID(nameStudent);
+            var InfoAccount = await accountRepo.FindNameAccountID(nameStudent);
             var Result = await _db.AcademicPrograms
-                                .Where(x => x.FacultyId == 
-                                            _db.Students.Find(InfoAccount.Student.Id).FacultyId 
+                                .Where(x => x.FacultyId ==
+                                            _db.Students.Find(InfoAccount.Student.Id).FacultyId
                                        && x.AcademicProgramTimeEnd > DateTime.Now
-                                       && _db.ClassLearns.Any(y=>y.AcademicProgramId == x.Id))
-                                .Select(x=>x.SubjectId)
+                                       && _db.ClassLearns.Any(y => y.AcademicProgramId == x.Id))
+                                .Select(x => x.SubjectId)
                                 .ToListAsync();
             var subjectsList = await _db.Subjects
                             .Where(s => Result.Contains(s.Id))
                             .ToListAsync(); // Lấy danh sách đối tượng Subject tương ứng từ danh sách SubjectId
 
-            return _mapper.Map<List<SubjectDto>>(subjectsList); 
+            return _mapper.Map<List<SubjectDto>>(subjectsList);
         }
         public async Task<List<SubjectDto>> GetSubjectStudentFaucltyNoRegister(string nameStudent)
         {

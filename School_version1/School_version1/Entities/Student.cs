@@ -28,7 +28,7 @@ namespace School_version1.Entities
         [JsonIgnore]
         public virtual ICollection<ListStudentClassLearn> ListStudentClassLearns { get; set; }
         [ForeignKey("CustomIdentityUser")]
-        public string CustomIdentityUserID { get; set; }
+        public Guid CustomIdentityUserID { get; set; }
         [JsonIgnore]
         public virtual CustomIdentityUser CustomIdentityUser { get; set; }
     }

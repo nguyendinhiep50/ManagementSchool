@@ -104,7 +104,7 @@ namespace School_version1.Controllers
         [HttpGet("SubjectRegister")] 
         public async Task<List<SubjectDto>> SubjectRegister()
         {
-            string username123 = HttpContext.Items["Username"].ToString();  
+            string username123 = HttpContext.Items["Username"].ToString();
             if (username123 != null)
                 return await _iSubject.GetSubjectStudentFaucltyRegister(username123); 
             return null;

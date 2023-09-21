@@ -83,7 +83,7 @@ namespace School_version1.Controllers
                 token = authorizationHeader.Substring("Bearer ".Length);
             }
             var ketqua = await accountRepo.TakeInfoAccount(token);
-            var StudentInfo = await _listStudentClassLearn.GetStudentId(Guid.Parse(ketqua.Id));
+            var StudentInfo = await _listStudentClassLearn.GetStudentId((ketqua.Id));
             var AcademicId =await _listStudentClassLearn.GetAcademicProgramDtos(Guid.Parse(id)); 
             var CLassLearnID = await _listStudentClassLearn.AddStudentClassLearn(AcademicId.AcademicProgramId,AcademicId.SubjectId,StudentInfo.StudentId);
             if(CLassLearnID == null) 

@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity; 
 
 namespace School_version1.Entities
 {
-    public class CustomIdentityUser : IdentityUser
+    public class CustomIdentityUser : IdentityUser<Guid>
     {
         public virtual Management Management { get; set; }
         public virtual Teacher Teacher { get; set; }

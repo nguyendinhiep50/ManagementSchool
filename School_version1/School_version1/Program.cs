@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MyApiNetCore6.Repositories; 
+using MyApiNetCore6.Repositories;
 using School_version1.Context;
 using School_version1.Entities;
-using School_version1.Interface; 
+using School_version1.Interface;
 using School_version1.Models.DTOs;
 using School_version1.Repositories;
 using School_version1.Services;
@@ -19,26 +19,34 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddControllers();
-builder.Services.AddDbContext<DbContextSchool>(options => 
+builder.Services.AddDbContext<DbContextSchool>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolHiep")));
 
-builder.Services.AddScoped<DbContextSchool>();
-builder.Services.AddScoped<IStudent, StudentServices>();
-builder.Services.AddScoped<ITeacher, TeacherServices>();
-builder.Services.AddScoped<ISubject, SubjectServices>();
-builder.Services.AddScoped<ISubjectGrades, SubjectGradesServices>();
-builder.Services.AddScoped<ISemesters, SemesterServices>();
-builder.Services.AddScoped<IFaculty, FacultyServices>();
-builder.Services.AddScoped<IAcademicProgram, AcademicProgramServices>();
-builder.Services.AddScoped<IClassLearn, ClassLearnsServices>();
-builder.Services.AddScoped<IListStudentClassLearn, ListStudentClassLearnsServices>();
-builder.Services.AddScoped<IBaseRepositories<Management, ManagementDto, ManagementAddDto>, BaseRepositories<Management, ManagementDto, ManagementAddDto>>();
-builder.Services.AddScoped<ILoginAccountRepository, LoginAccountServices>();
-builder.Services.AddScoped<ISupportToken, Handle_TokenServices>();
-builder.Services.AddScoped<IManagementRepositories, ManagementRepositories>();
- 
-builder.Services.AddScoped<UserManager<CustomIdentityUser>>();
- 
+// Đăng ký các dịch vụ của Identity
+builder.Services.AddIdentity<CustomIdentityUser, IdentityRole<Guid>>()
+    .AddEntityFrameworkStores<DbContextSchool>()
+    .AddDefaultTokenProviders();
+
+builder.Services.Configure<EmailSettingsDto>(builder.Configuration.GetSection("EmailSettings"));
+
+builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddTransient<IStudent, StudentServices>();
+builder.Services.AddTransient<ITeacher, TeacherServices>();
+builder.Services.AddTransient<ISubject, SubjectServices>();
+builder.Services.AddTransient<ISubjectGrades, SubjectGradesServices>();
+builder.Services.AddTransient<ISemesters, SemesterServices>();
+builder.Services.AddTransient<IFaculty, FacultyServices>();
+builder.Services.AddTransient<IAcademicProgram, AcademicProgramServices>();
+builder.Services.AddTransient<IClassLearn, ClassLearnsServices>();
+builder.Services.AddTransient<IListStudentClassLearn, ListStudentClassLearnsServices>();
+builder.Services.AddTransient<IBaseRepositories<Management, ManagementDto, ManagementAddDto>, BaseRepositories<Management, ManagementDto, ManagementAddDto>>();
+builder.Services.AddTransient<ILoginAccountRepository, LoginAccountServices>();
+builder.Services.AddTransient<ISupportToken, Handle_TokenServices>();
+
+builder.Services.AddTransient<IManagementRepositories, ManagementRepositories>();
+
+//builder.Services.AddScoped<UserManager<CustomIdentityUser>>();
+
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -79,10 +87,6 @@ builder.Services.AddCors(options =>
                           .AllowAnyHeader();
                       });
 });
-// Đăng ký các dịch vụ của Identity
-builder.Services.AddIdentity<CustomIdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<DbContextSchool>()
-    .AddDefaultTokenProviders();
 
 // Truy cập IdentityOptions
 builder.Services.Configure<IdentityOptions>(options =>

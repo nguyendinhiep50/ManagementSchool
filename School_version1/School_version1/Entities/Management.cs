@@ -11,7 +11,7 @@ namespace School_version1.Entities
         [Column(TypeName = "Nvarchar(100)")]
         public string ManagementName { get; set; }
         [ForeignKey("CustomIdentityUser")]
-        public string CustomIdentityUserID { get; set; }
+        public Guid CustomIdentityUserID { get; set; }
         [JsonIgnore]
         public virtual CustomIdentityUser CustomIdentityUser { get; set; }
     }
