@@ -38,7 +38,7 @@ namespace School_version1.Controllers
         public async Task<Boolean> UpdateStudentAsync(Guid id, ManagementDto management)
         {
             var isStudentDetailUpdated = await mediator.Send(new UpdateManagementCommand(
-               management.ManagementId,
+               management.ManagementId = id,
                management.ManagementName,
                management.ManagementEmail,
                management.ManagementPassword));

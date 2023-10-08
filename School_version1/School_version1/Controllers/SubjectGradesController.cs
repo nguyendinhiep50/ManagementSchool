@@ -45,15 +45,12 @@ namespace School_version1.Controllers
         }
         [AllowAnonymous]
         [HttpGet("GetSubjectGradesStudentSubject")]
-        public async Task<ActionResult<object>> GetSubjectGradesStudentSubject(string IdStudent)
+        public async Task<ActionResult<object>> GetSubjectGradesStudentSubject()
         {
             // add student name , add student subject
             //guid bien = new guid(idstudent);
-            //return await _scholl.subjectgrades
-            //                .where(x=>x.studentid == bien)
-            //                .include(x=>x.subject)
-            //                .include(x=>x.student)
-            //                .tolistasync();
+            var UserId = HttpContext.Items["UserId"].ToString();
+            var result = _iSubjectGrades.GetSubjectGradesStudentSubject(UserId);
             return null;
         }
         [AllowAnonymous]

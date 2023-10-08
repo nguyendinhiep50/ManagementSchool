@@ -46,17 +46,20 @@ namespace School_version1.Services
 
             return ListSubjectAllClassLearn;
         }
-         
+
 
         public async Task<SubjectGradesDto> GetSubjectGradesStudentSubject(string IdStudent)
         {
             Guid RefreshStudentId = new Guid(IdStudent);
-            var result = await _db.SubjectGrades
-                            .Where(x => x.StudentId == RefreshStudentId)
-                            .Include(x => x.Subject)
+            Student InfoStudent = await _db.Students.Include(x => x.CustomIdentityUser)
+                .Where(x => x.CustomIdentityUserID == RefreshStudentId).FirstOrDefaultAsync();
+            List<SubjectGrades> result = await _db.SubjectGrades
                             .Include(x => x.Student)
+                            .Include(x => x.Subject)
+                            .Where(x => x.StudentId == InfoStudent.Id)
                             .ToListAsync();
-            return null;
+
+            return _mapper.Map<SubjectGradesDto>(result);
         }
 
         public async Task<SubjectGradesAddDto> UpdateSubjectGradesStudent(SubjectGradesAddDto SubjectGradesAddDtos)

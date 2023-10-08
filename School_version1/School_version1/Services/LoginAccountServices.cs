@@ -71,8 +71,42 @@ namespace MyApiNetCore6.Repositories
             //string resetToken = await userManager.GeneratePasswordResetTokenAsync(result);
             //IdentityResult passwordChangeResult = await userManager.ResetPasswordAsync(resul'
             //t, resetToken, "123");
+            if(result.PasswordHash == model.AccountPassword)
+            {
+                var signInResult = await signInManager.PasswordSignInAsync(result, model.AccountPassword, true, false);
+                if (signInResult != null)
+                {
+                    var roles = await userManager.GetRolesAsync(result);
+                    var authClaims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name, model.AccountName),
+                            new Claim(JwtRegisteredClaimNames.Jti, result.Id.ToString())
 
-            if (result != null && await userManager.CheckPasswordAsync(result, model.AccountPassword))
+                        };
+                    // add role token
+                    if (roles != null)
+                    {
+                        foreach (var role in roles)
+                        {
+                            authClaims.Add(new Claim(ClaimTypes.Role, role));
+                        }
+
+                    }
+
+                    var authenKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
+
+
+                    token = new JwtSecurityToken(
+                        issuer: configuration["Jwt:Issuer"],
+                        audience: configuration["Jwt:Audience"],
+                        expires: DateTime.Now.AddMonths(1),
+                        claims: authClaims,
+                        signingCredentials: new SigningCredentials(authenKey, SecurityAlgorithms.HmacSha512Signature)
+                    );
+
+                }
+            }
+            else if (result != null && await userManager.CheckPasswordAsync(result, model.AccountPassword))
             {
                 var signInResult = await signInManager.PasswordSignInAsync(result, model.AccountPassword, true, false);
                 if (signInResult != null)
