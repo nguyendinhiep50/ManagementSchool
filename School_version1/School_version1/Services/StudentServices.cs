@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Humanizer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using School_version1.Context;
 using School_version1.Entities;
 using School_version1.Interface;
+using School_version1.Models;
 using School_version1.Models.DTOs;
 
 namespace School_version1.Services
@@ -20,16 +22,20 @@ namespace School_version1.Services
         }
         // ghi de phuong thuc Post Sinh vien de tao them tai khoan cho sinh vien trong identity
         public override async Task<bool> Post(StudentAddDto dto)
-        {
+        { 
+            Guid CreateId = Guid.NewGuid();
+            var hasher = new PasswordHasher<IdentityUser>();
             try
             {
                 var userAdd = new CustomIdentityUser
                 {
-                    UserName = dto.StudentName,
+                    UserName = dto.StudentNameLogin,
                     Email = dto.StudentEmail,
                     NormalizedUserName = dto.StudentName.ToUpper(),
                     NormalizedEmail = dto.StudentEmail.ToUpper(),
                     PasswordHash = "123",
+                    SecurityStamp = "123",
+                    PhoneNumber = dto.StudentPhoneNumber,
                     Student = new Student
                     {
                         StudentName = dto.StudentName,
@@ -37,8 +43,16 @@ namespace School_version1.Services
                         StudentDateCome = DateTime.Now,
                         FacultyId = dto.FacultyId,
                     },
-                };
-                var a = await userManager.AddToRoleAsync(userAdd, "Student"); 
+                }; 
+                var config = new MapperConfiguration(cfg => cfg.CreateMap<CustomIdentityUser, CustomIdentityUser>());
+                var mapper = config.CreateMapper();
+                var destinationUser = mapper.Map<CustomIdentityUser>(userAdd);
+
+                var b = await userManager.CreateAsync(destinationUser);
+                var a = await userManager.AddToRoleAsync(destinationUser, "Student");
+                //userManager.AddPasswordAsync()
+                //_db.Users
+                //    _db.UserRoles
             }
             catch (Exception)
             {
@@ -92,46 +106,15 @@ namespace School_version1.Services
 
         public async Task<bool> PostManyStudent(List<StudentAddDto> listStudent)
         {
-            //var hasher = new PasswordHasher<IdentityUser>();
-            //var usersToAdd = new List<CustomIdentityUser>();
-
-            //foreach (var line in listStudent)
-            //{
-            //    var user = new CustomIdentityUser
-            //    {
-            //        UserName = line.StudentNameLogin,
-            //        Email = line.StudentEmail,
-            //        NormalizedUserName = line.StudentName.ToUpper(),
-            //        NormalizedEmail = line.StudentEmail.ToUpper(),
-            //        PasswordHash = hasher.HashPassword(null, "123"),
-            //        Student = new Student
-            //        {
-            //            StudentName = line.StudentName,
-            //            StudentBirthDate = line.StudentBirthDate,
-            //            StudentDateCome = DateTime.Now,
-            //            FacultyId = line.FacultyId,
-            //        },
-            //    };
-
-            //    usersToAdd.Add(user);
-            //}
-
-            //// Tạo người dùng và thêm vai trò
-            //var createResult = await userManager.CreateAsync(usersToAdd, "123");
-            //if (createResult.Succeeded)
-            //{
-            //    foreach (var user in usersToAdd)
-            //    {
-            //        await userManager.AddToRoleAsync(user, "Student");
-            //    }
-            //}
-
-            //await _db.SaveChangesAsync();
-
+            foreach (var line in listStudent)
+            {
+                if (!await Post(line))
+                {
+                    return false;
+                }
+            }  
             return true;
         }
-
-
         public async Task<List<SubjectGradesAddDto>> GetTakeCourseScores(Guid idAccount)
         {
             var subjectGradesList = await _db.SubjectGrades.Include(x => x.Student).Include(x => x.Subject)

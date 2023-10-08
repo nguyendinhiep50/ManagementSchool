@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using School_version1.Context;
-using School_version1.Entities;
 using School_version1.Interface;
 using School_version1.Models.DTOs;
 
@@ -33,8 +31,9 @@ namespace School_version1.Controllers
         [HttpGet("{id}")]
         [AllowAnonymous]
         public async Task<ActionResult<FacultyDto>> GetFaculty(Guid id)
-        { 
-            return await _faculty.Get(id);
+        {
+            var facultyDto = await _faculty.Get(id);
+            return facultyDto; 
         }
 
         // PUT: api/Faculties/5

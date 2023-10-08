@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -18,7 +19,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-builder.Services.AddControllers();
+//builder.Services.AddControllers(options =>
+//{
+//    options.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+//}).AddXmlSerializerFormatters();
+//builder.Services.AddControllers();
+builder.Services.AddControllers();    // Formatter Xml
+
 builder.Services.AddDbContext<DbContextSchool>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolHiep")));
 

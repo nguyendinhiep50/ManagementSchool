@@ -18,11 +18,7 @@ public class JwtMiddleware
             await _next(context);
             return;
         }
-
         string accessToken = authorizationHeader.Substring("Bearer ".Length).Trim();
-
-        // Xác thực mã JWT ở đây và kiểm tra xác thực
-
         // Ví dụ: Kiểm tra và trích xuất thông tin người dùng từ JWT
         var handler = new JwtSecurityTokenHandler();
         var token = handler.ReadJwtToken(accessToken);
@@ -32,8 +28,7 @@ public class JwtMiddleware
         var UserId = token.Claims.FirstOrDefault(c => c.Type == "jti")?.Value;
         // Lưu thông tin người dùng vào dịch vụ JwtTokenInfo để sử dụng trong Controllers
         context.Items["Username"] = username;
-        context.Items["UserId"] = UserId;
-
+        context.Items["UserId"] = UserId; 
         await _next(context);
     }
 

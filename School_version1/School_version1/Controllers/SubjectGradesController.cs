@@ -48,12 +48,12 @@ namespace School_version1.Controllers
         public async Task<ActionResult<object>> GetSubjectGradesStudentSubject(string IdStudent)
         {
             // add student name , add student subject
-            //Guid Bien = new Guid(IdStudent);
-            //return await _scholl.SubjectGrades
-            //                .Where(x=>x.StudentId == Bien)
-            //                .Include(x=>x.Subject)
-            //                .Include(x=>x.Student)
-            //                .ToListAsync();
+            //guid bien = new guid(idstudent);
+            //return await _scholl.subjectgrades
+            //                .where(x=>x.studentid == bien)
+            //                .include(x=>x.subject)
+            //                .include(x=>x.student)
+            //                .tolistasync();
             return null;
         }
         [AllowAnonymous]

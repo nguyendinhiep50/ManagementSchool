@@ -69,7 +69,8 @@ namespace MyApiNetCore6.Repositories
 
             // reset PassWord
             //string resetToken = await userManager.GeneratePasswordResetTokenAsync(result);
-            //IdentityResult passwordChangeResult = await userManager.ResetPasswordAsync(result, resetToken, "123");
+            //IdentityResult passwordChangeResult = await userManager.ResetPasswordAsync(resul'
+            //t, resetToken, "123");
 
             if (result != null && await userManager.CheckPasswordAsync(result, model.AccountPassword))
             {
@@ -155,7 +156,6 @@ namespace MyApiNetCore6.Repositories
 
             return await userManager.CreateAsync(user, model.AccountPassword);
         }
-        // Add column in table User
 
         public async Task<bool> UpdateUser(AccountResetPassword model)
         {
